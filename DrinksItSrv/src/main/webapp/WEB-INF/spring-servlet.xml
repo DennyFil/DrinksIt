@@ -18,6 +18,10 @@
 	<tx:annotation-driven transaction-manager="transactionManager" />
 
 	<mvc:default-servlet-handler/>
+	
+	<mvc:cors>
+		<mvc:mapping path="/**" />
+	</mvc:cors>
 
 	<!-- Enables the Spring MVC @Controller programming model -->
 	<mvc:annotation-driven />
@@ -27,11 +31,11 @@
 	<mvc:resources mapping="/resources/**" location="/resources/" />
 
 	<!-- adding view resolver to show jsp's on browser -->
-	<bean id="viewResolver"
+	<!--<bean id="viewResolver"
 		class="org.springframework.web.servlet.view.InternalResourceViewResolver">
 		<property name="prefix" value="./jsp/" />
 		<property name="suffix" value=".jsp" />
-	</bean>
+	</bean>-->
 
 	<!-- Configure to plugin JSON as request and response in method handler -->
 	<bean
@@ -66,12 +70,11 @@
 		</property>
 		<property name="annotatedClasses">
 			<list>
-				<value>ru.drinksit.auxillary.database.Bar</value>
-				<value>ru.drinksit.auxillary.database.Drink</value>
-				<value>ru.drinksit.auxillary.database.Order</value>
-				<value>ru.drinksit.auxillary.database.Payment</value>
-				<value>ru.drinksit.auxillary.database.User</value>
-				<value>ru.drinksit.auxillary.database.Admin</value>
+				<value>ru.drinksit.auxillary.DTO.Bar</value>
+				<value>ru.drinksit.auxillary.DTO.Drink</value>
+				<value>ru.drinksit.auxillary.DTO.Order</value>
+				<value>ru.drinksit.auxillary.DTO.Payment</value>
+				<value>ru.drinksit.auxillary.DTO.User</value>
 			</list>
 		</property>
 		<property name="hibernateProperties">
@@ -91,16 +94,22 @@
 	<bean id="persistenceExceptionTranslationPostProcessor"
 		class="org.springframework.dao.annotation.PersistenceExceptionTranslationPostProcessor" />
 
-	<bean id="drinksItDBManager" class="ru.drinksit.auxillary.database.DrinksItDBManager">
+	<bean id="databaseManager" class="ru.drinksit.auxillary.database.DatabaseManager">
+	</bean>
+	
+	<bean id="userService" class="ru.drinksit.auxillary.ServiceDTO.UserService">
+	</bean>
+	
+	<bean id="barService" class="ru.drinksit.auxillary.ServiceDTO.BarService">
+	</bean>
+	
+	<bean id="orderService" class="ru.drinksit.auxillary.ServiceDTO.OrderService">
+	</bean>
+	
+	<bean id="drinkService" class="ru.drinksit.auxillary.ServiceDTO.DrinkService">
 	</bean>
 	
 	<bean id="hmacAuthenticationFilter" class="ru.drinksit.auxillary.HmacAuthenticationFilter">
-	</bean>
-
-	<bean id="loginControllerSrv" class="ru.drinksit.controllers.LoginControllerSrv">
-	</bean>
-
-	<bean id="orderControllerSrv" class="ru.drinksit.controllers.OrderControllerSrv">
 	</bean>
 
 	<!--<security:authentication-manager>

@@ -1,0 +1,25 @@
+<div>
+	<nav>
+		<a routerLink="/orders" routerLinkActive="active">Orders' Dashboard</a>
+		<a routerLink="/reports" routerLinkActive="active">Reports</a>
+		<a routerLink="/qrcode" routerLinkActive="active">QR Code</a>
+	</nav>
+	
+	<div *ngIf="appInfo && appInfo.title">
+		{{appInfo.title}}
+	</div>
+	<!-- <div *ngIf="user && user.username">
+		{{ user.username }} is logged in
+	</div>-->
+</div>
+<!--<top-banner [appInfo]="appInfo"></top-banner>-->
+	<router-outlet></router-outlet>
+	<div *ngIf="this._authService.getLoggedUser()">
+		<div class="col-sm-offset-2 col-sm-10">
+			<button type="submit" class="btn btn-default" (click)="this._authService.logout()">Logout</button>
+		</div>
+	</div>
+<!--<app-footer [user]=user></app-footer>-->
+<div *ngIf="user && user.username">
+	{{ user.username }} is logged in
+</div>

@@ -1,10 +1,9 @@
-package ru.drinksit.auxillary.database;
+package ru.drinksit.auxillary.DTO;
 
 import java.util.Date;
-
 import javax.persistence.*;
 
-import org.hibernate.annotations.CreationTimestamp;
+import ru.drinksit.auxillary.database.OrderComparator;
 
 @Entity
 @Table(name = "orders")
@@ -99,18 +98,6 @@ public class Order implements java.io.Serializable, Comparable<Order> {
 	public void setStatus(String status) {
 		this.status = status;
 	}
-
-	/*
-	@PrePersist
-    protected void onCreate() {
-		creationTime = new Date();
-		updateTime = new Date();
-    }
-
-    @PreUpdate
-    protected void onUpdate() {
-    	updateTime = new Date();
-    }*/
 	
 	public int compareTo(Order that)
 	{

@@ -1,6 +1,7 @@
 package ru.drinksit.auxillary.database;
 
 import java.util.Comparator;
+import ru.drinksit.auxillary.DTO.Order;
 
 public class OrderComparator implements Comparator<Order> {
 

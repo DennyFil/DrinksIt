@@ -1,15 +1,10 @@
 package ru.drinksit.views;
 
-import ru.drinksit.auxillary.OrderTable;
-import ru.drinksit.auxillary.database.Bar;
-import ru.drinksit.auxillary.database.Order;
-
 import java.io.IOException;
 import java.security.NoSuchAlgorithmException;
 import java.security.SignatureException;
 import java.security.cert.CRLException;
 import java.text.DateFormat;
-import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
@@ -18,6 +13,10 @@ import javax.servlet.http.HttpServletResponse;
 
 import org.apache.pdfbox.pdmodel.PDDocument;
 import org.apache.pdfbox.pdmodel.PDPage;
+
+import ru.drinksit.auxillary.OrderTable;
+import ru.drinksit.auxillary.DTO.Bar;
+import ru.drinksit.auxillary.DTO.Order;
 
 public class PdfOrderReportView extends AbstractPdfBoxView
 {

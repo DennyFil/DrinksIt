@@ -14,8 +14,9 @@ import org.apache.pdfbox.pdmodel.font.PDType1Font;
 import be.quodlibet.boxable.BaseTable;
 import be.quodlibet.boxable.Cell;
 import be.quodlibet.boxable.Row;
-import ru.drinksit.auxillary.database.Order;
-import ru.drinksit.auxillary.database.Bar;
+
+import ru.drinksit.auxillary.DTO.Order;
+import ru.drinksit.auxillary.DTO.Bar;
 
 public class OrderTable {
 

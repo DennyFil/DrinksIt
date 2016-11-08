@@ -1,4 +1,4 @@
-package ru.drinksit.auxillary.database;
+package ru.drinksit.auxillary.DTO;
 
 import javax.persistence.*;
 

@@ -86,15 +86,16 @@ public class RESTClientTools {
 		
 		headers.setContentType(contentType);
 		
-		DateFormat df = new SimpleDateFormat("E, dd MMM yyyy HH:mm:ss Z");
+		// Sun, 28 Aug 2016 22:15:13 GMT
+		DateFormat df = new SimpleDateFormat("E, dd MMM yyyy HH:mm:ss z");
+		df.setTimeZone(TimeZone.getTimeZone("GMT"));
+		
 		Date date = new Date();
 
 		long dateL = date.getTime();
 		headers.setDate(dateL);
 
 		String contentToEncodeStr = contentToEncodeJson.toString();
-
-		System.out.println(contentToEncodeStr);
 
 		// create signature: method + content md5 + content-type + date + uri
 		StringBuilder signature = new StringBuilder();
@@ -260,7 +261,7 @@ public class RESTClientTools {
 
 	public static List<Bar> listBars(String url)
 	{
-		String requestUri = url + "admin/bars";
+		String requestUri = url + "bars";
 
 		@SuppressWarnings("unchecked")
 		Bar [] bars = (Bar []) handleAdminRequest(requestUri, adminWS, passwordHashWS, null, HttpMethod.GET, Bar[].class);

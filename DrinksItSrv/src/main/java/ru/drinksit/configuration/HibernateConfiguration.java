@@ -1,4 +1,4 @@
-package ru.drinksit.spring.configuration;
+package ru.drinksit.configuration;
 
 import java.util.Properties;
 
@@ -18,7 +18,7 @@ import org.springframework.transaction.annotation.EnableTransactionManagement;
  
 @Configuration
 @EnableTransactionManagement
-@ComponentScan({ "ru.drinksit.spring.configuration" })
+@ComponentScan({ "ru.drinksit.configuration" })
 @PropertySource(value = { "classpath:server.properties" })
 public class HibernateConfiguration {
  
@@ -29,7 +29,7 @@ public class HibernateConfiguration {
     public LocalSessionFactoryBean sessionFactory() {
         LocalSessionFactoryBean sessionFactory = new LocalSessionFactoryBean();
         sessionFactory.setDataSource(dataSource());
-        sessionFactory.setPackagesToScan(new String[] { "ru.drinksit.auxillary.database" });
+        sessionFactory.setPackagesToScan(new String[] { "ru.drinksit.auxillary.DTO" });
         sessionFactory.setHibernateProperties(hibernateProperties());
         return sessionFactory;
      }
