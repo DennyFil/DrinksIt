@@ -133,7 +133,4 @@
 		<security:csrf disabled="true"/>
 	</security:http>-->
 
-	<bean id="ordersReport" class="ru.drinksit.views.PdfOrderReportView">
-	</bean>
-
 </beans>  

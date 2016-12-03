@@ -6,7 +6,7 @@ import 'rxjs/add/operator/map';
 import { AuthenticationService, DrinksItUser } from './authentication.service';
 import { HttpPacketService } from './httpPacket.service';
 import { CryptoService } from './crypto.service';
-import { DrinksItInfo } from './drinksitinfo';
+//import { DrinksItInfo } from './drinksitinfo';
 
 @Component({
     selector: 'drinksit',
@@ -15,13 +15,12 @@ import { DrinksItInfo } from './drinksitinfo';
 })
 export class DrinksItComponent {
 	
-	title = 'Welcome to DrinksIt';
-	appInfo: DrinksItInfo;
+	//appInfo: DrinksItInfo;
 	user: DrinksItUser;
 	
 	constructor(private router: Router, private _authService:AuthenticationService) {
 		if(this._authService.getLoggedUser()) {
-			this.appInfo = {title: this.title};
+			//this.appInfo = {title: this.title};
 			this.user = JSON.parse(this._authService.getLoggedUser());
 		}
 		else {

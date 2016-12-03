@@ -1,25 +1,26 @@
-<div>
-	<nav>
-		<a routerLink="/orders" routerLinkActive="active">Orders' Dashboard</a>
-		<a routerLink="/reports" routerLinkActive="active">Reports</a>
-		<a routerLink="/qrcode" routerLinkActive="active">QR Code</a>
-	</nav>
-	
-	<div *ngIf="appInfo && appInfo.title">
-		{{appInfo.title}}
-	</div>
-	<!-- <div *ngIf="user && user.username">
-		{{ user.username }} is logged in
-	</div>-->
+<div class="drinksit-text h1 container-fluid">
+	DrinksIt
 </div>
-<!--<top-banner [appInfo]="appInfo"></top-banner>-->
-	<router-outlet></router-outlet>
-	<div *ngIf="this._authService.getLoggedUser()">
-		<div class="col-sm-offset-2 col-sm-10">
-			<button type="submit" class="btn btn-default" (click)="this._authService.logout()">Logout</button>
-		</div>
+
+<div *ngIf="this._authService.getLoggedUser()" class="row top-buffer">
+	<div class="btn-group btn-group-justified" role="group">
+	  <div class="btn-group" role="group">
+	    <button type="button" routerLink="/orders" routerLinkActive="active" class="btn btn-default">Orders</button>
+	  </div>
+	  <div class="btn-group" role="group">
+	    <button type="button" routerLink="/reports" routerLinkActive="active" class="btn btn-default">Reports</button>
+	  </div>
+	  <div class="btn-group" role="group">
+	    <button type="button" routerLink="/qrcode" routerLinkActive="active" class="btn btn-default">QR code</button>
+	  </div>
 	</div>
-<!--<app-footer [user]=user></app-footer>-->
-<div *ngIf="user && user.username">
-	{{ user.username }} is logged in
+</div>
+
+<div class="row top-buffer">
+	<router-outlet></router-outlet>
+</div>
+
+<div *ngIf="this._authService.isLoggedIn()" class="pull-right">
+	<button type="submit" class="btn btn-default navbar-btn" (click)="this._authService.logout()">Logout</button>
+    <p *ngIf="user" class="navbar-text">{{ user.username }}</p>
 </div>

@@ -59,6 +59,10 @@ export class AuthenticationService {
     getLoggedUser() {
         return localStorage.getItem("user");
     }
+    
+    isLoggedIn() {
+    	return localStorage.getItem("user") !== null && localStorage.getItem("user") !== undefined;
+    }
 
     logout() {
         localStorage.removeItem("user");
