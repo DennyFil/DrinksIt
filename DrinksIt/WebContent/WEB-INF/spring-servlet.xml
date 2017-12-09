@@ -1,0 +1,112 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns:mvc="http://www.springframework.org/schema/mvc"
+	xmlns="http://www.springframework.org/schema/beans" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:security="http://www.springframework.org/schema/security"
+	xmlns:context="http://www.springframework.org/schema/context" xmlns:tx="http://www.springframework.org/schema/tx"
+	xmlns:aop="http://www.springframework.org/schema/aop" xmlns:util="http://www.springframework.org/schema/util"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd 
+    				http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd
+    				http://www.springframework.org/schema/mvc http://www.springframework.org/schema/mvc/spring-mvc.xsd
+         			http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-4.0.xsd
+					http://www.springframework.org/schema/tx  http://www.springframework.org/schema/tx/spring-tx-4.0.xsd
+					http://www.springframework.org/schema/security http://www.springframework.org/schema/security/spring-security-4.0.xsd">
+
+	<context:property-placeholder location="classpath:server.properties" />
+
+	<context:component-scan base-package="webservice" />
+
+	<tx:annotation-driven transaction-manager="transactionManager" />
+
+	<mvc:default-servlet-handler />
+
+	<mvc:cors>
+		<mvc:mapping path="/**" />
+	</mvc:cors>
+
+	<!-- Enables the Spring MVC @Controller programming model -->
+	<mvc:annotation-driven />
+
+	<!-- Handles HTTP GET requests for /resources/** by efficiently serving 
+		up static resources in the ${webappRoot}/resources directory -->
+	<mvc:resources mapping="/resources/**" location="/resources/" />
+
+	<!-- Configure to plugin JSON as request and response in method handler -->
+	<bean
+		class="org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerAdapter">
+		<property name="messageConverters">
+			<list>
+				<ref bean="jsonMessageConverter" />
+			</list>
+		</property>
+	</bean>
+
+	<!-- Configure bean to convert JSON to POJO and vice versa -->
+	<bean id="jsonMessageConverter"
+		class="org.springframework.http.converter.json.MappingJackson2HttpMessageConverter">
+	</bean>
+
+	<bean id="dataSource"
+		class="org.springframework.jdbc.datasource.DriverManagerDataSource">
+		<property name="driverClassName" value="${jdbc.driverClassName}" />
+		<property name="url" value="${jdbc.url}" />
+		<property name="username" value="${jdbc.username}" />
+		<property name="password" value="${jdbc.password}" />
+	</bean>
+
+	<bean id="flyway" class="org.flywaydb.core.Flyway" init-method="migrate">
+		<property name="baselineOnMigrate" value="true" />
+		<property name="locations" value="classpath:/db/migrations/" />
+		<property name="dataSource" ref="dataSource" />
+	</bean>
+
+	<bean id="sessionFactory"
+		class="org.springframework.orm.hibernate5.LocalSessionFactoryBean"
+		depends-on="flyway">
+		<property name="dataSource" ref="dataSource" />
+		<property name="packagesToScan">
+			<list>
+				<value>webservice</value>
+			</list>
+		</property>
+		<property name="annotatedClasses">
+			<list>
+				<value>webservice.auxillary.DTO.Bar</value>
+				<value>webservice.auxillary.DTO.Drink</value>
+				<value>webservice.auxillary.DTO.Order</value>
+				<value>webservice.auxillary.DTO.Payment</value>
+				<value>webservice.auxillary.DTO.User</value>
+			</list>
+		</property>
+		<property name="hibernateProperties">
+			<props>
+				<prop key="hibernate.dialect">${hibernate.dialect}</prop>
+				<prop key="hibernate.show_sql">${hibernate.show_sql:false}</prop>
+				<prop key="hibernate.format_sql">${hibernate.format_sql:false}</prop>
+			</props>
+		</property>
+	</bean>
+
+	<bean id="transactionManager"
+		class="org.springframework.orm.hibernate5.HibernateTransactionManager">
+		<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
+
+	<bean id="persistenceExceptionTranslationPostProcessor"
+		class="org.springframework.dao.annotation.PersistenceExceptionTranslationPostProcessor" />
+
+	<bean id="userService" class="webservice.auxillary.ServiceDTO.UserService">
+	</bean>
+
+	<bean id="barService" class="webservice.auxillary.ServiceDTO.BarService">
+	</bean>
+
+	<bean id="orderService" class="webservice.auxillary.ServiceDTO.OrderService">
+	</bean>
+
+	<bean id="drinkService" class="webservice.auxillary.ServiceDTO.DrinkService">
+	</bean>
+
+	<bean id="authService" class="webservice.auxillary.AuthenticationService">
+	</bean>
+
+</beans>  
