@@ -25,7 +25,7 @@ public class AuthenticationService {
     public boolean IsAuthorized(UserInfo userInfo) {
 
         try {
-        	User user = userService.getUserByUsername(userInfo.userName);
+        	User user = userService.GetUser(userInfo.userName);
             assert (user != null);
             
             if (!userInfo.passwordHash.equals(user.getPasswordHash())) {

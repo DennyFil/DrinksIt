@@ -17,7 +17,7 @@ public class Order extends GenItem implements java.io.Serializable, Comparable<O
 	@Column(name = "ts_update")
 	private Date ts_update;
 	
-	@ManyToOne(fetch = FetchType.EAGER)
+	@ManyToOne
 	@JoinColumn(name = "drink_id")
 	private Drink drink;
 	

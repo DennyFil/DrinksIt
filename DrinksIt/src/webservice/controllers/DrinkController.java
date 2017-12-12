@@ -42,7 +42,7 @@ public class DrinkController extends GenController {
 			return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(null);
 		}
 
-		List<Drink> drinks = drinkService.getListOfDrinks(barId);
+		List<Drink> drinks = drinkService.GetDrinks(barId);
 		
 		return ResponseEntity.ok(drinks);
 	}
@@ -65,8 +65,8 @@ public class DrinkController extends GenController {
 			return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(null);
 		}
 
-		Drink drink = drinkService.createDrink(drinkName, price, size, barId);
+		Drink drink = drinkService.CreateDrink(drinkName, price, size, barId);
 		
-		return ResponseEntity.ok(drink);
+		return drink != null? ResponseEntity.ok(drink) : ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
 	}
 }

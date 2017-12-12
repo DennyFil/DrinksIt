@@ -27,13 +27,8 @@ export class AuthenticationService {
     login(user) {
 
         let url = 'DrinksIt/login';
-
-        let method = 'POST';
-
         let body = JSON.stringify({});
-
-        //user.passwordHash = this._cryptoService.computeHash(user.password);
-        let packetOptions = this._httpPacketService.computePacketOptions(method, user, body, url);
+        let packetOptions = this._httpPacketService.computePacketOptions('POST', user);
 
         this.http.post(url, body, packetOptions)
             .map(response => response.json())

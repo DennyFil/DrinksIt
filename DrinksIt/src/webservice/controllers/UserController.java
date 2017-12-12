@@ -42,13 +42,14 @@ public class UserController extends GenController {
 			return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(null);
 		}
 
-		List<User> users = userService.getListOfUsers(barId);
+		List<User> users = userService.GetBarUsers(barId);
 			
 		return ResponseEntity.ok(users);
 	}
 	
+	@SuppressWarnings("unchecked")
 	@RequestMapping("/postUser")
-	public ResponseEntity<User> PostUser(HttpServletRequest request, @RequestParam String userName, @RequestParam String passwordHash, @RequestParam Integer barId) throws Exception {
+	public ResponseEntity<User> PostUser(HttpServletRequest request, @RequestParam String userName, @RequestParam String password, @RequestParam Integer barId) throws Exception {
 
 		logger.debug("POST /postUser: " + userName + " for bar " + barId);
 		
@@ -65,8 +66,8 @@ public class UserController extends GenController {
 			return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(null);
 		}
 
-		User user = userService.createUser(userName, passwordHash, barId);
+		User user = userService.CreateUser(userName, password, barId);
 			
-		return ResponseEntity.ok(user);
+		return user != null? ResponseEntity.ok(user) : ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
 	}
 }

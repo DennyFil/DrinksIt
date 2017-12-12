@@ -8,7 +8,7 @@ import webservice.auxillary.DTO.Bar;
 @Table(name = "drinks")
 public class Drink extends GenItem implements java.io.Serializable {
 	
-	@ManyToOne(fetch = FetchType.LAZY)
+	@ManyToOne
 	@JoinColumn(name = "bar_id")
 	private Bar bar;
 	

@@ -4,6 +4,7 @@ import { AuthenticationService } from './authentication.service';
 import { HttpPacketService } from './httpPacket.service';
 import { Http, Response, ResponseContentType } from '@angular/http';
 import { Headers, RequestOptions } from '@angular/http';
+import * as FileSaver from 'file-saver';
 
 @Component({
     selector: 'drinksit-report',
@@ -36,33 +37,17 @@ export class ReportComponent {
     getReportData(dateFrom, dateTo) {
     
     	this.errorMsg = '';
-        let url = 'DrinksIt/orderReport';
-
+        let url = 'DrinksIt/ordersReport';
         let user = JSON.parse(this._authService.getLoggedUser());
-        let userName = user.username;
-
-        let body = JSON.stringify({ "endDate": dateTo, "userName": userName, "startDate": dateFrom });
-
-        let method = 'POST';
-
-        let packetOptions = this._httpPacketService.computePacketOptions(method, user, body, url);
-        
+        let body = JSON.stringify({ "endDate": dateTo, "startDate": dateFrom });        
+        let packetOptions = this._httpPacketService.computePacketOptions('POST', user);        
         packetOptions.responseType = ResponseContentType.ArrayBuffer;
 
-		this.http.post(url + '?userName=' + userName + '&startDate=' + dateFrom + '&endDate=' + dateTo, body, packetOptions)
+		this.http.post(url + '?startDate=' + dateFrom + '&endDate=' + dateTo, body, packetOptions)
             .subscribe(function(response) {
-			    let file = new Blob([response], {type: 'application/pdf'});
+			    let file = new Blob([response.blob()], {type: 'application/pdf'});
 				let fileURL = URL.createObjectURL(file);
-				window.open(fileURL);
-			})
-            /*.subscribe( 
-            	data => {				        
-	                	let file = new Blob([data], {type: 'application/pdf'});
-						let fileURL = URL.createObjectURL(file);
-						window.open(fileURL);						
-				},
-                err => this.errorMsg = 'Failed to generate report',
-                () => console.log('the subscription is completed')
-                )*/;
+				FileSaver.saveAs(file, response.headers.get('filename'));
+			});
     }
 }

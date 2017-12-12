@@ -11,7 +11,7 @@ public class Payment extends GenItem implements java.io.Serializable {
 	@Column(name = "amount")
 	private double amount;
     
-	@OneToOne(fetch = FetchType.LAZY)
+	@OneToOne
 	@JoinColumn(name = "order_id")
 	private Order order;
 

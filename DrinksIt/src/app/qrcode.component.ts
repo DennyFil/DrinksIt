@@ -39,19 +39,12 @@ export class QrCodeComponent {
 
 		this.errorMsg = '';
         this.qrCode = null;
-
         let url = 'DrinksIt/qrcode';
-
-        let method = 'POST';
-
         let user = JSON.parse(this._authService.getLoggedUser());
-        let userName = user.username;
+        let body = JSON.stringify({ "drinkId": drinkId });
+        let packetOptions = this._httpPacketService.computePacketOptions('POST', user);
 
-        let body = JSON.stringify({ "drinkId": drinkId, "userName": userName });
-
-        let packetOptions = this._httpPacketService.computePacketOptions(method, user, body, url);
-
-        this.http.post(url + '?userName=' + userName + '&drinkId=' + drinkId, body, packetOptions)
+        this.http.post(url + '?drinkId=' + drinkId, body, packetOptions)
             .map(response => response.json())
             .subscribe(
                 data => this.qrCode = data,

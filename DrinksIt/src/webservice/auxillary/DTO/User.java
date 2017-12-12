@@ -24,7 +24,7 @@ public class User implements java.io.Serializable {
     @Column(name = "isAdmin")
     private boolean isAdmin;
     
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne
     @JoinColumn(name = "bar_id")
     private Bar bar;
     

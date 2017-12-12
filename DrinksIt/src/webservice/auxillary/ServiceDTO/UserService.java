@@ -1,5 +1,6 @@
 package webservice.auxillary.ServiceDTO;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.commons.lang.exception.ExceptionUtils;
@@ -11,7 +12,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import webservice.auxillary.HashComputor;
 import webservice.auxillary.DTO.Bar;
+import webservice.auxillary.DTO.Order;
 import webservice.auxillary.DTO.User;
 
 @Service("UserService")
@@ -28,7 +31,7 @@ public class UserService {
 	}
 	
 	@SuppressWarnings({"rawtypes", "finally"})
-	public List<User> getListOfUsers(int barId)
+	public List<User> GetBarUsers(int barId)
 	{
 		try{
 			Session session = sessionFactory.getCurrentSession();
@@ -36,7 +39,7 @@ public class UserService {
 			String query = "FROM User";
 			if (barId > 0)
 			{
-				query += " WHERE bar.bar_id = '" + barId + "'";
+				query += " WHERE bar.id = '" + barId + "'";
 			}
 			List<User> results = (List<User>)session.createQuery(query).list();
 
@@ -49,18 +52,23 @@ public class UserService {
 
 		}
 		
-		return null;
+		return new ArrayList<User>();
 	}
 
-	public String getUserPasswordHash(String userName)
+	public String GetUserPasswordHash(String userName)
 	{
 		try{			
 			Session session = sessionFactory.getCurrentSession();
 
 			User user = (User) session.get(User.class, userName);
+			if (user != null) {
 
-			logger.debug("RETURNED password hash of " + userName);
-			return user.getPasswordHash();
+				logger.debug("RETURNED password hash of " + userName);
+				return user.getPasswordHash();
+			}
+			else {
+				logger.debug("User: " + userName + " does not exist");
+			}
 		}catch (Exception e) {
 			logger.error("Failed to get password hash of " + userName);
 			logger.error(ExceptionUtils.getStackTrace(e));
@@ -71,7 +79,7 @@ public class UserService {
 		return null;
 	}
 	
-	public User getUserByUsername(String userName)
+	public User GetUser(String userName)
 	{
 		try{			
 			Session session = sessionFactory.getCurrentSession();
@@ -90,19 +98,25 @@ public class UserService {
 		return null;
 	}
 	
-	public User createUser(String userName, String passwordHash, int barId)
+	public User CreateUser(String userName, String password, int barId)
 	{
 		try{
 			Session session = sessionFactory.getCurrentSession();
 			
 			Bar bar = (Bar)session.get(Bar.class, barId);
 			
-			User user = new User(userName, passwordHash, bar);
-
-			session.save(user);
-
-			logger.debug("CREATION: user " + userName + " for bar " + barId);
-			return user;
+			if (bar != null) {
+				
+				User user = new User(userName, HashComputor.ComputeSHA256(password), bar);
+	
+				session.save(user);
+	
+				logger.debug("CREATION: user " + userName + " for bar " + barId);
+				return user;
+			}
+			else {
+				logger.debug("Bar: " + barId + " does not exist");
+			}
 		}
 		catch (Exception e) {
 			logger.error("Failed to create user " + userName + " for bar " + barId);

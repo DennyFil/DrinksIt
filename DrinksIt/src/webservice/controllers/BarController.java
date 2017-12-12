@@ -32,9 +32,10 @@ public class BarController extends GenController {
 	AuthenticationService authService;
 
 	@RequestMapping("/barsByUser")
-	public ResponseEntity<Bar> GetBarsByUser(HttpServletRequest request, @RequestParam String userName) throws Exception {
+	public ResponseEntity<Bar> GetBarsByUser(HttpServletRequest request) throws Exception {
 		
-		logger.debug("GET /barsByUser for " + userName);
+		UserInfo userInfo = getUserInfo(request);
+		logger.debug("GET /barsByUser for " + userInfo.getUserName());
 		
 		if (! authService.IsAuthorized(getUserInfo(request)))
 		{
@@ -42,9 +43,9 @@ public class BarController extends GenController {
 			return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(null);
 		}
 		
-		Bar bar = barService.getBarByUser(userName);
-			
-		return ResponseEntity.ok(bar);
+		Bar bar = barService.GetBar(userInfo.getUserName());
+
+		return bar != null? ResponseEntity.ok(bar) : ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
 	}
 
 	@RequestMapping("/bars")
@@ -57,7 +58,7 @@ public class BarController extends GenController {
 			return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(null);
 		}
 
-		List<Bar> bars = barService.getListOfBars();
+		List<Bar> bars = barService.GetBars();
 			
 		return ResponseEntity.ok(bars);
 	}
@@ -66,11 +67,6 @@ public class BarController extends GenController {
 	public ResponseEntity<Bar> PostBar(HttpServletRequest request, @RequestParam String barName, @RequestParam String address, @RequestParam String city, @RequestParam String country) throws Exception {
 		
 		logger.debug("POST /postBar");
-		JSONObject contentJson = new JSONObject();
-		contentJson.put("barName", barName);
-		contentJson.put("address", address);
-		contentJson.put("city", city);
-		contentJson.put("country", country);
 
 		UserInfo userInfo = getUserInfo(request);
 		if (! authService.IsAuthorized(userInfo))
@@ -85,8 +81,8 @@ public class BarController extends GenController {
 			return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(null);
 		}
 		
-		Bar bar = barService.createBar(barName, address, city, country);
+		Bar bar = barService.CreateBar(barName, address, city, country);
 			
-		return ResponseEntity.ok(bar);
+		return bar != null? ResponseEntity.ok(bar) : ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
 	}
 }

@@ -1,5 +1,6 @@
 package webservice.auxillary.ServiceDTO;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.commons.lang.exception.ExceptionUtils;
@@ -12,6 +13,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import webservice.auxillary.DTO.Bar;
+import webservice.auxillary.DTO.Order;
 import webservice.auxillary.DTO.User;
 
 @Service("BarService")
@@ -27,15 +29,20 @@ public class BarService {
 	@Autowired
 	public SessionFactory sessionFactory;
 	
-	public Bar getBarByUser(String userName)
+	public Bar GetBar(String userName)
 	{
 		try{
 			Session session = sessionFactory.getCurrentSession();
 
 			User user = (User) session.get(User.class, userName);
-
-			logger.debug("RETURNED: bar of user: " + userName);
-			return user.getBar();
+			if (user != null)
+			{
+				logger.debug("RETURNED: bar of user: " + userName);
+				return user.getBar();
+			}
+			else {
+				logger.debug("User: " + userName + " does not exist");
+			}				
 		}
 		catch (Exception e) {
 			logger.error("Failed to get bar for user " + userName);
@@ -47,7 +54,7 @@ public class BarService {
 		return null;
 	}
 
-	public List<Bar> getListOfBars()
+	public List<Bar> GetBars()
 	{
 		try{
 			Session session = sessionFactory.getCurrentSession();
@@ -63,10 +70,10 @@ public class BarService {
 
 		}
 		
-		return null;
+		return new ArrayList<Bar>();
 	}
 
-	public Bar createBar(String name, String address, String city, String country)
+	public Bar CreateBar(String name, String address, String city, String country)
 	{
 		try{
 			Session session = sessionFactory.getCurrentSession();

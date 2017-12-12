@@ -29,21 +29,21 @@ public class DrinkService {
 	public SessionFactory sessionFactory;
 	
 	@SuppressWarnings("finally")
-	public Drink checkDrink(int drinkId, int barId, String drinkName, double drinkSize, double drinkPrice)
+	public boolean CheckDrink(int drinkId, int barId, String drinkName, double drinkSize, double drinkPrice)
 	{
 		try
 		{
 			Session session = sessionFactory.getCurrentSession();
 			Drink drink = (Drink) session.get(Drink.class, drinkId);
 
-			if (drink.getBar().getId() == barId
+			if (drink != null && drink.getBar().getId() == barId
 					&& drink.getName().equals(drinkName)
 					&& drink.getSize() == drinkSize
 					&& drink.getPrice() == drinkPrice)
 			{
 				logger.debug("CHECK: drink: " + drinkId + " (name: " + drinkName + ", size: " + drinkSize + ", price: " + drinkPrice + ") in bar: " + barId);
 				
-				return drink;
+				return true;
 			}
 			else
 			{
@@ -60,11 +60,11 @@ public class DrinkService {
 			
 		}
 		
-		return null;
+		return false;
 	}
 
 	@SuppressWarnings({"rawtypes", "finally"})
-	public List<Drink> getListOfDrinks(int barId)
+	public List<Drink> GetDrinks(int barId)
 	{
 		try{
 			Session session = sessionFactory.getCurrentSession();
@@ -72,7 +72,7 @@ public class DrinkService {
 			String query = "FROM Drink";
 			if (barId > 0)
 			{
-				query += " WHERE bar.bar_id = '" + barId + "'";
+				query += " WHERE bar.id = '" + barId + "'";
 			}
 			List<Drink> drinks = (List<Drink>)session.createQuery(query).list();
 
@@ -88,7 +88,7 @@ public class DrinkService {
 		return null;
 	}	
 
-	public Drink getDrinkByUser(int drinkId, String userName)
+	public Drink GetDrink(int drinkId, String userName)
 	{
 		try{
 			Session session = sessionFactory.getCurrentSession();
@@ -96,7 +96,7 @@ public class DrinkService {
 			User user = (User) session.get(User.class, userName);
 			Drink drink = (Drink) session.get(Drink.class, drinkId);
 
-			if (drink.getBar().getId() == user.getBar().getId())
+			if (drink != null && user != null && drink.getBar().getId() == user.getBar().getId())
 			{
 				logger.debug("RETURNED drink " + drinkId + " for " + userName);
 				return drink;
@@ -115,19 +115,25 @@ public class DrinkService {
 		return null;
 	}
 
-    public Drink createDrink(String name, double price, double size, int barId)
+    public Drink CreateDrink(String name, double price, double size, int barId)
     {
         try{
             Session session = sessionFactory.getCurrentSession();
 
             Bar bar = session.get(Bar.class, barId);
+            
+            if (bar != null) {
 
-            Drink drink = new Drink(bar, name, price, size);
+            	Drink drink = new Drink(bar, name, price, size);
 
-            session.save(drink);
+            	session.save(drink);
 
-            logger.debug("CREATION: drink: " + name + ", size: " + size + ", price: " + price + ", bar: " + barId);
-            return drink;
+	            logger.debug("CREATION: drink: " + name + ", size: " + size + ", price: " + price + ", bar: " + barId);
+	            return drink;
+            }
+            else {
+            	logger.debug("CREATION: drink: bar " + barId + "not available");
+            }
         }
         catch (Exception e) {
             logger.error("Failed to create drink: " + name + ", size: " + size + ", price: " + price + ", bar: " + barId);

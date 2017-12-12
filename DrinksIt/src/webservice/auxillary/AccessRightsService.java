@@ -21,7 +21,7 @@ public class AccessRightsService {
 	public boolean checkRight(UserInfo userInfo, String right) {
 
         try {
-            User user = userService.getUserByUsername(userInfo.userName);
+            User user = userService.GetUser(userInfo.userName);
             assert (user != null);            
                       
             if (!user.getIsAdmin()) {

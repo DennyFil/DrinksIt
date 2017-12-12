@@ -1,5 +1,6 @@
 package webservice.auxillary.ServiceDTO;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -22,38 +23,35 @@ public class OrderService {
 
 	private static final Logger logger = 
 			LoggerFactory.getLogger("orderServiceLogger");
-	
+
 	public OrderService() {
 	}
-	
+
 	@Autowired
-	public SessionFactory sessionFactory;	
+	public SessionFactory sessionFactory;
 
 	@SuppressWarnings({"rawtypes", "finally"})
-	public List<Order> getListOfOrders(String userName)
+	public Order GetOrder(int orderId)
 	{
 		try{
 			Session session = sessionFactory.getCurrentSession();
 
-			User user = (User) session.get(User.class, userName);
-			int barId = user.getBar().getId();
+			Order order = (Order) session.get(Order.class, orderId);
 
-			List<Order> results = (List<Order>)session.createQuery("FROM Order o JOIN FETCH o.drink d WHERE d.bar.bar_id = '" + barId + "'").list(); //JOIN User u JOIN FETCH u.bar ub WHERE ub.bar_id = db.bar_id AND u.userName = " + userName).list();
-
-			logger.debug("RETURNED: list of orders for user " + userName);
-			return results;
+			logger.debug("RETURNED: order " + orderId);
+			return order;
 		}catch (Exception e) {
-			logger.error("Failed to get list of order for " + userName);
+			logger.error("Failed to get orders " + orderId);
 			logger.error(ExceptionUtils.getStackTrace(e));
 		}finally {
 
 		}
-		
+
 		return null;
 	}
 
 	@SuppressWarnings({"rawtypes", "finally"})
-	public List<Order> getListOfOrdersAll()
+	public List<Order> GetOrders()
 	{
 		try{
 			Session session = sessionFactory.getCurrentSession();
@@ -68,45 +66,76 @@ public class OrderService {
 		}finally {
 
 		}
-		
-		return null;
+
+		return new ArrayList<Order>();
 	}
 
-	public boolean updateOrderStatus(int orderId, String status)
+	@SuppressWarnings({"rawtypes", "finally"})
+	public List<Order> GetOrders(String userName)
 	{
 		try{
 			Session session = sessionFactory.getCurrentSession();
 
-			Order order = (Order)session.get(Order.class, orderId); 
-			order.setStatus(status);
-			order.setUpdateTS(new Date());
-			session.update(order);
-			
-			logger.debug("STATUS UPDATED: order " + orderId + " to " + status);
-			return true;
+			User user = (User) session.get(User.class, userName);
+
+			if (user != null) {
+				int barId = user.getBar().getId();
+
+				List<Order> results = (List<Order>)session.createQuery("FROM Order o JOIN FETCH o.drink d WHERE d.bar.id = '" + barId + "'").list(); //JOIN User u JOIN FETCH u.bar ub WHERE ub.id = db.id AND u.userName = " + userName).list();
+
+				logger.debug("RETURNED: list of orders for user " + userName);
+				return results;
+			}
+			else {
+				logger.debug("User: " + userName + " does not exist");
+			}
 		}catch (Exception e) {
-			logger.error("Failed to update status of order " + orderId + " to " + status);
+			logger.error("Failed to get list of order for " + userName);
 			logger.error(ExceptionUtils.getStackTrace(e));
 		}finally {
 
 		}
-		
+
+		return new ArrayList<Order>();
+	}
+
+	public boolean UpdateOrder(Order order)
+	{
+		try{
+			Session session = sessionFactory.getCurrentSession();
+			
+			session.update(order);				
+			logger.debug("UPDATED: order " + order.getId());
+			return true;
+		}catch (Exception e) {
+			logger.error("Failed to update order " + order.getId());
+			logger.error(ExceptionUtils.getStackTrace(e));
+		}finally {
+
+		}
+
 		return false;
 	}
 
-	public Order createOrder(int drinkId, int quantity, String status)
+	public Order CreateOrder(int drinkId, int quantity, String status)
 	{
 		try{
 			Session session = sessionFactory.getCurrentSession();
 
 			Drink drink = session.get(Drink.class, drinkId);
 
-			Order order = new Order(drink, quantity, status, new Date());
+			if (drink != null) {
 
-			session.save(order);
+				Order order = new Order(drink, quantity, status, new Date());
 
-			logger.debug("CREATION: order for drink: " + drinkId + " with quantity: " + quantity);
-			return order;
+				session.save(order);
+
+				logger.debug("CREATION: order for drink: " + drinkId + " with quantity: " + quantity);
+				return order;
+			}
+			else {
+				logger.debug("Drink: " + drinkId + " does not exist");
+			}
 		}
 		catch (Exception e) {
 			logger.error("Failed to create order for drink: " + drinkId + " with quantity: " + quantity);
@@ -114,7 +143,7 @@ public class OrderService {
 		}finally {
 
 		}
-		
+
 		return null;
 	}
 }

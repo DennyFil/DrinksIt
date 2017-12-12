@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.RestController;
 import webservice.auxillary.AuthenticationService;
 import webservice.auxillary.QRCodeGenerator;
 import webservice.auxillary.QrCode;
+import webservice.auxillary.UserInfo;
 import webservice.auxillary.DTO.Drink;
 import webservice.auxillary.ServiceDTO.DrinkService;
 
@@ -36,12 +37,14 @@ public class QRCodeController extends GenController {
 	@Autowired
 	AuthenticationService authService;
 	
+	@SuppressWarnings("unchecked")
 	@RequestMapping("/qrcode")
-	public ResponseEntity<QrCode> GetQRCode(HttpServletRequest request, @RequestParam String userName, @RequestParam String drinkId) throws Exception
+	public ResponseEntity<QrCode> GetQRCode(HttpServletRequest request, @RequestParam String drinkId) throws Exception
 	{
+		UserInfo userInfo = getUserInfo(request);
 		logger.debug("GET /qrcode for drink " + drinkId);
 		
-		if (! authService.IsAuthorized(getUserInfo(request)))
+		if (! authService.IsAuthorized(userInfo))
 		{
 			logger.debug("GET /qrcode: not logged in");
 			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
@@ -50,31 +53,37 @@ public class QRCodeController extends GenController {
 		try
 		{
 			// Request DB for Drink name, price, size and Bar Id based on drinkId
-			Drink drink = drinkService.getDrinkByUser(Integer.valueOf(drinkId), userName);
+			Drink drink = drinkService.GetDrink(Integer.valueOf(drinkId), userInfo.getUserName());
 			
-			// Generate QR Code
-			String serverUrl = environment.getRequiredProperty("server.url");
-			String drinkName = drink.getName();
-			double drinkPrice = drink.getPrice();
-			double drinkSize = drink.getSize();
-			int drinkBarId = drink.getBar().getId();
-
-			String qrCodeContent = serverUrl + "/postOrder?drinkId=" + drinkId + 
-											"&barId=" + drinkBarId + 
-											"&drinkName=" + drinkName +
-											"&drinkPrice=" + drinkPrice +
-											"&drinkSize=" + drinkSize;
-			
-			String format = environment.getRequiredProperty("qrCodeGenerator.format");
-
-			int qrCodeHeight = Integer.valueOf(environment.getRequiredProperty("qrCode.height"));
-			int qrCodeWidth = Integer.valueOf(environment.getRequiredProperty("qrCode.width"));
-			
-			String qrCodeImage = QRCodeGenerator.generateQRCode(qrCodeContent, format, qrCodeHeight, qrCodeWidth);
-			
-			QrCode qrCode = new QrCode(qrCodeImage, qrCodeContent);
-			
-			return ResponseEntity.ok(qrCode);
+			if (drink != null) {
+				// Generate QR Code
+				String serverUrl = environment.getRequiredProperty("server.url");
+				String drinkName = drink.getName();
+				double drinkPrice = drink.getPrice();
+				double drinkSize = drink.getSize();
+				int drinkBarId = drink.getBar().getId();
+	
+				String qrCodeContent = serverUrl + "/postOrder?drinkId=" + drinkId + 
+												"&barId=" + drinkBarId + 
+												"&drinkName=" + drinkName +
+												"&drinkPrice=" + drinkPrice +
+												"&drinkSize=" + drinkSize;
+				
+				String format = environment.getRequiredProperty("qrCodeGenerator.format");
+	
+				int qrCodeHeight = Integer.valueOf(environment.getRequiredProperty("qrCode.height"));
+				int qrCodeWidth = Integer.valueOf(environment.getRequiredProperty("qrCode.width"));
+				
+				String qrCodeImage = QRCodeGenerator.generateQRCode(qrCodeContent, format, qrCodeHeight, qrCodeWidth);
+				
+				QrCode qrCode = new QrCode(qrCodeImage, qrCodeContent);
+				
+				return ResponseEntity.ok(qrCode);
+			}
+			else {
+				logger.debug("Drink: " + drinkId + " does not exist");
+				return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
+			}
 		}
 		catch (IllegalStateException e)
 		{
