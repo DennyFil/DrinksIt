@@ -2,14 +2,13 @@ import { Component } from '@angular/core';
 import { Router } from '@angular/router';
 import { AuthenticationService } from './authentication.service';
 import { HttpPacketService } from './httpPacket.service';
-import { CryptoService } from './crypto.service';
 
 import { Http, Response } from '@angular/http';
 
 @Component({
     selector: 'drinksit-qrcode',
     templateUrl: './qrcode.html',
-    providers: [AuthenticationService, CryptoService, HttpPacketService]
+    providers: [AuthenticationService, HttpPacketService]
 })
 export class QrCodeComponent {
 

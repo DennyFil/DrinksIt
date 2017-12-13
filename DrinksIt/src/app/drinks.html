@@ -1,0 +1,30 @@
+<!-- Bar selector -->
+<div class="row">
+	<h3>Select bar</h3>
+	<select [(ngModel)]="selectedBar" (ngModelChange)="onBarSelected()">
+	  <option *ngFor="let bar of bars" [ngValue]="bar">{{bar.name}}</option>
+	</select>
+</div>
+
+<!-- Drink displayer -->
+<div class="row">
+	<h4 [hidden]="!selectedBar.name">Drinks in {{selectedBar.name}}</h4>
+	<table class="table table-striped">
+		<thead class="drinksit-text">
+			<tr>
+		    	<th>ID</th>
+		    	<th>Name</th>
+				<th>Price</th>
+				<th>Size</th>
+			</tr>
+		</thead>
+		<tbody>
+	    	<tr *ngFor="let drink of drinks">
+				<td>{{drink.id}}</td>
+	        	<td>{{drink.name}}</td>
+				<td>{{drink.price}}</td>
+				<td>{{drink.size}}</td>
+			</tr>
+		</tbody>
+	</table>
+</div>

@@ -31,22 +31,17 @@ public class UserService {
 	}
 	
 	@SuppressWarnings({"rawtypes", "finally"})
-	public List<User> GetBarUsers(int barId)
+	public List<User> GetUsers()
 	{
 		try{
 			Session session = sessionFactory.getCurrentSession();
 
-			String query = "FROM User";
-			if (barId > 0)
-			{
-				query += " WHERE bar.id = '" + barId + "'";
-			}
-			List<User> results = (List<User>)session.createQuery(query).list();
+			List<User> results = (List<User>)session.createQuery("FROM User u JOIN FETCH u.bar").list();
 
-			logger.debug("RETURNED: List of users for bar: " + barId + "");
+			logger.debug("RETURNED: List of users");
 			return results;
 		}catch (Exception e) {
-			logger.error("Failed to get of users for bar: " + barId);
+			logger.error("Failed to get of users");
 			logger.error(ExceptionUtils.getStackTrace(e));
 		}finally {
 

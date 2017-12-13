@@ -1,0 +1,20 @@
+<table class="table table-striped">
+	<thead class="drinksit-text">
+		<tr>
+	    	<th>ID</th>
+	    	<th>Name</th>
+			<th>Address</th>
+			<th>City</th>
+			<th>Country</th>
+		</tr>
+	</thead>
+	<tbody>
+    	<tr *ngFor="let bar of bars">
+			<td>{{bar.id}}</td>
+        	<td>{{bar.name}}</td>
+			<td>{{bar.address}}</td>
+			<td>{{bar.city}}</td>
+			<td>{{bar.country}}</td>
+		</tr>
+	</tbody>
+</table>
