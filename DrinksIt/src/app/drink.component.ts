@@ -16,7 +16,7 @@ export class DrinkComponent {
     title = '';
     drinks = [];
     bars = [];
-    selectedBar = { id: -1 };
+    selectedBar = {};
 
     constructor(private _router: Router,
         private _authService: AuthenticationService,
@@ -44,7 +44,7 @@ export class DrinkComponent {
         let body = JSON.stringify({ "barId": this.selectedBar.id });
         let packetOptions = this._httpPacketService.computePacketOptions('POST', user);
 
-        this._http.post(url, body, packetOptions)
+        this._http.post(url + '?barId=' + this.selectedBar.id, body, packetOptions)
             .map(response => response.json())
             .subscribe(
                 data => this.drinks = data,
