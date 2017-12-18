@@ -1,26 +1,28 @@
 import { Component, Injectable } from '@angular/core';
 import { Router } from '@angular/router';
 import { Http, Response } from '@angular/http';
+import 'rxjs/add/operator/map';
+import 'rxjs/add/operator/catch';
 
-import { AuthenticationService } from './authentication.service';
-import { HttpPacketService } from './httpPacket.service';
-import { CryptoService } from './crypto.service';
+import { AuthenticationService } 	from './authentication.service';
+import { RestService }           	from './restService';
+import { Bar }           			from './models/bar';
 
 @Component({
     selector: 'drinksit-drink',
     templateUrl: './drinks.html',
-    providers: [AuthenticationService, CryptoService, HttpPacketService]
+    providers: [AuthenticationService, RestService]
 })
 export class DrinkComponent {
 
     title = '';
     drinks = [];
     bars = [];
-    selectedBar = {};
+    selectedBar = { id: ''};
 
     constructor(private _router: Router,
         private _authService: AuthenticationService,
-        private _httpPacketService: HttpPacketService,
+        private _restService: RestService,
         private _http: Http) { }
 
     ngOnInit() {
@@ -39,18 +41,11 @@ export class DrinkComponent {
 
     getDrinks() {
 
-        let url = 'DrinksIt/drinks';
-        let user = JSON.parse(this._authService.getLoggedUser());
-        let body = JSON.stringify({ "barId": this.selectedBar.id });
-        let packetOptions = this._httpPacketService.computePacketOptions('POST', user);
-
-        this._http.post(url + '?barId=' + this.selectedBar.id, body, packetOptions)
-            .map(response => response.json())
-            .subscribe(
-                data => this.drinks = data,
-                err => console.error('There was an error: ' + err.statusText),
-                () => console.log('the subscription is completed')
-                );
+		let user = JSON.parse(this._authService.getLoggedUser());
+		this._restService.getDrinks(user, this.selectedBar.id)
+			.subscribe(
+            	data => this.drinks = data, //Bind to view
+                err => console.error('There was an error: ' + err.statusText));
     }
     
     onBarSelected() {
@@ -60,17 +55,11 @@ export class DrinkComponent {
     }
     
     getBars() {
-
-        let url = 'DrinksIt/bars';
-        let user = JSON.parse(this._authService.getLoggedUser());
-        let packetOptions = this._httpPacketService.computePacketOptions('GET', user);
-
-        this._http.get(url, packetOptions)
-            .map(response => response.json())
-            .subscribe(
-                data => this.bars = data,
-                err => console.error('There was an error: ' + err.statusText),
-                () => console.log('the subscription is completed')
-                );
+		
+		let user = JSON.parse(this._authService.getLoggedUser());
+		this._restService.getBars(user)
+			.subscribe(
+            	data => this.bars = data, //Bind to view
+                err => console.error('There was an error: ' + err.statusText));
     }
 }

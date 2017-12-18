@@ -2,13 +2,14 @@ import { Component, Injectable } from '@angular/core';
 import { Router } from '@angular/router';
 import { Http, Response } from '@angular/http';
 
-import { AuthenticationService } from './authentication.service';
-import { HttpPacketService } from './httpPacket.service';
+import { AuthenticationService } 	from './authentication.service';
+import { RestService }           	from './restService';
+import { User }           			from './models/user';
 
 @Component({
     selector: 'drinksit-user',
     templateUrl: './users.html',
-    providers: [AuthenticationService, HttpPacketService]
+    providers: [AuthenticationService, RestService]
 })
 export class UserComponent {
 
@@ -17,7 +18,7 @@ export class UserComponent {
 
     constructor(private _router: Router,
         private _authService: AuthenticationService,
-        private _httpPacketService: HttpPacketService,
+        private _restService: RestService,
         private _http: Http) { }
 
     ngOnInit() {
@@ -36,16 +37,10 @@ export class UserComponent {
 
     getUsers() {
 
-        let url = 'DrinksIt/users';
-        let user = JSON.parse(this._authService.getLoggedUser());
-        let packetOptions = this._httpPacketService.computePacketOptions('GET', user);
-
-        this._http.get(url, packetOptions)
-            .map(response => response.json())
-            .subscribe(
-                data => this.users = data,
-                err => console.error('There was an error: ' + err.statusText),
-                () => console.log('the subscription is completed')
-                );
+		let user = JSON.parse(this._authService.getLoggedUser());
+		this._restService.getUsers(user)
+			.subscribe(
+            data => this.users = data, //Bind to view
+            err => console.error('There was an error: ' + err.statusText));
     }
 }
