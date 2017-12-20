@@ -1,6 +1,5 @@
 import { Component, Injectable } from '@angular/core';
 import { Router } from '@angular/router';
-import { Http, Response } from '@angular/http';
 import 'rxjs/add/operator/map';
 import 'rxjs/add/operator/catch';
 
@@ -22,8 +21,7 @@ export class DrinkComponent {
 
     constructor(private _router: Router,
         private _authService: AuthenticationService,
-        private _restService: RestService,
-        private _http: Http) { }
+        private _restService: RestService) { }
 
     ngOnInit() {
         if (this._authService.getLoggedUser()) {

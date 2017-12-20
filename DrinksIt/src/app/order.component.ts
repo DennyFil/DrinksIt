@@ -1,7 +1,5 @@
 import { Component, Injectable } from '@angular/core';
 import { Router } from '@angular/router';
-import { Http, Response } from '@angular/http';
-
 import { AuthenticationService } from './authentication.service';
 import { RestService }           	from './restService';
 import { Order }           			from './models/order';
@@ -10,7 +8,7 @@ import { Order }           			from './models/order';
 })
 export class OrderComponent {
     title = '';    orders = [];    constructor(private _router: Router,        private _authService: AuthenticationService,
-        private _restService: RestService,        private _http: Http) { }    ngOnInit() {        if (this._authService.getLoggedUser()) {            this.setTitle();            this.getOrders();        }        else {            this._router.navigateByUrl('/login');        }    }    setTitle() {        this.title = 'Order';    }    getOrders() {
+        private _restService: RestService) { }    ngOnInit() {        if (this._authService.getLoggedUser()) {            this.setTitle();            this.getOrders();        }        else {            this._router.navigateByUrl('/login');        }    }    setTitle() {        this.title = 'Order';    }    getOrders() {
 		let user = JSON.parse(this._authService.getLoggedUser());
 		this._restService.getOrders(user)
 			.subscribe(

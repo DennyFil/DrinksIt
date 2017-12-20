@@ -13,8 +13,8 @@
 	</thead>
 	<tbody>
     	<tr *ngFor="let order of orders">
-        	<td>{{order.creationTS}}</td>
-			<td>{{order.updateTS}}</td>
+        	<td>{{order.creationTS | date: 'dd/MM/yyyy'}}</td>
+			<td>{{order.updateTS | date: 'dd/MM/yyyy'}}</td>
 			<td>{{order.id}}</td>
 			<td>{{order.drink.id}}</td>
 			<td>{{order.drink.name}}</td>

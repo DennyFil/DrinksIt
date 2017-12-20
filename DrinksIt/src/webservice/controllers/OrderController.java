@@ -98,7 +98,7 @@ public class OrderController extends GenController {
 	}
 
 	@RequestMapping("/updateOrderStatus")
-	public ResponseEntity<String> UpdateOrderStatus(HttpServletRequest request, HttpSession session, @RequestParam Integer orderId) throws Exception {  
+	public ResponseEntity<Order> UpdateOrderStatus(HttpServletRequest request, HttpSession session, @RequestParam Integer orderId) throws Exception {  
 
 		logger.debug("GET /updateOrderStatus for order " + orderId);
 		
@@ -132,7 +132,7 @@ public class OrderController extends GenController {
 			order.setUpdateTS(new Date());
 			orderService.UpdateOrder(order);
 
-			return ResponseEntity.ok(status);
+			return ResponseEntity.ok(order);
 		}
 		
 		return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
