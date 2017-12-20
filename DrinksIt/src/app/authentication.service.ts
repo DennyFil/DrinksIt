@@ -2,65 +2,60 @@ import { Component, Injectable } from '@angular/core';
 import { Router } from '@angular/router';
  
 import { HttpPacketService } from './httpPacket.service';
-import { CryptoService } from './crypto.service';
+import { User }           			from './models/user';
 
 import { Http, Response } from '@angular/http';
 
-export class DrinksItUser {
+export class UserCreds {
     constructor(
-        public username: string,
+        public userName: string,
         public password: string) { }
 }
 
 @Injectable()
 @Component({
-    providers: [CryptoService, HttpPacketService]
+    providers: [HttpPacketService]
 })
 export class AuthenticationService {
 
-	loginSuccessful: boolean = false;
     constructor(public router: Router,
-        private _cryptoService: CryptoService,
         private _httpPacketService: HttpPacketService,
         private http: Http) { }
         
-    login(user) {
+    login(userCreds, successCbk, failureCbk) {
 
         let url = 'DrinksIt/login';
         let body = JSON.stringify({});
-        let packetOptions = this._httpPacketService.computePacketOptions('POST', user);
+        let packetOptions = this._httpPacketService.computePacketOptions('POST', userCreds);
 
         this.http.post(url, body, packetOptions)
             .map(response => response.json())
             .subscribe(
-                data => this.loginSuccessful = data,
-                err => console.error('There was an error: ' + err.statusText),
-                () => this.loginCbk(user)
+                data => this.loginResponseCbk(data, successCbk, failureCbk, userCreds),
+                err => failureCbk()
                 );
     }    
 	
-	loginCbk(user) {
+	loginResponseCbk(isSuccessfull, successCbk, failureCbk, userCreds) {
 
-        if (this.loginSuccessful) {
-
-            localStorage.setItem("user", JSON.stringify(user));
-            this.router.navigateByUrl('/orders');
+		if (isSuccessfull) {
+        	localStorage.setItem("userCreds", JSON.stringify(userCreds));
+        	successCbk();
         }
         else {
-            this.router.navigateByUrl('/login');
+        	failureCbk();
         }
     }
     
 	getLoggedUser() {
-        return localStorage.getItem("user");
+        return JSON.parse(localStorage.getItem("userCreds"));
     }
     
     isLoggedIn() {
-    	return localStorage.getItem("user") !== null && localStorage.getItem("user") !== undefined;
+    	return localStorage.getItem("userCreds") !== null && localStorage.getItem("userCreds") !== undefined;
     }
     
-    logout() {
-        localStorage.removeItem("user");
-        this.router.navigateByUrl('/login');
+    cleanLoggedUser() {
+        localStorage.removeItem("userCreds");
     }
 }

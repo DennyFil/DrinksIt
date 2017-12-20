@@ -39,8 +39,7 @@ export class DrinkComponent {
 
     getDrinks() {
 
-		let user = JSON.parse(this._authService.getLoggedUser());
-		this._restService.getDrinks(user, this.selectedBar.id)
+		this._restService.getDrinks(this._authService.getLoggedUser(), this.selectedBar.id)
 			.subscribe(
             	data => this.drinks = data, //Bind to view
                 err => console.error('There was an error: ' + err.statusText));
@@ -54,8 +53,7 @@ export class DrinkComponent {
     
     getBars() {
 		
-		let user = JSON.parse(this._authService.getLoggedUser());
-		this._restService.getBars(user)
+		this._restService.getBars(this._authService.getLoggedUser())
 			.subscribe(
             	data => this.bars = data, //Bind to view
                 err => console.error('There was an error: ' + err.statusText));

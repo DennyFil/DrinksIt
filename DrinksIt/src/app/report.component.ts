@@ -35,7 +35,6 @@ export class ReportComponent {
     getReportData(dateFrom, dateTo) {
     
     	this.errorMsg = '';
-        let user = JSON.parse(this._authService.getLoggedUser());
-        this._restService.getReport(dateFrom, dateTo, user);
+        this._restService.getReport(dateFrom, dateTo, this._authService.getLoggedUser());
     }
 }

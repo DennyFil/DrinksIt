@@ -1,6 +1,6 @@
 import { Component, Injectable } from '@angular/core';
 import { Router } from '@angular/router';
-import { AuthenticationService, DrinksItUser } from './authentication.service';
+import { AuthenticationService, UserCreds } from './authentication.service';
 
 @Component({
   selector: 'drinksit-login',
@@ -10,7 +10,7 @@ import { AuthenticationService, DrinksItUser } from './authentication.service';
 export class LoginComponent {
  
     public errorMsg = '';
-	public user = new DrinksItUser('', '');
+	private userCreds = new UserCreds('', '');
  
     constructor(public router: Router, private _authService:AuthenticationService) {
 		if(this._authService.getLoggedUser()) {
@@ -23,13 +23,15 @@ export class LoginComponent {
  
     login() {
 		
-		this._authService.login(this.user);
-		
-        if( !this._authService.getLoggedUser() ){
-            this.errorMsg = 'Failed to login';
-        }
-		else {
-			this.router.navigateByUrl('/orders');
-		}
+		// closure safe
+		let self = this;
+		this._authService.login(this.userCreds, 
+			function() {
+				self.router.navigateByUrl('/orders');
+			},
+			function() {
+				self.errorMsg = 'Failed to login';
+				self.router.navigateByUrl('/login');
+			});
     }
 }

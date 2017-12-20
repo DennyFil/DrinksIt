@@ -35,9 +35,8 @@ export class QrCodeComponent {
 
 		this.errorMsg = '';
         this.qrCode = null;
-        let user = JSON.parse(this._authService.getLoggedUser());
         
-        this._restService.getQRCode(drinkId, user)
+        this._restService.getQRCode(drinkId, this._authService.getLoggedUser())
             .subscribe(
                 data => this.qrCode = data,
                 err => this.errorMsg = 'Failed to generate QR code',

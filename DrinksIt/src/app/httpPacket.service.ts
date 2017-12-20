@@ -1,14 +1,13 @@
 import { Component, Injectable } from '@angular/core';
 import { Headers, RequestOptions } from '@angular/http';
-import { CryptoService } from './crypto.service';
 
 @Injectable()
 @Component({
-    providers: [CryptoService]
+    providers: []
 })
 export class HttpPacketService {
 
-    constructor(private _cryptoService: CryptoService) {
+    constructor() {
     }
 
     computeHeaders(contentType) {
@@ -20,7 +19,7 @@ export class HttpPacketService {
         let contentType = 'application/json';
         let contentHeaders = this.computeHeaders(contentType);
         
-        let authHeader = user.username + ":" + user.password;
+        let authHeader = user.userName + ":" + user.password;
         contentHeaders.append('Authorization', authHeader);
 		
         return new RequestOptions({ headers: contentHeaders });

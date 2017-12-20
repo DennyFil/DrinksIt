@@ -34,8 +34,7 @@ export class BarComponent {
 
     getBars() {
 
-        let user = JSON.parse(this._authService.getLoggedUser());
-		this._restService.getBars(user)
+		this._restService.getBars(this._authService.getLoggedUser())
 			.subscribe(
             	data => this.bars = data, //Bind to view
                 err => console.error('There was an error: ' + err.statusText));

@@ -4,13 +4,10 @@ package webservice.auxillary;
  * Created by dennyfil on 25.06.16.
  */
 
-import javax.servlet.http.HttpServletRequest;
-
 import org.apache.commons.lang.exception.ExceptionUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpHeaders;
 
 import webservice.auxillary.DTO.User;
 import webservice.auxillary.ServiceDTO.UserService;

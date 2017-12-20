@@ -1,6 +1,5 @@
 import { Component, Injectable } from '@angular/core';
 import { Router } from '@angular/router';
-import { Http, Response } from '@angular/http';
 
 import { AuthenticationService } 	from './authentication.service';
 import { RestService }           	from './restService';
@@ -18,8 +17,7 @@ export class UserComponent {
 
     constructor(private _router: Router,
         private _authService: AuthenticationService,
-        private _restService: RestService,
-        private _http: Http) { }
+        private _restService: RestService) { }
 
     ngOnInit() {
         if (this._authService.getLoggedUser()) {
@@ -37,8 +35,7 @@ export class UserComponent {
 
     getUsers() {
 
-		let user = JSON.parse(this._authService.getLoggedUser());
-		this._restService.getUsers(user)
+		this._restService.getUsers(this._authService.getLoggedUser())
 			.subscribe(
             data => this.users = data, //Bind to view
             err => console.error('There was an error: ' + err.statusText));

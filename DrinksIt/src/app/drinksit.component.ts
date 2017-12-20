@@ -3,28 +3,30 @@ import { Router } from '@angular/router';
 import {Observable} from 'rxjs/Rx';
 import 'rxjs/add/operator/map';
 
-import { AuthenticationService, DrinksItUser } from './authentication.service';
+import { AuthenticationService } from './authentication.service';
 import { HttpPacketService } from './httpPacket.service';
-import { CryptoService } from './crypto.service';
-//import { DrinksItInfo } from './drinksitinfo';
+import { User }           			from './models/user';
 
 @Component({
     selector: 'drinksit',
     templateUrl: './drinksit.component.html',
-	providers: [AuthenticationService, CryptoService, HttpPacketService]
+	providers: [AuthenticationService, HttpPacketService]
 })
 export class DrinksItComponent {
 	
-	//appInfo: DrinksItInfo;
-	user: DrinksItUser;
+	user: User;
 	
 	constructor(private router: Router, private _authService:AuthenticationService) {
 		if(this._authService.getLoggedUser()) {
-			//this.appInfo = {title: this.title};
-			this.user = JSON.parse(this._authService.getLoggedUser());
+			this.user = this._authService.getLoggedUser());
 		}
 		else {
 			this.router.navigateByUrl('/login');
 		}
-	}
+	}    
+    
+    logout() {
+    	this._authService.cleanLoggedUser();
+        this.router.navigateByUrl('/login');
+    }
 }

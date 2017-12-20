@@ -9,13 +9,11 @@ import { Order }           			from './models/order';
 export class OrderComponent {
     title = '';    orders = [];    constructor(private _router: Router,        private _authService: AuthenticationService,
         private _restService: RestService) { }    ngOnInit() {        if (this._authService.getLoggedUser()) {            this.setTitle();            this.getOrders();        }        else {            this._router.navigateByUrl('/login');        }    }    setTitle() {        this.title = 'Order';    }    getOrders() {
-		let user = JSON.parse(this._authService.getLoggedUser());
-		this._restService.getOrders(user)
+		this._restService.getOrders(this._authService.getLoggedUser())
 			.subscribe(
             	data => this.orders = data, //Bind to view
                 err => console.error('There was an error: ' + err.statusText));    }    updateStatus(order) {
-		let user = JSON.parse(this._authService.getLoggedUser());
-		this._restService.updateOrderStatus(order, user)
+		this._restService.updateOrderStatus(order, this._authService.getLoggedUser())
 			.subscribe(
             	data => this.getOrders(), //Bind to view
                 err => console.error('There was an error: ' + err.statusText));    }
