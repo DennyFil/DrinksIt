@@ -26,7 +26,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import webservice.auxillary.AuthenticationService;
-import webservice.auxillary.UserInfo;
+import webservice.auxillary.AutoInfo;
 import webservice.auxillary.DTO.Drink;
 import webservice.auxillary.DTO.Order;
 import webservice.auxillary.database.OrderComparator;
@@ -55,7 +55,7 @@ public class OrderController extends GenController {
 	@RequestMapping("/recentOrders")
 	public ResponseEntity<List<Order>> GetRecentOrders(HttpServletRequest request) throws Exception {
 
-		UserInfo userInfo = getUserInfo(request);
+		AutoInfo userInfo = getAuthInfo(request);
 		logger.debug("GET /recentOrders for: " + userInfo.getUserName());
 		
 		if (! authService.IsAuthorized(userInfo))
@@ -83,7 +83,7 @@ public class OrderController extends GenController {
 	@RequestMapping("/orders")
 	public ResponseEntity<List<Order>> GetOrders(HttpServletRequest request) throws Exception {
 		
-		UserInfo userInfo = getUserInfo(request);
+		AutoInfo userInfo = getAuthInfo(request);
 		logger.debug("GET /orders for " + userInfo.getUserName());
 
 		if (! authService.IsAuthorized(userInfo))
@@ -102,7 +102,7 @@ public class OrderController extends GenController {
 
 		logger.debug("GET /updateOrderStatus for order " + orderId);
 		
-		if (! authService.IsAuthorized(getUserInfo(request)))
+		if (! authService.IsAuthorized(getAuthInfo(request)))
 		{
 			logger.debug("GET /updateOrderStatus: not logged in");
 			return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(null);

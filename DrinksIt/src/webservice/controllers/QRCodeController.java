@@ -18,7 +18,7 @@ import org.springframework.web.bind.annotation.RestController;
 import webservice.auxillary.AuthenticationService;
 import webservice.auxillary.QRCodeGenerator;
 import webservice.auxillary.QrCode;
-import webservice.auxillary.UserInfo;
+import webservice.auxillary.AutoInfo;
 import webservice.auxillary.DTO.Drink;
 import webservice.auxillary.ServiceDTO.DrinkService;
 
@@ -41,7 +41,7 @@ public class QRCodeController extends GenController {
 	@RequestMapping("/qrcode")
 	public ResponseEntity<QrCode> GetQRCode(HttpServletRequest request, @RequestParam String drinkId) throws Exception
 	{
-		UserInfo userInfo = getUserInfo(request);
+		AutoInfo userInfo = getAuthInfo(request);
 		logger.debug("GET /qrcode for drink " + drinkId);
 		
 		if (! authService.IsAuthorized(userInfo))

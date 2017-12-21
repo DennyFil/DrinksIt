@@ -18,6 +18,7 @@ export class UserCreds {
 })
 export class AuthenticationService {
 
+	user: User;
     constructor(public router: Router,
         private _httpPacketService: HttpPacketService,
         private http: Http) { }
@@ -36,9 +37,10 @@ export class AuthenticationService {
                 );
     }    
 	
-	loginResponseCbk(isSuccessfull, successCbk, failureCbk, userCreds) {
+	loginResponseCbk(userInfo, successCbk, failureCbk, userCreds) {
 
-		if (isSuccessfull) {
+		if (userInfo) {
+        	localStorage.setItem("userInfo", JSON.stringify(userInfo));
         	localStorage.setItem("userCreds", JSON.stringify(userCreds));
         	successCbk();
         }
@@ -48,14 +50,15 @@ export class AuthenticationService {
     }
     
 	getLoggedUser() {
+        return JSON.parse(localStorage.getItem("userInfo"));
+    }
+    
+	getUserCreds() {
         return JSON.parse(localStorage.getItem("userCreds"));
     }
     
-    isLoggedIn() {
-    	return localStorage.getItem("userCreds") !== null && localStorage.getItem("userCreds") !== undefined;
-    }
-    
     cleanLoggedUser() {
+        localStorage.removeItem("userInfo");
         localStorage.removeItem("userCreds");
     }
 }

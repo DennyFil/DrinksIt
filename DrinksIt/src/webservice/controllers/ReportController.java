@@ -37,7 +37,7 @@ import webservice.auxillary.DTO.Order;
 import webservice.auxillary.ServiceDTO.BarService;
 import webservice.auxillary.ServiceDTO.OrderService;
 import webservice.auxillary.ReportBuilder;
-import webservice.auxillary.UserInfo;
+import webservice.auxillary.AutoInfo;
 
 @RestController
 public class ReportController extends GenController {
@@ -57,7 +57,7 @@ public class ReportController extends GenController {
 	@RequestMapping("/ordersReport")
 	public ResponseEntity<byte []> ExportOrders(HttpServletRequest request, @RequestParam String startDate, @RequestParam String endDate) throws Exception {
 
-		UserInfo userInfo = getUserInfo(request);
+		AutoInfo userInfo = getAuthInfo(request);
 		logger.debug("GET /orderReport for: " + userInfo.getUserName());
 
 		if (! authService.IsAuthorized(userInfo))

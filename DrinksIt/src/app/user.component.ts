@@ -35,7 +35,7 @@ export class UserComponent {
 
     getUsers() {
 
-		this._restService.getUsers(this._authService.getLoggedUser())
+		this._restService.getUsers(this._authService.getUserCreds())
 			.subscribe(
             data => this.users = data, //Bind to view
             err => console.error('There was an error: ' + err.statusText));

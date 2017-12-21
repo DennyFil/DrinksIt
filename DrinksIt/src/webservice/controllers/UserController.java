@@ -16,10 +16,10 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import webservice.auxillary.AuthenticationService;
-import webservice.auxillary.UserInfo;
+import webservice.auxillary.AutoInfo;
 import webservice.auxillary.ServiceDTO.UserService;
 import webservice.auxillary.DTO.User;
-import webservice.auxillary.DTO.UserInList;
+import webservice.auxillary.DTO.UserInfo;
 
 @RestController
 public class UserController extends GenController {
@@ -34,11 +34,11 @@ public class UserController extends GenController {
 	AuthenticationService authService;
 
 	@RequestMapping("/users")
-	public ResponseEntity<List<UserInList>> GetUsers(HttpServletRequest request) throws Exception {
+	public ResponseEntity<List<UserInfo>> GetUsers(HttpServletRequest request) throws Exception {
 
 		logger.debug("GET /users");
 
-		if (! authService.IsAuthorized(getUserInfo(request)))
+		if (! authService.IsAuthorized(getAuthInfo(request)))
 		{
 			logger.debug("GET /users: hmac check failed");
 			return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(null);
@@ -46,9 +46,9 @@ public class UserController extends GenController {
 
 		List<User> users = userService.GetUsers();
 
-		List<UserInList> userToList = users.stream()
+		List<UserInfo> userToList = users.stream()
 				.filter(elt -> elt != null)
-				.map(elt -> new UserInList(elt))
+				.map(elt -> new UserInfo(elt))
 				.collect(Collectors.toList());
 
 		return ResponseEntity.ok(userToList);
@@ -60,7 +60,7 @@ public class UserController extends GenController {
 
 		logger.debug("POST /postUser: " + userName + " for bar " + barId);
 
-		UserInfo userInfo = getUserInfo(request);
+		AutoInfo userInfo = getAuthInfo(request);
 		if (! authService.IsAuthorized(userInfo))
 		{
 			logger.debug("POST /postUser: not logged in");

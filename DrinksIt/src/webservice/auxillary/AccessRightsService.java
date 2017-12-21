@@ -18,7 +18,7 @@ public class AccessRightsService {
 	@Autowired
 	UserService userService;
 	
-	public boolean checkRight(UserInfo userInfo, String right) {
+	public boolean checkRight(AutoInfo userInfo, String right) {
 
         try {
             User user = userService.GetUser(userInfo.userName);

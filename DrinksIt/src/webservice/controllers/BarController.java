@@ -15,7 +15,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import webservice.auxillary.AuthenticationService;
-import webservice.auxillary.UserInfo;
+import webservice.auxillary.AutoInfo;
 import webservice.auxillary.DTO.Bar;
 import webservice.auxillary.ServiceDTO.BarService;
 
@@ -34,10 +34,10 @@ public class BarController extends GenController {
 	@RequestMapping("/barsByUser")
 	public ResponseEntity<Bar> GetBarsByUser(HttpServletRequest request) throws Exception {
 		
-		UserInfo userInfo = getUserInfo(request);
+		AutoInfo userInfo = getAuthInfo(request);
 		logger.debug("GET /barsByUser for " + userInfo.getUserName());
 		
-		if (! authService.IsAuthorized(getUserInfo(request)))
+		if (! authService.IsAuthorized(getAuthInfo(request)))
 		{
 			logger.debug("GET /barsByUser: not logged in");
 			return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(null);
@@ -52,7 +52,7 @@ public class BarController extends GenController {
 	public ResponseEntity<List<Bar>> GetBars(HttpServletRequest request) throws Exception {
 
 		logger.debug("GET /bars");
-		if (! authService.IsAuthorized(getUserInfo(request)))
+		if (! authService.IsAuthorized(getAuthInfo(request)))
 		{
 			logger.debug("GET /bars: not logged in");
 			return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(null);
@@ -68,7 +68,7 @@ public class BarController extends GenController {
 		
 		logger.debug("POST /postBar");
 
-		UserInfo userInfo = getUserInfo(request);
+		AutoInfo userInfo = getAuthInfo(request);
 		if (! authService.IsAuthorized(userInfo))
 		{
 			logger.debug("POST /postBar: not logged in");

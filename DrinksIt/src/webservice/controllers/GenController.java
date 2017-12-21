@@ -7,13 +7,13 @@ import org.springframework.http.HttpHeaders;
 
 import webservice.auxillary.AccessRightsService;
 import webservice.auxillary.HashComputor;
-import webservice.auxillary.UserInfo;
+import webservice.auxillary.AutoInfo;
 
 public class GenController {
 
 	protected AccessRightsService arService = new AccessRightsService();
 	
-	protected UserInfo getUserInfo(HttpServletRequest request) throws Exception {
+	protected AutoInfo getAuthInfo(HttpServletRequest request) throws Exception {
 
 		String authHeader = request.getHeader(HttpHeaders.AUTHORIZATION);
 
@@ -28,7 +28,7 @@ public class GenController {
 			String receivedPassword = authHeader.substring(idxSeparator + 1, authHeader.length());
 			String receivedPasswordHash = HashComputor.ComputeSHA256(receivedPassword);
 
-			return new UserInfo(userName, receivedPasswordHash);
+			return new AutoInfo(userName, receivedPasswordHash);
 		}
 		catch (Exception e)
 		{

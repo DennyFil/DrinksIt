@@ -1,16 +1,18 @@
 package webservice.auxillary.DTO;
 
 // Not Mapped
-public class UserInList {
+public class UserInfo {
 
 	private String userName;
 	private boolean isAdmin;
     private String barName;
     
-	public UserInList(User user) {
+	public UserInfo(User user) {
 		this.userName = user.getUserName();
 		this.isAdmin = user.getIsAdmin();
-		this.barName = user.getBar().getName();
+		if (user.getBar() != null){
+			this.barName = user.getBar().getName();
+		}
 	}
 	
 	public String getUserName() {

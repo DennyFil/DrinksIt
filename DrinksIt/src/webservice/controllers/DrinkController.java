@@ -15,7 +15,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import webservice.auxillary.AuthenticationService;
-import webservice.auxillary.UserInfo;
+import webservice.auxillary.AutoInfo;
 import webservice.auxillary.DTO.Drink;
 import webservice.auxillary.ServiceDTO.DrinkService;
 
@@ -36,7 +36,7 @@ public class DrinkController extends GenController {
 
 		logger.debug("GET /drinks for bar " + barId);
 
-		if (! authService.IsAuthorized(getUserInfo(request)))
+		if (! authService.IsAuthorized(getAuthInfo(request)))
 		{
 			logger.debug("GET /drinks: not logged in");
 			return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(null);
@@ -52,7 +52,7 @@ public class DrinkController extends GenController {
 
 		logger.debug("POST /postDrink " + drinkName + " to bar " + barId);
 
-		UserInfo userInfo = getUserInfo(request);
+		AutoInfo userInfo = getAuthInfo(request);
 		if (! authService.IsAuthorized(userInfo))
 		{
 			logger.debug("POST /postDrink: not logged in");

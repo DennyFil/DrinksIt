@@ -17,8 +17,9 @@ export class DrinksItComponent {
 	user: User;
 	
 	constructor(private router: Router, private _authService:AuthenticationService) {
-		if(this._authService.getLoggedUser()) {
-			this.user = this._authService.getLoggedUser());
+		let loggedInUser = this._authService.getLoggedUser();
+		if(loggedInUser) {
+			this.user = loggedInUser;
 		}
 		else {
 			this.router.navigateByUrl('/login');

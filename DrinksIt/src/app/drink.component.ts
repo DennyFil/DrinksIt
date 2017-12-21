@@ -39,7 +39,7 @@ export class DrinkComponent {
 
     getDrinks() {
 
-		this._restService.getDrinks(this._authService.getLoggedUser(), this.selectedBar.id)
+		this._restService.getDrinks(this._authService.getUserCreds(), this.selectedBar.id)
 			.subscribe(
             	data => this.drinks = data, //Bind to view
                 err => console.error('There was an error: ' + err.statusText));
@@ -53,7 +53,7 @@ export class DrinkComponent {
     
     getBars() {
 		
-		this._restService.getBars(this._authService.getLoggedUser())
+		this._restService.getBars(this._authService.getUserCreds())
 			.subscribe(
             	data => this.bars = data, //Bind to view
                 err => console.error('There was an error: ' + err.statusText));

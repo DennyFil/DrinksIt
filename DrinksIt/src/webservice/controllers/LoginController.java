@@ -12,6 +12,9 @@ import org.springframework.web.bind.annotation.RestController;
 
 import webservice.auxillary.AuthenticationService;
 import webservice.auxillary.ServiceDTO.UserService;
+import webservice.auxillary.AutoInfo;
+import webservice.auxillary.DTO.User;
+import webservice.auxillary.DTO.UserInfo;
 
 @RestController
 public class LoginController extends GenController {
@@ -26,16 +29,18 @@ public class LoginController extends GenController {
 	AuthenticationService authService;
 	
 	@RequestMapping("/login")
-	public ResponseEntity<Boolean> login(HttpServletRequest request) throws Exception
+	public ResponseEntity<UserInfo> login(HttpServletRequest request) throws Exception
 	{
 		logger.debug("POST /login");
 		
-		if (! authService.IsAuthorized(getUserInfo(request)))
+		AutoInfo authInfo = getAuthInfo(request);
+		if (! authService.IsAuthorized(authInfo))
 		{
 			logger.debug("POST /login: login failed");
-			return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(false);
+			return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(null);
 		}
 		
-		return ResponseEntity.status(HttpStatus.ACCEPTED).body(true);
+		User user = userService.GetUser(authInfo.getUserName());
+		return ResponseEntity.status(HttpStatus.ACCEPTED).body(new UserInfo(user));
 	}
 }
