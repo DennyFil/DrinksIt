@@ -3,7 +3,6 @@ package webservice.controllers;
 import javax.servlet.http.HttpServletRequest;
 
 import org.apache.commons.lang.exception.ExceptionUtils;
-import org.json.JSONObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -15,10 +14,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import webservice.auxillary.AuthenticationService;
 import webservice.auxillary.QRCodeGenerator;
 import webservice.auxillary.QrCode;
-import webservice.auxillary.AutoInfo;
+import webservice.auxillary.AuthInfo;
 import webservice.auxillary.DTO.Drink;
 import webservice.auxillary.ServiceDTO.DrinkService;
 
@@ -34,14 +32,11 @@ public class QRCodeController extends GenController {
 	@Autowired
     private Environment environment;
 	
-	@Autowired
-	AuthenticationService authService;
-	
 	@SuppressWarnings("unchecked")
 	@RequestMapping("/qrcode")
 	public ResponseEntity<QrCode> GetQRCode(HttpServletRequest request, @RequestParam String drinkId) throws Exception
 	{
-		AutoInfo userInfo = getAuthInfo(request);
+		AuthInfo userInfo = getAuthInfo(request);
 		logger.debug("GET /qrcode for drink " + drinkId);
 		
 		if (! authService.IsAuthorized(userInfo))
@@ -61,7 +56,7 @@ public class QRCodeController extends GenController {
 				String drinkName = drink.getName();
 				double drinkPrice = drink.getPrice();
 				double drinkSize = drink.getSize();
-				int drinkBarId = drink.getBar().getId();
+				int drinkBarId = drink.getBarId();
 	
 				String qrCodeContent = serverUrl + "/postOrder?drinkId=" + drinkId + 
 												"&barId=" + drinkBarId + 

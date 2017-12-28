@@ -93,7 +93,38 @@ public class UserService {
 		return null;
 	}
 	
-	public User CreateUser(String userName, String password, int barId)
+	public User CreateUser(User newUser)
+	{
+		try{
+			Session session = sessionFactory.getCurrentSession();
+			
+			Bar bar = (Bar)session.get(Bar.class, newUser.getBarId());
+			
+			if (bar != null) {
+				
+				newUser.setPasswordHash(HashComputor.ComputeSHA256(newUser.getPassword()));
+				newUser.setBar(bar);
+				
+				session.save(newUser);
+	
+				logger.debug("CREATION: user " + newUser.getUserName() + " for bar " + newUser.getBarId());
+				return newUser;
+			}
+			else {
+				logger.debug("Bar: " + newUser.getBarId() + " does not exist");
+			}
+		}
+		catch (Exception e) {
+			logger.error("Failed to create user " + newUser.getUserName() + " for bar " + newUser.getBarId());
+			logger.error(ExceptionUtils.getStackTrace(e));
+		}finally {
+
+		}
+		
+		return null;
+	}
+	
+	public User CreateUser(String userName, String password, int barId, boolean isAdmin)
 	{
 		try{
 			Session session = sessionFactory.getCurrentSession();
@@ -102,7 +133,7 @@ public class UserService {
 			
 			if (bar != null) {
 				
-				User user = new User(userName, HashComputor.ComputeSHA256(password), bar);
+				User user = new User(userName, HashComputor.ComputeSHA256(password), barId, isAdmin);
 	
 				session.save(user);
 	

@@ -1,14 +1,17 @@
 import { Component, Injectable } from '@angular/core';
 import { Router } from '@angular/router';
+import { Overlay, overlayConfigFactory } from 'angular2-modal';
+import { Modal, BSModalContext } from 'angular2-modal/plugins/bootstrap';
 
-import { AuthenticationService } 	from './authentication.service';
-import { RestService }           	from './restService';
-import { User }           			from './models/user';
+import { AuthenticationService } 		from './authentication.service';
+import { RestService }           		from './restService';
+import { UserEditContext, UserEdit }    from './userEdit';
+import { User }           				from './models/user';
 
 @Component({
     selector: 'drinksit-user',
     templateUrl: './users.html',
-    providers: [AuthenticationService, RestService]
+    providers: [AuthenticationService, RestService, Modal]
 })
 export class UserComponent {
 
@@ -17,7 +20,8 @@ export class UserComponent {
 
     constructor(private _router: Router,
         private _authService: AuthenticationService,
-        private _restService: RestService) { }
+        private _restService: RestService,
+        public modal: Modal) { }
 
     ngOnInit() {
         if (this._authService.getLoggedUser()) {
@@ -40,4 +44,22 @@ export class UserComponent {
             data => this.users = data, //Bind to view
             err => console.error('There was an error: ' + err.statusText));
     }
+  
+  	editUser(user) {
+    	
+    	// New user
+    	if (user == null){
+    		user = new User("", false, null );
+    	}
+
+    	return this.modal.open(UserEdit,
+    		overlayConfigFactory(
+    		{
+	    		onSubmitCallback: () => {
+	               this.getUsers();
+	          	},
+	           	user: user
+	        },
+           	BSModalContext));
+  	}
 }

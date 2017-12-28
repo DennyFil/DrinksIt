@@ -7,6 +7,7 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 
 import webservice.auxillary.DTO.Bar;
 
@@ -17,32 +18,39 @@ public class User implements java.io.Serializable {
 	@Id
     @Column(name = "userName")
     private String userName;
-
+	
     @Column(name = "passwordHash")
     private String passwordHash;
     
     @Column(name = "isAdmin")
     private boolean isAdmin;
     
-    @ManyToOne
+    @Column(name = "bar_id", insertable = false, updatable = false)
+	private int barId;
+    
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "bar_id")
     private Bar bar;
+
+	// Not mapped
+    @Transient
+	private String password;
     
     public User() {
     }
     
-    public User(String userName, String passwordHash, Bar bar) {
+    public User(String userName, String passwordHash, int barId) {
         this.userName = userName;
         this.passwordHash = passwordHash;
         this.isAdmin = false;
-        this.bar = bar;
+        this.barId = barId;
     }
     
-    public User(String userName, String passwordHash, Bar bar, boolean isAdmin) {
+    public User(String userName, String passwordHash, int barId, boolean isAdmin) {
         this.userName = userName;
         this.passwordHash = passwordHash;
         this.isAdmin = isAdmin;
-        this.bar = bar;
+        this.barId = barId;
     }
     
     public String getUserName() {
@@ -53,6 +61,10 @@ public class User implements java.io.Serializable {
         this.userName = userName;
     }
 
+    public String getPassword() {
+        return this.password;
+    }
+    
     public String getPasswordHash() {
         return this.passwordHash;
     }
@@ -75,5 +87,9 @@ public class User implements java.io.Serializable {
 
     public void setBar(Bar bar) {
         this.bar = bar;
+    }
+    
+    public int getBarId(){
+    	return this.barId;
     }
 }

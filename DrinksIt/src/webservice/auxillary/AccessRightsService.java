@@ -1,12 +1,9 @@
 package webservice.auxillary;
 
-import javax.servlet.http.HttpServletRequest;
-
 import org.apache.commons.lang.exception.ExceptionUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpHeaders;
 
 import webservice.auxillary.DTO.User;
 import webservice.auxillary.ServiceDTO.UserService;
@@ -18,11 +15,11 @@ public class AccessRightsService {
 	@Autowired
 	UserService userService;
 	
-	public boolean checkRight(AutoInfo userInfo, String right) {
+	public boolean checkRight(AuthInfo userInfo, String right) {
 
         try {
-            User user = userService.GetUser(userInfo.userName);
-            assert (user != null);            
+            User user = userService.GetUser(userInfo.getUserName());
+            assert (user != null);
                       
             if (!user.getIsAdmin()) {
             	logger.error("AccessRightService: not authorized");

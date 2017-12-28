@@ -73,7 +73,6 @@
 				<value>webservice.auxillary.DTO.Bar</value>
 				<value>webservice.auxillary.DTO.Drink</value>
 				<value>webservice.auxillary.DTO.Order</value>
-				<value>webservice.auxillary.DTO.Payment</value>
 				<value>webservice.auxillary.DTO.User</value>
 			</list>
 		</property>
@@ -107,6 +106,9 @@
 	</bean>
 
 	<bean id="authService" class="webservice.auxillary.AuthenticationService">
+	</bean>
+	
+	<bean id="arService" class="webservice.auxillary.AccessRightsService">
 	</bean>
 
 </beans>  

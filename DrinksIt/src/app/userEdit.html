@@ -1,0 +1,59 @@
+<div id="userEdit" class="container-fluid">
+	<div class="row modal-header">
+		<div class="col-sm-12">
+			<h1>Create user</h1>
+		</div>
+	</div>
+	<div class="row">
+		<div class="col-xs-4">
+			<label for="username">Username</label>
+		</div>
+		<div class="col-xs-8">
+			<div class="form-group">
+				<input type="text" class="form-control" id="name"
+					placeholder="Username" name="userName" [(ngModel)]="userEditContext.user.userName"
+					required>
+			</div>
+		</div>
+	</div>
+	<div class="row">
+		<div class="col-xs-4">
+			<label for="password">Password</label>
+		</div>
+		<div class="col-xs-8">
+			<div class="form-group">
+				<input type="password" class="form-control" id="password"
+					placeholder="Password" name="password" [(ngModel)]="userEditContext.user.password"
+					required>
+			</div>
+		</div>
+	</div>
+	<div class="row">
+		<div class="col-xs-4">
+			<label for="bar">Bar</label>
+		</div>
+		<div class="col-xs-8">
+			<div class="form-group">			
+				<select [(ngModel)]="userEditContext.user.barId">
+				  <option *ngFor="let bar of bars" [ngValue]="bar.id">{{bar.name}}</option>
+				</select>
+			</div>
+		</div>
+	</div>
+	<div class="row">
+		<div class="col-xs-4">
+			<label for="isAdmin">Admin</label>
+		</div>
+		<div class="col-xs-8">
+			<div class="form-group">
+				<input type="checkbox" [checked]="userEditContext.user.isAdmin"
+					(change)="userEditContext.user.isAdmin = !userEditContext.user.isAdmin"
+					[(ngModel)]="userEditContext.user.isAdmin" />
+			</div>
+		</div>
+	</div>
+	<div class="row">
+		<button type="submit" class="btn btn-default" (click)="onSubmit()">OK</button>
+		<button type="button" class="btn btn-default" (click)="onCancel()">Cancel</button>
+	</div>
+</div>

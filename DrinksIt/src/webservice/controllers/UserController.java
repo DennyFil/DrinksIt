@@ -5,18 +5,17 @@ import java.util.stream.Collectors;
 
 import javax.servlet.http.HttpServletRequest;
 
-import org.json.JSONObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import webservice.auxillary.AuthenticationService;
-import webservice.auxillary.AutoInfo;
+import webservice.auxillary.AuthInfo;
 import webservice.auxillary.ServiceDTO.UserService;
 import webservice.auxillary.DTO.User;
 import webservice.auxillary.DTO.UserInfo;
@@ -29,9 +28,6 @@ public class UserController extends GenController {
 
 	@Autowired
 	UserService userService;
-
-	@Autowired
-	AuthenticationService authService;
 
 	@RequestMapping("/users")
 	public ResponseEntity<List<UserInfo>> GetUsers(HttpServletRequest request) throws Exception {
@@ -56,11 +52,11 @@ public class UserController extends GenController {
 
 	@SuppressWarnings("unchecked")
 	@RequestMapping("/postUser")
-	public ResponseEntity<User> PostUser(HttpServletRequest request, @RequestParam String userName, @RequestParam String password, @RequestParam Integer barId) throws Exception {
+	public ResponseEntity<User> PostUser(HttpServletRequest request, @RequestBody User newUser) throws Exception {
 
-		logger.debug("POST /postUser: " + userName + " for bar " + barId);
+		logger.debug("POST /postUser: " + newUser.getUserName() + " for bar " + newUser.getBarId());
 
-		AutoInfo userInfo = getAuthInfo(request);
+		AuthInfo userInfo = getAuthInfo(request);
 		if (! authService.IsAuthorized(userInfo))
 		{
 			logger.debug("POST /postUser: not logged in");
@@ -70,10 +66,10 @@ public class UserController extends GenController {
 		if ( ! arService.checkRight(userInfo, "create"))
 		{
 			logger.debug("POST /postUser: no create right");
-			return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(null);
+			return ResponseEntity.status(HttpStatus.FORBIDDEN).body(null);
 		}
 
-		User user = userService.CreateUser(userName, password, barId);
+		User user = userService.CreateUser(newUser);
 
 		return user != null? ResponseEntity.ok(user) : ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
 	}

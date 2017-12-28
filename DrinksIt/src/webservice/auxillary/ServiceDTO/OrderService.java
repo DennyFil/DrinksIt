@@ -79,9 +79,9 @@ public class OrderService {
 			User user = (User) session.get(User.class, userName);
 
 			if (user != null) {
-				int barId = user.getBar().getId();
+				int barId = user.getBarId();
 
-				List<Order> results = (List<Order>)session.createQuery("FROM Order o JOIN FETCH o.drink d WHERE d.bar.id = '" + barId + "'").list(); //JOIN User u JOIN FETCH u.bar ub WHERE ub.id = db.id AND u.userName = " + userName).list();
+				List<Order> results = (List<Order>)session.createQuery("FROM Order o JOIN FETCH o.drink d WHERE d.bar_id = '" + barId + "'").list(); //JOIN User u JOIN FETCH u.bar ub WHERE ub.id = db.id AND u.userName = " + userName).list();
 
 				logger.debug("RETURNED: list of orders for user " + userName);
 				return results;
@@ -126,7 +126,7 @@ public class OrderService {
 
 			if (drink != null) {
 
-				Order order = new Order(drink, quantity, status, new Date());
+				Order order = new Order(drinkId, quantity, status, new Date());
 
 				session.save(order);
 

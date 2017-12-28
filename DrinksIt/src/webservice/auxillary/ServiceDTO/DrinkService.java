@@ -36,7 +36,7 @@ public class DrinkService {
 			Session session = sessionFactory.getCurrentSession();
 			Drink drink = (Drink) session.get(Drink.class, drinkId);
 
-			if (drink != null && drink.getBar().getId() == barId
+			if (drink != null && drink.getBarId() == barId
 					&& drink.getName().equals(drinkName)
 					&& drink.getSize() == drinkSize
 					&& drink.getPrice() == drinkPrice)
@@ -72,7 +72,7 @@ public class DrinkService {
 			String query = "FROM Drink";
 			if (barId > 0)
 			{
-				query += " WHERE bar.id = '" + barId + "'";
+				query += " WHERE bar_id = '" + barId + "'";
 			}
 			List<Drink> drinks = (List<Drink>)session.createQuery(query).list();
 
@@ -96,7 +96,7 @@ public class DrinkService {
 			User user = (User) session.get(User.class, userName);
 			Drink drink = (Drink) session.get(Drink.class, drinkId);
 
-			if (drink != null && user != null && drink.getBar().getId() == user.getBar().getId())
+			if (drink != null && user != null && drink.getBarId() == user.getBarId())
 			{
 				logger.debug("RETURNED drink " + drinkId + " for " + userName);
 				return drink;
@@ -124,7 +124,7 @@ public class DrinkService {
             
             if (bar != null) {
 
-            	Drink drink = new Drink(bar, name, price, size);
+            	Drink drink = new Drink(barId, name, price, size);
 
             	session.save(drink);
 

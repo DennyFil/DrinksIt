@@ -4,7 +4,6 @@ import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
 
-import org.json.JSONObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,8 +13,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import webservice.auxillary.AuthenticationService;
-import webservice.auxillary.AutoInfo;
+import webservice.auxillary.AuthInfo;
 import webservice.auxillary.DTO.Drink;
 import webservice.auxillary.ServiceDTO.DrinkService;
 
@@ -27,9 +25,6 @@ public class DrinkController extends GenController {
 	
 	@Autowired
 	DrinkService drinkService;
-	
-	@Autowired
-	AuthenticationService authService;
 	
 	@RequestMapping("/drinks")
 	public ResponseEntity<List<Drink>> GetDrinks(HttpServletRequest request, @RequestParam Integer barId) throws Exception {
@@ -52,7 +47,7 @@ public class DrinkController extends GenController {
 
 		logger.debug("POST /postDrink " + drinkName + " to bar " + barId);
 
-		AutoInfo userInfo = getAuthInfo(request);
+		AuthInfo userInfo = getAuthInfo(request);
 		if (! authService.IsAuthorized(userInfo))
 		{
 			logger.debug("POST /postDrink: not logged in");

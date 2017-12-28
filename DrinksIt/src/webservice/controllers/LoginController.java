@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import webservice.auxillary.AuthenticationService;
 import webservice.auxillary.ServiceDTO.UserService;
-import webservice.auxillary.AutoInfo;
+import webservice.auxillary.AuthInfo;
 import webservice.auxillary.DTO.User;
 import webservice.auxillary.DTO.UserInfo;
 
@@ -24,16 +24,13 @@ public class LoginController extends GenController {
 
 	@Autowired
 	UserService userService;
-
-	@Autowired
-	AuthenticationService authService;
 	
 	@RequestMapping("/login")
 	public ResponseEntity<UserInfo> login(HttpServletRequest request) throws Exception
 	{
 		logger.debug("POST /login");
 		
-		AutoInfo authInfo = getAuthInfo(request);
+		AuthInfo authInfo = getAuthInfo(request);
 		if (! authService.IsAuthorized(authInfo))
 		{
 			logger.debug("POST /login: login failed");

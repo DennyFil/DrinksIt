@@ -61,6 +61,16 @@ export class RestService {
             .catch((error:any) => Observable.throw(error.json().error || 'Server error'));
      }
      
+     postUser(user, userCreds) : Observable<User> {
+	
+        let packetOptions = this._httpPacketService.computePacketOptions('POST', userCreds);
+		let body = JSON.stringify(user);
+		
+        return this.http.post('DrinksIt/postUser', body, packetOptions)
+        	.map((res:Response) => res.json())
+            .catch((error:any) => Observable.throw(error.json().error || 'Server error'));
+     }
+     
      getReport(dateFrom, dateTo, user) {
      
 	    let body = JSON.stringify({ "endDate": dateTo, "startDate": dateFrom });        

@@ -1,23 +1,13 @@
 package webservice.controllers;
 
-import java.io.ByteArrayOutputStream;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.OutputStream;
 import java.text.DateFormat;
-import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
-import java.util.Locale;
 import java.util.stream.Collectors;
 
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 
-import org.apache.commons.lang.exception.ExceptionUtils;
-import org.json.JSONObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,17 +17,14 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
-import webservice.auxillary.AuthenticationService;
 import webservice.auxillary.DTO.Bar;
-import webservice.auxillary.DTO.Drink;
 import webservice.auxillary.DTO.Order;
 import webservice.auxillary.ServiceDTO.BarService;
 import webservice.auxillary.ServiceDTO.OrderService;
 import webservice.auxillary.ReportBuilder;
-import webservice.auxillary.AutoInfo;
+import webservice.auxillary.AuthInfo;
 
 @RestController
 public class ReportController extends GenController {
@@ -51,13 +38,10 @@ public class ReportController extends GenController {
 	@Autowired
 	BarService barService;
 
-	@Autowired
-	AuthenticationService authService;
-
 	@RequestMapping("/ordersReport")
 	public ResponseEntity<byte []> ExportOrders(HttpServletRequest request, @RequestParam String startDate, @RequestParam String endDate) throws Exception {
 
-		AutoInfo userInfo = getAuthInfo(request);
+		AuthInfo userInfo = getAuthInfo(request);
 		logger.debug("GET /orderReport for: " + userInfo.getUserName());
 
 		if (! authService.IsAuthorized(userInfo))

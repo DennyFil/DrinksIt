@@ -17,7 +17,10 @@ public class Order extends GenItem implements java.io.Serializable, Comparable<O
 	@Column(name = "ts_update")
 	private Date ts_update;
 	
-	@ManyToOne
+	@Column(name = "drink_id", insertable = false, updatable = false)
+	private int drinkId;
+	
+	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "drink_id")
 	private Drink drink;
 	
@@ -30,15 +33,15 @@ public class Order extends GenItem implements java.io.Serializable, Comparable<O
 	public Order() {
 	}
 	
-	public Order(Drink drink, int quantity, String status, Date ts_create) {
-		this.drink = drink;
+	public Order(int drinkId, int quantity, String status, Date ts_create) {
+		this.drinkId = drinkId;
 		this.quantity = quantity;
 		this.status = status;
 		this.ts_create = ts_create;
 	}
 
-	public Order(Drink drink, int quantity, String status, Date ts_create, Date updateTime) {
-		this.drink = drink;
+	public Order(int drinkId, int quantity, String status, Date ts_create, Date updateTime) {
+		this.drinkId = drinkId;
 		this.quantity = quantity;
 		this.status = status;
 		this.ts_create = ts_create;
@@ -66,10 +69,10 @@ public class Order extends GenItem implements java.io.Serializable, Comparable<O
 	public Drink getDrink() {
 		return this.drink;
 	}
-
-	public void setDrink(Drink drink) {
-		this.drink = drink;
-	}
+	
+	public int getDrinkId(){
+    	return this.drinkId;
+    }
 
 	public int getQuantity() {
 		return this.quantity;

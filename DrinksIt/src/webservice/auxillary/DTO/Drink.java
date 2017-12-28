@@ -8,9 +8,12 @@ import webservice.auxillary.DTO.Bar;
 @Table(name = "drinks")
 public class Drink extends GenItem implements java.io.Serializable {
 	
-	@ManyToOne
+	@Column(name = "bar_id", insertable = false, updatable = false)
+	private int barId;
+	
+	/*@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "bar_id")
-	private Bar bar;
+	private Bar bar;*/
 	
 	@Column(name = "name")
 	private String name;
@@ -23,20 +26,20 @@ public class Drink extends GenItem implements java.io.Serializable {
 
 	public Drink() {
 	}
-
-	public Drink(Bar bar, String name, double price, double size) {
-		this.bar = bar;
+	
+	public Drink(int barId, String name, double price, double size) {
+		this.barId = barId;
 		this.name = name;
 		this.price = price;
 		this.size = size;
 	}
     
-    public Bar getBar() {
+    /*public Bar getBar() {
         return this.bar;
-    }
+    }*/
     
-    public void setBar(Bar bar) {
-        this.bar = bar;
+    public int getBarId(){
+    	return this.barId;
     }
 
 	public String getName() {
@@ -62,5 +65,4 @@ public class Drink extends GenItem implements java.io.Serializable {
 	public void setSize(double size) {
 		this.size = size;
 	}
-
 }

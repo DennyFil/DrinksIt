@@ -73,6 +73,26 @@ public class BarService {
 		return new ArrayList<Bar>();
 	}
 
+	public Bar CreateBar(Bar newBar)
+	{
+		try{
+			Session session = sessionFactory.getCurrentSession();
+
+			session.save(newBar);
+
+			logger.debug("CREATION: bar: " + newBar.getName() + ", " + newBar.getAddress() + ", " + newBar.getCity() + ", " + newBar.getCountry());
+			return newBar;
+		}
+		catch (Exception e) {
+			logger.error("Failed to create bar: " + newBar.getName() + ", " + newBar.getAddress() + ", " + newBar.getCity() + ", " + newBar.getCountry());
+			logger.error(ExceptionUtils.getStackTrace(e));
+		}finally {
+
+		}
+		
+		return null;
+	}
+	
 	public Bar CreateBar(String name, String address, String city, String country)
 	{
 		try{

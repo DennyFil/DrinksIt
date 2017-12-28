@@ -1,10 +1,10 @@
 package webservice.auxillary;
 
-public class AutoInfo {
+public class AuthInfo {
 	String userName;
 	String passwordHash;
 	
-	public AutoInfo(String userName, String passwordHash) {
+	public AuthInfo(String userName, String passwordHash) {
 		this.userName = userName;
 		this.passwordHash = passwordHash;
 	}

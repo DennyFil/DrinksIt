@@ -7,13 +7,13 @@
 	  <div class="btn-group" role="group">
 	    <button type="button" routerLink="/orders" routerLinkActive="active" class="btn btn-default">Orders</button>
 	  </div>
-	  <div [hidden]="user.isAdmin===false" class="btn-group" role="group">
+	  <div *ngIf="user.isAdmin" class="btn-group" role="group">
 	    <button type="button" routerLink="/bars" routerLinkActive="active" class="btn btn-default">Bars</button>
 	  </div>
 	  <div class="btn-group" role="group">
 	    <button type="button" routerLink="/drinks" routerLinkActive="active" class="btn btn-default">Drinks</button>
 	  </div>
-	  <div [hidden]="user.isAdmin===false" class="btn-group" role="group">
+	  <div *ngIf="user.isAdmin" class="btn-group" role="group">
 	    <button type="button" routerLink="/users" routerLinkActive="active" class="btn btn-default">Users</button>
 	  </div>
 	  <div class="btn-group" role="group">

@@ -42,10 +42,14 @@ export class AuthenticationService {
 		if (userInfo) {
         	localStorage.setItem("userInfo", JSON.stringify(userInfo));
         	localStorage.setItem("userCreds", JSON.stringify(userCreds));
-        	successCbk();
+        	if (successCbk){
+        		successCbk();
+        	}
         }
         else {
-        	failureCbk();
+        	if (failureCbk) {
+        		failureCbk();
+        	}
         }
     }
     

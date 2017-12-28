@@ -19,7 +19,7 @@ public class AuthenticationService {
 	@Autowired
 	UserService userService;
 
-    public boolean IsAuthorized(AutoInfo userInfo) {
+    public boolean IsAuthorized(AuthInfo userInfo) {
 
         try {
         	User user = userService.GetUser(userInfo.userName);
