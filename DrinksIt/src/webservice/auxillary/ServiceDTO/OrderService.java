@@ -51,26 +51,6 @@ public class OrderService {
 	}
 
 	@SuppressWarnings({"rawtypes", "finally"})
-	public List<Order> GetOrders()
-	{
-		try{
-			Session session = sessionFactory.getCurrentSession();
-
-			List<Order> results = (List<Order>)session.createQuery("FROM Order").list(); //JOIN User u JOIN FETCH u.bar ub WHERE ub.bar_id = db.bar_id AND u.userName = " + userName).list();
-
-			logger.debug("RETURNED: list of all orders");
-			return results;
-		}catch (Exception e) {
-			logger.error("Failed to get list of orders");
-			logger.error(ExceptionUtils.getStackTrace(e));
-		}finally {
-
-		}
-
-		return new ArrayList<Order>();
-	}
-
-	@SuppressWarnings({"rawtypes", "finally"})
 	public List<Order> GetOrders(String userName)
 	{
 		try{
@@ -81,7 +61,7 @@ public class OrderService {
 			if (user != null) {
 				int barId = user.getBarId();
 
-				List<Order> results = (List<Order>)session.createQuery("FROM Order o JOIN FETCH o.drink d WHERE d.bar_id = '" + barId + "'").list(); //JOIN User u JOIN FETCH u.bar ub WHERE ub.id = db.id AND u.userName = " + userName).list();
+				List<Order> results = (List<Order>)session.createQuery("FROM Order o JOIN FETCH o.drink d WHERE d.barId = '" + barId + "'").list(); //JOIN User u JOIN FETCH u.bar ub WHERE ub.id = db.id AND u.userName = " + userName).list();
 
 				logger.debug("RETURNED: list of orders for user " + userName);
 				return results;
