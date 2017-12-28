@@ -92,4 +92,8 @@ public class User implements java.io.Serializable {
     public int getBarId(){
     	return this.barId;
     }
+    
+    public boolean isBarAdmin(int barId) {
+        return this.barId == barId || this.barId == 0; // or master bar admin
+    }
 }

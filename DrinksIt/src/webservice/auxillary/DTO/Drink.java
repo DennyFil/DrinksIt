@@ -11,9 +11,9 @@ public class Drink extends GenItem implements java.io.Serializable {
 	@Column(name = "bar_id", insertable = false, updatable = false)
 	private int barId;
 	
-	/*@ManyToOne(fetch = FetchType.LAZY)
+	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "bar_id")
-	private Bar bar;*/
+	private Bar bar;
 	
 	@Column(name = "name")
 	private String name;
@@ -34,9 +34,9 @@ public class Drink extends GenItem implements java.io.Serializable {
 		this.size = size;
 	}
     
-    /*public Bar getBar() {
-        return this.bar;
-    }*/
+    public void setBar(Bar bar) {
+        this.bar = bar;
+    }
     
     public int getBarId(){
     	return this.barId;

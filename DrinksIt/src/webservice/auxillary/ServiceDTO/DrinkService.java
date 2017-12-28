@@ -114,6 +114,35 @@ public class DrinkService {
 		
 		return null;
 	}
+	
+	public Drink CreateDrink(Drink newDrink)
+    {
+        try{
+            Session session = sessionFactory.getCurrentSession();
+
+            Bar bar = session.get(Bar.class, newDrink.getBarId());
+            
+            if (bar != null) {
+
+            	newDrink.setBar(bar);
+            	session.save(newDrink);
+
+	            logger.debug("CREATION: drink: " + newDrink.getName() + ", size: " + newDrink.getSize() + ", price: " + newDrink.getPrice() + ", bar: " + newDrink.getBarId());
+	            return newDrink;
+            }
+            else {
+            	logger.debug("CREATION: drink: bar " + newDrink.getBarId() + "not available");
+            }
+        }
+        catch (Exception e) {
+            logger.error("Failed to create drink: " + newDrink.getName() + ", size: " + newDrink.getSize() + ", price: " + newDrink.getPrice() + ", bar: " + newDrink.getBarId());
+			logger.error(ExceptionUtils.getStackTrace(e));
+        }finally {
+
+        }
+        
+        return null;
+    }
 
     public Drink CreateDrink(String name, double price, double size, int barId)
     {

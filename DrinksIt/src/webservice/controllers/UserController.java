@@ -34,10 +34,17 @@ public class UserController extends GenController {
 
 		logger.debug("GET /users");
 
-		if (! authService.IsAuthorized(getAuthInfo(request)))
+		AuthInfo userInfo = getAuthInfo(request);
+		if (! authService.IsAuthorized(userInfo))
 		{
 			logger.debug("GET /users: hmac check failed");
 			return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(null);
+		}
+		
+		if ( ! arService.checkRight(userInfo, "list"))
+		{
+			logger.debug("POST /postUser: no list right");
+			return ResponseEntity.status(HttpStatus.FORBIDDEN).body(null);
 		}
 
 		List<User> users = userService.GetUsers();

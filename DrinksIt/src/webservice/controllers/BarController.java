@@ -10,7 +10,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import webservice.auxillary.AuthInfo;
@@ -25,23 +24,6 @@ public class BarController extends GenController {
 	
 	@Autowired
 	BarService barService;
-
-	@RequestMapping("/barsByUser")
-	public ResponseEntity<Bar> GetBarsByUser(HttpServletRequest request) throws Exception {
-		
-		AuthInfo userInfo = getAuthInfo(request);
-		logger.debug("GET /barsByUser for " + userInfo.getUserName());
-		
-		if (! authService.IsAuthorized(getAuthInfo(request)))
-		{
-			logger.debug("GET /barsByUser: not logged in");
-			return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(null);
-		}
-		
-		Bar bar = barService.GetBar(userInfo.getUserName());
-
-		return bar != null? ResponseEntity.ok(bar) : ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
-	}
 
 	@RequestMapping("/bars")
 	public ResponseEntity<List<Bar>> GetBars(HttpServletRequest request) throws Exception {

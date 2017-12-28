@@ -34,4 +34,23 @@ public class AccessRightsService {
             return false;
         }
     }
+	
+	public boolean isBarAdmin(AuthInfo userInfo, int barId){
+		try {
+            User user = userService.GetUser(userInfo.getUserName());
+            assert (user != null);
+                      
+            if (!user.isBarAdmin(barId)) {
+            	logger.error("AccessRightService: not bar admin");
+            	return false;
+            }
+
+            return true;
+        }
+        catch (Exception e)
+        {        	
+        	logger.error(ExceptionUtils.getStackTrace(e));
+            return false;
+        }
+	}
 }

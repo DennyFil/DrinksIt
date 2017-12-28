@@ -9,6 +9,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
@@ -43,9 +44,9 @@ public class DrinkController extends GenController {
 	}
 
 	@RequestMapping("/postDrink")
-	public ResponseEntity<Drink> PostDrink(HttpServletRequest request, @RequestParam String drinkName, @RequestParam double price, @RequestParam double size, @RequestParam int barId) throws Exception {
+	public ResponseEntity<Drink> PostDrink(HttpServletRequest request, @RequestBody Drink newDrink) throws Exception {
 
-		logger.debug("POST /postDrink " + drinkName + " to bar " + barId);
+		logger.debug("POST /postDrink " + newDrink.getName() + " to bar " + newDrink.getBarId());
 
 		AuthInfo userInfo = getAuthInfo(request);
 		if (! authService.IsAuthorized(userInfo))
@@ -54,13 +55,13 @@ public class DrinkController extends GenController {
 			return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(null);
 		}
 		
-		if ( ! arService.checkRight(userInfo, "create"))
+		if ( ! arService.isBarAdmin(userInfo, newDrink.getBarId()))
 		{
 			logger.debug("POST /postDrink: no create right");
 			return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(null);
 		}
 
-		Drink drink = drinkService.CreateDrink(drinkName, price, size, barId);
+		Drink drink = drinkService.CreateDrink(newDrink);
 		
 		return drink != null? ResponseEntity.ok(drink) : ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
 	}
