@@ -11,7 +11,7 @@ public class UserInfo {
 		this.userName = user.getUserName();
 		this.isAdmin = user.getIsAdmin();
 		if (user.getBar() != null){
-			//this.barName = user.getBar().getName();
+			this.barName = user.getBar().getName();
 		}
 	}
 	

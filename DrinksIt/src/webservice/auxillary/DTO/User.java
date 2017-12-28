@@ -28,7 +28,7 @@ public class User implements java.io.Serializable {
     @Column(name = "bar_id", insertable = false, updatable = false)
 	private int barId;
     
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "bar_id")
     private Bar bar;
 
