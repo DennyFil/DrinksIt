@@ -32,15 +32,23 @@ public class DrinkController extends GenController {
 
 		logger.debug("GET /drinks for bar " + barId);
 
-		if (! authService.IsAuthorized(getAuthInfo(request)))
+		AuthInfo userInfo = getAuthInfo(request);
+		if (! authService.IsAuthorized(userInfo))
 		{
-			logger.debug("GET /drinks: not logged in");
+			logger.debug("GET /drinks: not authorized for " + userInfo.getUserName());
 			return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(null);
 		}
 
-		List<Drink> drinks = drinkService.GetDrinks(barId);
-		
-		return ResponseEntity.ok(drinks);
+		try {
+			List<Drink> drinks = drinkService.GetDrinks(barId);
+			
+			return ResponseEntity.ok(drinks);
+		}
+		catch (Exception e){
+			logger.debug(e.getMessage());
+		}
+
+		return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
 	}
 
 	@RequestMapping("/postDrink")
@@ -51,18 +59,28 @@ public class DrinkController extends GenController {
 		AuthInfo userInfo = getAuthInfo(request);
 		if (! authService.IsAuthorized(userInfo))
 		{
-			logger.debug("POST /postDrink: not logged in");
+			logger.debug("POST /postDrink: not authorized for " + userInfo.getUserName());
 			return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(null);
 		}
 		
 		if ( ! arService.isBarAdmin(userInfo, newDrink.getBarId()))
 		{
-			logger.debug("POST /postDrink: no create right");
-			return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(null);
+			logger.debug("POST /postDrink: no create right for " + userInfo.getUserName());
+			return ResponseEntity.status(HttpStatus.FORBIDDEN).body(null);
+		}
+		
+		try {
+
+			Drink drink = drinkService.CreateDrink(newDrink);
+			
+			logger.debug("CREATION drink: " + newDrink.getName() + ", size: " + newDrink.getSize() + ", price: " + newDrink.getPrice() + ", bar: " + newDrink.getBarId());
+            
+			return ResponseEntity.ok(drink);
+		}
+		catch (Exception e){
+			logger.debug(e.getMessage());
 		}
 
-		Drink drink = drinkService.CreateDrink(newDrink);
-		
-		return drink != null? ResponseEntity.ok(drink) : ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
+		return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
 	}
 }

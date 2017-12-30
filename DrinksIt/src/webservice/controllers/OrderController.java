@@ -1,19 +1,13 @@
 package webservice.controllers;
 
-import java.text.DateFormat;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
-import java.util.Locale;
 import java.util.stream.Collectors;
 import java.util.Collections;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
-import org.apache.commons.lang.exception.ExceptionUtils;
-import org.json.JSONObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -25,9 +19,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import webservice.auxillary.AuthenticationService;
 import webservice.auxillary.AuthInfo;
-import webservice.auxillary.DTO.Drink;
 import webservice.auxillary.DTO.Order;
 import webservice.auxillary.database.OrderComparator;
 import webservice.auxillary.database.OrderStatus;
@@ -39,76 +31,91 @@ public class OrderController extends GenController {
 
 	private static final Logger logger = 
 			LoggerFactory.getLogger("orderControllerLogger");
-	
+
 	@Autowired
 	OrderService orderService;
-	
+
 	@Autowired
 	DrinkService drinkService;
-	
+
 	@Autowired
-    private Environment environment;
+	private Environment environment;
 
 	@RequestMapping("/recentOrders")
 	public ResponseEntity<List<Order>> GetRecentOrders(HttpServletRequest request) throws Exception {
 
 		AuthInfo userInfo = getAuthInfo(request);
 		logger.debug("GET /recentOrders for: " + userInfo.getUserName());
-		
+
 		if (! authService.IsAuthorized(userInfo))
 		{
-			logger.debug("GET /recentOrders: not logged in");
+			logger.debug("GET /recentOrders: not authorized for " + userInfo.getUserName());
 			return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(null);
 		}
-		
-		List<Order> orderListAll = orderService.GetOrders(userInfo.getUserName());
 
-		String deliveredOrderTimeDisplay = environment.getRequiredProperty("order.deliveredOrderTimeDisplay");
-		long DISPLAY_ORDER_TIME = Integer.valueOf(deliveredOrderTimeDisplay);
+		try {
+			List<Order> orderListAll = orderService.GetOrders(userInfo.getUserName());
 
-		Date currDate = new Date();
-		List<Order> filteredOrders = orderListAll.stream()
-				.filter(o -> ( (currDate.getTime() - o.getUpdateTS().getTime()) / (60 * 1000) ) <= DISPLAY_ORDER_TIME ).collect(Collectors.toList());
+			String deliveredOrderTimeDisplay = environment.getRequiredProperty("order.deliveredOrderTimeDisplay");
+			long DISPLAY_ORDER_TIME = Integer.valueOf(deliveredOrderTimeDisplay);
 
-		// Sorting order by status and creation time
-		Collections.sort(filteredOrders, new OrderComparator());
+			Date currDate = new Date();
+			List<Order> filteredOrders = orderListAll.stream()
+					.filter(o -> ( (currDate.getTime() - o.getUpdateTS().getTime()) / (60 * 1000) ) <= DISPLAY_ORDER_TIME ).collect(Collectors.toList());
 
-		logger.debug("GET /recentOrders: returned list of recent orders");
-		return ResponseEntity.ok(filteredOrders);
+			// Sorting order by status and creation time
+			Collections.sort(filteredOrders, new OrderComparator());
+
+			return ResponseEntity.ok(filteredOrders);
+		}
+		catch (Exception e)
+		{
+			logger.debug(e.getMessage());
+		}
+
+		return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
 	}
 
 	@RequestMapping("/orders")
 	public ResponseEntity<List<Order>> GetOrders(HttpServletRequest request) throws Exception {
-		
+
 		AuthInfo userInfo = getAuthInfo(request);
 		logger.debug("GET /orders for " + userInfo.getUserName());
 
 		if (! authService.IsAuthorized(userInfo))
 		{
-			logger.debug("GET /orders: not logged in");
+			logger.debug("GET /orders: not authorized for " + userInfo.getUserName());
 			return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(null);
 		}
 
-		List<Order> orderListAll = orderService.GetOrders(userInfo.getUserName());
-		
-		return ResponseEntity.ok(orderListAll);
+		try {
+			List<Order> orderListAll = orderService.GetOrders(userInfo.getUserName());
+
+			return ResponseEntity.ok(orderListAll);
+		}
+		catch (Exception e)
+		{
+			logger.debug(e.getMessage());
+		}
+
+		return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
 	}
 
 	@RequestMapping("/updateOrderStatus")
 	public ResponseEntity<Order> UpdateOrderStatus(HttpServletRequest request, HttpSession session, @RequestParam Integer orderId) throws Exception {  
 
 		logger.debug("GET /updateOrderStatus for order " + orderId);
-		
-		if (! authService.IsAuthorized(getAuthInfo(request)))
+
+		AuthInfo userInfo = getAuthInfo(request);
+		if (! authService.IsAuthorized(userInfo))
 		{
-			logger.debug("GET /updateOrderStatus: not logged in");
+			logger.debug("GET /updateOrderStatus: not authorized for " + userInfo.getUserName());
 			return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(null);
 		}
-		
-		Order order = orderService.GetOrder(orderId);
-		
-		if (order != null) {
-	
+
+		try {
+			Order order = orderService.GetOrder(orderId);
+
 			String status = order.getStatus();
 			switch (OrderStatus.valueOf(status))
 			{
@@ -125,35 +132,42 @@ public class OrderController extends GenController {
 				// do nothing
 				break;
 			}
-	
+
 			order.setUpdateTS(new Date());
 			orderService.UpdateOrder(order);
 
 			return ResponseEntity.ok(order);
 		}
-		
-		return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
-	}
-	
+		catch (Exception e)
+		{
+			logger.debug(e.getMessage());
+		}
+
+		return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);	}
+
 	@RequestMapping("/postOrder")
 	public ResponseEntity<Order> PostOrder(@RequestParam Integer drinkId, 
-							@RequestParam Integer barId, 
-							@RequestParam String drinkName, 
-							@RequestParam Double drinkSize, 
-							@RequestParam Double drinkPrice)
+			@RequestParam Integer barId, 
+			@RequestParam String drinkName, 
+			@RequestParam Double drinkSize, 
+			@RequestParam Double drinkPrice)
 	{
 		logger.debug("POST /postOrder for drink " + drinkId + " in bar " + barId);
-		
-		boolean drinkExists = drinkService.CheckDrink(drinkId, barId, drinkName, drinkSize, drinkPrice);
-		
-		if (drinkExists)
-		{
-			int quantity = 1;
-			Order order = orderService.CreateOrder(drinkId, quantity, OrderStatus.NOT_ACCEPTED.getStatus());
-			
-			return order != null? ResponseEntity.ok(order) : ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
+
+		try {
+			boolean drinkExists = drinkService.CheckDrink(drinkId, barId, drinkName, drinkSize, drinkPrice);
+
+			if (drinkExists)
+			{
+				int quantity = 1;
+				Order newOrder = orderService.CreateOrder(drinkId, quantity, OrderStatus.NOT_ACCEPTED.getStatus());
+				return ResponseEntity.ok(newOrder);
+			}
 		}
-		
-		return ResponseEntity.status(HttpStatus.PRECONDITION_FAILED).body(null);
+		catch (Exception e){
+			logger.debug(e.getMessage());
+		}		
+
+		return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
 	}
 }

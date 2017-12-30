@@ -34,7 +34,7 @@ public class ReportController extends GenController {
 
 	@Autowired
 	OrderService orderService;
-	
+
 	@Autowired
 	BarService barService;
 
@@ -42,58 +42,60 @@ public class ReportController extends GenController {
 	public ResponseEntity<byte []> ExportOrders(HttpServletRequest request, @RequestParam String startDate, @RequestParam String endDate) throws Exception {
 
 		AuthInfo userInfo = getAuthInfo(request);
-		logger.debug("GET /orderReport for: " + userInfo.getUserName());
+		String userName = userInfo.getUserName();
+		logger.debug("GET /orderReport for: " + userName);
 
 		if (! authService.IsAuthorized(userInfo))
 		{
-			logger.debug("GET /orderReport: not logged in");
+			logger.debug("GET /orderReport: not authorized for " + userName);
 			return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(null);
 		}
 
-		String userName = userInfo.getUserName();
-		List<Order> orderListAll = orderService.GetOrders(userName);
+		try {
+			List<Order> orderListAll = orderService.GetOrders(userName);
 
-		// Tue Mar 22 22:12:34 CET 2016
-		//DateFormat dfCreationTimeSrv = new SimpleDateFormat("EEE MMM dd HH:mm:ss z yyyy", Locale.US);
+			// Tue Mar 22 22:12:34 CET 2016
+			//DateFormat dfCreationTimeSrv = new SimpleDateFormat("EEE MMM dd HH:mm:ss z yyyy", Locale.US);
 
-		DateFormat dfCreationTime = new SimpleDateFormat("yyyy-MM-dd");
-		
-		Date startDateD = dfCreationTime.parse(startDate);
-		Date endDateD = dfCreationTime.parse(endDate);
+			DateFormat dfCreationTime = new SimpleDateFormat("yyyy-MM-dd");
 
-		logger.debug("GET /orderReport: all orders count " + orderListAll.size());
-		List<Order> filteredOrders = orderListAll;
+			Date startDateD = dfCreationTime.parse(startDate);
+			Date endDateD = dfCreationTime.parse(endDate);
 
-		filteredOrders = orderListAll.stream()
-				.filter(o -> {
-					
-					return o.getCreationTS().after(startDateD) && 
+			logger.debug("GET /orderReport: all orders count " + orderListAll.size());
+			List<Order> filteredOrders = orderListAll;
+
+			filteredOrders = orderListAll.stream()
+					.filter(o -> {
+
+						return o.getCreationTS().after(startDateD) && 
 								o.getCreationTS().before(endDateD);
-				}).collect(Collectors.toList());		
+					}).collect(Collectors.toList());		
 
-		Bar bar = barService.GetBar(userName);
-		
-		if (bar != null) {
-		
+			Bar bar = barService.GetBar(userName);
+
 			byte[] report = ReportBuilder.buildOrderReport(filteredOrders, bar, startDateD, endDateD, dfCreationTime);
-			
+
 			logger.debug("GET /orderReport: filtered orders count " + filteredOrders.size());
 			logger.debug("GET /orderReport: returned pdf report containing orders for period from " + startDate.toString() + " till " + endDate.toString());
-	
+
 			String reportFileName = "Orders_Bar_" + bar.getId() + "_" + startDate.toString() + "_to_" + endDate.toString() + ".pdf";
-			
+
 			HttpHeaders responseHeaders = new HttpHeaders();
 			responseHeaders.setContentDispositionFormData(reportFileName, reportFileName);
 			responseHeaders.setCacheControl("must-revalidate, post-check=0, pre-check=0");
 			responseHeaders.setContentType(MediaType.parseMediaType("application/pdf"));
 			responseHeaders.set("filename", reportFileName);
-			
+
 			ResponseEntity<byte[]> response = new ResponseEntity<byte[]>(report, responseHeaders, HttpStatus.OK);
-		    
+
 			return response;
 		}
+		catch (Exception e) {
+			logger.error("REPORT GEN FAILURE");			
+			logger.debug(e.getMessage());
+		}
 
-		logger.debug("Bar not available for user: " + userName);
 		return new ResponseEntity<byte[]>(HttpStatus.NOT_FOUND);
 	}
 }

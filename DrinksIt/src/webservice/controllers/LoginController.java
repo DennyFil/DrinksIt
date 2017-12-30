@@ -24,20 +24,28 @@ public class LoginController extends GenController {
 
 	@Autowired
 	UserService userService;
-	
+
 	@RequestMapping("/login")
 	public ResponseEntity<UserInfo> login(HttpServletRequest request) throws Exception
 	{
 		logger.debug("POST /login");
-		
+
 		AuthInfo authInfo = getAuthInfo(request);
 		if (! authService.IsAuthorized(authInfo))
 		{
 			logger.debug("POST /login: login failed");
 			return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(null);
 		}
-		
-		User user = userService.GetUser(authInfo.getUserName());
-		return ResponseEntity.status(HttpStatus.ACCEPTED).body(new UserInfo(user));
+
+		try {
+			User user = userService.GetUser(authInfo.getUserName());
+			return ResponseEntity.status(HttpStatus.ACCEPTED).body(new UserInfo(user));
+		}
+		catch (Exception e)
+		{
+			logger.debug(e.getMessage());
+		}
+
+		return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
 	}
 }

@@ -2,11 +2,8 @@ package webservice.auxillary.ServiceDTO;
 
 import java.util.List;
 
-import org.apache.commons.lang.exception.ExceptionUtils;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -18,159 +15,71 @@ import webservice.auxillary.DTO.User;
 @Service("DrinkService")
 @Transactional
 public class DrinkService {
-	
-	private static final Logger logger = 
-			LoggerFactory.getLogger("drinkServiceLogger");
-	
+
 	public DrinkService() {
 	}
-	
+
 	@Autowired
 	public SessionFactory sessionFactory;
-	
-	@SuppressWarnings("finally")
-	public boolean CheckDrink(int drinkId, int barId, String drinkName, double drinkSize, double drinkPrice)
-	{
-		try
-		{
-			Session session = sessionFactory.getCurrentSession();
-			Drink drink = (Drink) session.get(Drink.class, drinkId);
 
-			if (drink != null && drink.getBarId() == barId
-					&& drink.getName().equals(drinkName)
-					&& drink.getSize() == drinkSize
-					&& drink.getPrice() == drinkPrice)
-			{
-				logger.debug("CHECK: drink: " + drinkId + " (name: " + drinkName + ", size: " + drinkSize + ", price: " + drinkPrice + ") in bar: " + barId);
-				
-				return true;
-			}
-			else
-			{
-				logger.debug("NOT AVAILABLE: drink: " + drinkId + " (name: " + drinkName + ", size: " + drinkSize + ", price: " + drinkPrice + ") in bar: " + barId);
-			}
-		}
-		catch (Exception e)
-		{
-			logger.error("Failed to check drink: " + drinkId + " (name: " + drinkName + ", size: " + drinkSize + ", price: " + drinkPrice + ") in bar: " + barId);
-			logger.error(ExceptionUtils.getStackTrace(e));
-		}
-		finally
-		{
-			
-		}
-		
-		return false;
+	public boolean CheckDrink(int drinkId, int barId, String drinkName, double drinkSize, double drinkPrice) throws Exception
+	{
+		Session session = sessionFactory.getCurrentSession();
+		Drink drink = (Drink) session.get(Drink.class, drinkId);
+
+		return drink != null
+			&& drink.getBarId() == barId
+			&& drink.getName().equals(drinkName)
+			&& drink.getSize() == drinkSize
+			&& drink.getPrice() == drinkPrice;
 	}
 
-	@SuppressWarnings({"rawtypes", "finally"})
-	public List<Drink> GetDrinks(int barId)
+	@SuppressWarnings({"unchecked"})
+	public List<Drink> GetDrinks(int barId) throws Exception
 	{
-		try{
-			Session session = sessionFactory.getCurrentSession();
+		Session session = sessionFactory.getCurrentSession();
 
-			String query = "FROM Drink";
-			if (barId > 0)
-			{
-				query += " WHERE bar_id = '" + barId + "'";
-			}
-			List<Drink> drinks = (List<Drink>)session.createQuery(query).list();
-
-			logger.debug("RETURNED: List of drinks for bar: " + barId + "");
-			return drinks;
-		}catch (Exception e) {
-			logger.error("Failed to get drinks at bar: " + barId);
-			logger.error(ExceptionUtils.getStackTrace(e));
-		}finally {
-
+		String query = "FROM Drink";
+		if (barId > 0) // 0 is Master Bar which cannot have drinks linked
+		{
+			query += " WHERE bar_id = '" + barId + "'";
 		}
-		
-		return null;
+
+		return (List<Drink>)session.createQuery(query).list();
 	}	
 
-	public Drink GetDrink(int drinkId, String userName)
+	public Drink GetDrink(int drinkId, String userName) throws Exception
 	{
-		try{
-			Session session = sessionFactory.getCurrentSession();
+		Session session = sessionFactory.getCurrentSession();
 
-			User user = (User) session.get(User.class, userName);
-			Drink drink = (Drink) session.get(Drink.class, drinkId);
+		User user = (User) session.get(User.class, userName);
+		Drink drink = (Drink) session.get(Drink.class, drinkId);
 
-			if (drink != null && user != null && drink.getBarId() == user.getBarId())
-			{
-				logger.debug("RETURNED drink " + drinkId + " for " + userName);
-				return drink;
-			}
-			else
-			{
-				logger.error("No drink " + drinkId + " available for " + userName);
-			}
-		}catch (Exception e) {
-			logger.error("Failed to get drink " + drinkId + " for " + userName);
-			logger.error(ExceptionUtils.getStackTrace(e));
-		}finally {
-
+		if (drink != null && user != null && drink.getBarId() == user.getBarId())
+		{
+			return drink;
 		}
-		
-		return null;
+		else
+		{
+			throw new Exception("Drink " + drinkId + " not available for " + userName);
+		}
 	}
-	
-	public Drink CreateDrink(Drink newDrink)
-    {
-        try{
-            Session session = sessionFactory.getCurrentSession();
 
-            Bar bar = session.get(Bar.class, newDrink.getBarId());
-            
-            if (bar != null) {
+	public Drink CreateDrink(Drink newDrink) throws Exception
+	{
+		Session session = sessionFactory.getCurrentSession();
 
-            	newDrink.setBar(bar);
-            	session.save(newDrink);
+		Bar bar = session.get(Bar.class, newDrink.getBarId());
 
-	            logger.debug("CREATION: drink: " + newDrink.getName() + ", size: " + newDrink.getSize() + ", price: " + newDrink.getPrice() + ", bar: " + newDrink.getBarId());
-	            return newDrink;
-            }
-            else {
-            	logger.debug("CREATION: drink: bar " + newDrink.getBarId() + "not available");
-            }
-        }
-        catch (Exception e) {
-            logger.error("Failed to create drink: " + newDrink.getName() + ", size: " + newDrink.getSize() + ", price: " + newDrink.getPrice() + ", bar: " + newDrink.getBarId());
-			logger.error(ExceptionUtils.getStackTrace(e));
-        }finally {
+		if (bar != null) {
 
-        }
-        
-        return null;
-    }
+			newDrink.setBar(bar);
+			session.save(newDrink);
 
-    public Drink CreateDrink(String name, double price, double size, int barId)
-    {
-        try{
-            Session session = sessionFactory.getCurrentSession();
-
-            Bar bar = session.get(Bar.class, barId);
-            
-            if (bar != null) {
-
-            	Drink drink = new Drink(barId, name, price, size);
-
-            	session.save(drink);
-
-	            logger.debug("CREATION: drink: " + name + ", size: " + size + ", price: " + price + ", bar: " + barId);
-	            return drink;
-            }
-            else {
-            	logger.debug("CREATION: drink: bar " + barId + "not available");
-            }
-        }
-        catch (Exception e) {
-            logger.error("Failed to create drink: " + name + ", size: " + size + ", price: " + price + ", bar: " + barId);
-			logger.error(ExceptionUtils.getStackTrace(e));
-        }finally {
-
-        }
-        
-        return null;
-    }
+			return newDrink;
+		}
+		else {
+			throw new Exception("CREATE drink failed: bar " + newDrink.getBarId() + " not available");
+		}
+	}
 }

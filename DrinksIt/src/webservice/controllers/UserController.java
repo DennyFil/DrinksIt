@@ -12,7 +12,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import webservice.auxillary.AuthInfo;
@@ -37,27 +36,33 @@ public class UserController extends GenController {
 		AuthInfo userInfo = getAuthInfo(request);
 		if (! authService.IsAuthorized(userInfo))
 		{
-			logger.debug("GET /users: hmac check failed");
+			logger.debug("GET /users: not authorized for " + userInfo.getUserName());
 			return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(null);
 		}
 		
 		if ( ! arService.checkRight(userInfo, "list"))
 		{
-			logger.debug("POST /postUser: no list right");
+			logger.debug("POST /postUser: no list right for " + userInfo.getUserName());
 			return ResponseEntity.status(HttpStatus.FORBIDDEN).body(null);
 		}
+		
+		try {
+			List<User> users = userService.GetUsers();
 
-		List<User> users = userService.GetUsers();
+			List<UserInfo> userToList = users.stream()
+					.filter(elt -> elt != null)
+					.map(elt -> new UserInfo(elt))
+					.collect(Collectors.toList());
 
-		List<UserInfo> userToList = users.stream()
-				.filter(elt -> elt != null)
-				.map(elt -> new UserInfo(elt))
-				.collect(Collectors.toList());
+			return ResponseEntity.ok(userToList);
+		}
+		catch (Exception e){
+			logger.debug(e.getMessage());
+		}
 
-		return ResponseEntity.ok(userToList);
+		return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);		
 	}
 
-	@SuppressWarnings("unchecked")
 	@RequestMapping("/postUser")
 	public ResponseEntity<User> PostUser(HttpServletRequest request, @RequestBody User newUser) throws Exception {
 
@@ -66,18 +71,27 @@ public class UserController extends GenController {
 		AuthInfo userInfo = getAuthInfo(request);
 		if (! authService.IsAuthorized(userInfo))
 		{
-			logger.debug("POST /postUser: not logged in");
+			logger.debug("POST /postUser: not authorized for " + userInfo.getUserName());
 			return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(null);
 		}
 
 		if ( ! arService.checkRight(userInfo, "create"))
 		{
-			logger.debug("POST /postUser: no create right");
+			logger.debug("POST /postUser: no create right for " + userInfo.getUserName());
 			return ResponseEntity.status(HttpStatus.FORBIDDEN).body(null);
 		}
 
-		User user = userService.CreateUser(newUser);
+		try {
+			User user = userService.CreateUser(newUser);
 
-		return user != null? ResponseEntity.ok(user) : ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
+			logger.debug("CREATION: user " + user.getUserName() + " for bar " + user.getBarId());
+			
+			return ResponseEntity.ok(user);
+		}
+		catch (Exception e){
+			logger.debug(e.getMessage());
+		}
+
+		return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
 	}
 }

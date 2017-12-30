@@ -32,19 +32,26 @@ public class BarController extends GenController {
 		AuthInfo userInfo = getAuthInfo(request);
 		if (! authService.IsAuthorized(userInfo))
 		{
-			logger.debug("GET /bars: not logged in");
+			logger.debug("GET /bars: not authorized for " + userInfo.getUserName());
 			return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(null);
 		}
 		
 		if ( ! arService.checkRight(userInfo, "list"))
 		{
-			logger.debug("GET /bars: no list right");
+			logger.debug("GET /bars: no list right for " + userInfo.getUserName());
 			return ResponseEntity.status(HttpStatus.FORBIDDEN).body(null);
 		}
-
-		List<Bar> bars = barService.GetBars();
+		
+		try {
+			List<Bar> bars = barService.GetBars();
 			
-		return ResponseEntity.ok(bars);
+			return ResponseEntity.ok(bars);
+		}
+		catch (Exception e){
+			logger.debug(e.getMessage());
+		}
+		
+		return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
 	}
 	
 	@RequestMapping("/postBar")
@@ -55,18 +62,27 @@ public class BarController extends GenController {
 		AuthInfo userInfo = getAuthInfo(request);
 		if (! authService.IsAuthorized(userInfo))
 		{
-			logger.debug("POST /postBar: not logged in");
+			logger.debug("POST /postBar: not authorized for " + userInfo.getUserName());
 			return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(null);
 		}
 		
 		if ( ! arService.checkRight(userInfo, "create"))
 		{
-			logger.debug("POST /postBar: no create right");
+			logger.debug("POST /postBar: no create right for " + userInfo.getUserName());
 			return ResponseEntity.status(HttpStatus.FORBIDDEN).body(null);
 		}
 		
-		Bar bar = barService.CreateBar(newBar);
+		try {
+			Bar bar = barService.CreateBar(newBar);
+
+			logger.debug("CREATION: bar " + bar.getName());
 			
-		return bar != null? ResponseEntity.ok(bar) : ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
+			return ResponseEntity.ok(bar);
+		}
+		catch (Exception e){
+			logger.debug(e.getMessage());
+		}
+
+		return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
 	}
 }
