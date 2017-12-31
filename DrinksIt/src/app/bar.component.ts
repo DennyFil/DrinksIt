@@ -1,13 +1,14 @@
 import { Component, Injectable } from '@angular/core';
 import { Router } from '@angular/router';
 
+import { ErrorManager } 			from './errorManager';
 import { AuthenticationService } from './authentication.service';
 import { RestService }           	from './restService';
 
 @Component({
     selector: 'drinksit-bar',
     templateUrl: './bars.html',
-    providers: [AuthenticationService, RestService]
+    providers: [ErrorManager, AuthenticationService, RestService]
 })
 export class BarComponent {
 
@@ -15,6 +16,7 @@ export class BarComponent {
     bars = [];
 
     constructor(private _router: Router,
+        private _errorManager: ErrorManager,
         private _authService: AuthenticationService,
         private _restService: RestService) { }
 
@@ -37,6 +39,6 @@ export class BarComponent {
 		this._restService.getBars(this._authService.getUserCreds())
 			.subscribe(
             	data => this.bars = data, //Bind to view
-                err => console.error('There was an error: ' + err.statusText));
+                err => this._errorManager.displayError(err.message));
     }
 }

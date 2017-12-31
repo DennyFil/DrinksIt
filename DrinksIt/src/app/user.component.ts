@@ -3,6 +3,7 @@ import { Router } from '@angular/router';
 import { Overlay, overlayConfigFactory } from 'angular2-modal';
 import { Modal, BSModalContext } from 'angular2-modal/plugins/bootstrap';
 
+import { ErrorManager } 				from './errorManager';
 import { AuthenticationService } 		from './authentication.service';
 import { RestService }           		from './restService';
 import { UserEditContext, UserEdit }    from './userEdit';
@@ -11,7 +12,7 @@ import { User }           				from './models/user';
 @Component({
     selector: 'drinksit-user',
     templateUrl: './users.html',
-    providers: [AuthenticationService, RestService, Modal]
+    providers: [ErrorManager, AuthenticationService, RestService, Modal]
 })
 export class UserComponent {
 
@@ -19,6 +20,7 @@ export class UserComponent {
     users = [];
 
     constructor(private _router: Router,
+    	private _errorManager: ErrorManager,
         private _authService: AuthenticationService,
         private _restService: RestService,
         public modal: Modal) { }
@@ -42,14 +44,14 @@ export class UserComponent {
 		this._restService.getUsers(this._authService.getUserCreds())
 			.subscribe(
             data => this.users = data, //Bind to view
-            err => console.error('There was an error: ' + err.statusText));
+            err => this._errorManager.displayError(err.message));
     }
   
   	editUser(user) {
     	
     	// New user
     	if (user == null){
-    		user = new User("", false, null );
+    		user = new User("", false, -1 );
     	}
 
     	return this.modal.open(UserEdit,

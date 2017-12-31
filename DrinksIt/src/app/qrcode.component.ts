@@ -1,20 +1,22 @@
 import { Component } from '@angular/core';
 import { Router } from '@angular/router';
+import { ErrorManager } 			from './errorManager';
 import { AuthenticationService } from './authentication.service';
 import { RestService }           	from './restService';
 
 @Component({
     selector: 'drinksit-qrcode',
     templateUrl: './qrcode.html',
-    providers: [AuthenticationService, RestService]
+    providers: [ErrorManager, AuthenticationService, RestService]
 })
 export class QrCodeComponent {
 
-	public errorMsg = '';
+	errorMsg = '';
     title = '';
     qrCode = null;
 
     constructor(private router: Router,
+    	private _errorManager: ErrorManager,
         private _authService: AuthenticationService,
         private _restService: RestService) { }
 
@@ -39,8 +41,7 @@ export class QrCodeComponent {
         this._restService.getQRCode(drinkId, this._authService.getUserCreds())
             .subscribe(
                 data => this.qrCode = data,
-                err => this.errorMsg = 'Failed to generate QR code',
-                () => console.log('the subscription is completed')
+                err => this._errorManager.displayError(err.message)
                 );
     }
 }

@@ -71,7 +71,7 @@ export class RestService {
             .catch((error:any) => Observable.throw(error.json().error || 'Server error'));
      }
      
-     getReport(dateFrom, dateTo, user) {
+     getReport(dateFrom, dateTo, user, onErrorCbk) {
      
 	    let body = JSON.stringify({ "endDate": dateTo, "startDate": dateFrom });        
         let packetOptions = this._httpPacketService.computePacketOptions('POST', user);        
@@ -82,6 +82,10 @@ export class RestService {
 			    let file = new Blob([response.blob()], {type: 'application/pdf'});
 				let fileURL = URL.createObjectURL(file);
 				FileSaver.saveAs(file, response.headers.get('filename'));
+			}, function(error) {
+				if(onErrorCbk) {
+					onErrorCbk(error);
+				}
 			});
 	}
 	

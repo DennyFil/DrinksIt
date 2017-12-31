@@ -1,4 +1,9 @@
 <div id="userEdit" class="container-fluid">
+	<div class="row">
+		<div class="col-lg-12 alert alert-danger"
+			[hidden]="!this._errorManager.errorMsg">
+			{{this._errorManager.errorMsg}}</div>
+	</div>
 	<div class="row modal-header">
 		<div class="col-sm-12">
 			<h1>Create user</h1>
