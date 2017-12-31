@@ -56,7 +56,7 @@ public class QRCodeController extends GenController {
 			double drinkSize = drink.getSize();
 			int drinkBarId = drink.getBarId();
 
-			String qrCodeContent = serverUrl + "/postOrder?drinkId=" + drinkId + 
+			String qrCodeContent = serverUrl + "/DrinksIt/postOrder?drinkId=" + drinkId + 
 					"&barId=" + drinkBarId + 
 					"&drinkName=" + drinkName +
 					"&drinkPrice=" + drinkPrice +

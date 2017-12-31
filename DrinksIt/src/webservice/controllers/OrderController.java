@@ -143,7 +143,8 @@ public class OrderController extends GenController {
 			logger.debug(e.getMessage());
 		}
 
-		return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);	}
+		return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
+	}
 
 	@RequestMapping("/postOrder")
 	public ResponseEntity<Order> PostOrder(@RequestParam Integer drinkId, 

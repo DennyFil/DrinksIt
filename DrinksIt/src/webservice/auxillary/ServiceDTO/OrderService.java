@@ -63,7 +63,8 @@ public class OrderService {
 		if (drink != null) {
 
 			Order order = new Order(drinkId, quantity, status, new Date());
-
+			order.setDrink(drink);
+			
 			session.save(order);
 
 			return order;

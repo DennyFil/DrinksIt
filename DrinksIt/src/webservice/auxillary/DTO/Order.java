@@ -70,6 +70,10 @@ public class Order extends GenItem implements java.io.Serializable, Comparable<O
 		return this.drink;
 	}
 	
+	public void setDrink(Drink drink) {
+		this.drink = drink;
+	}
+	
 	public int getDrinkId(){
     	return this.drinkId;
     }
