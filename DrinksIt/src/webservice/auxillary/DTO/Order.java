@@ -20,7 +20,7 @@ public class Order extends GenItem implements java.io.Serializable, Comparable<O
 	@Column(name = "drink_id", insertable = false, updatable = false)
 	private int drinkId;
 	
-	@ManyToOne(fetch = FetchType.LAZY)
+	@ManyToOne(fetch = FetchType.EAGER)
 	@JoinColumn(name = "drink_id")
 	private Drink drink;
 	

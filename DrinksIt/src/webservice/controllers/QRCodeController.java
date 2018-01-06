@@ -33,7 +33,7 @@ public class QRCodeController extends GenController {
 	private Environment environment;
 
 	@RequestMapping("/qrcode")
-	public ResponseEntity<QrCode> GetQRCode(HttpServletRequest request, @RequestParam String drinkId) throws Exception
+	public ResponseEntity GetQRCode(HttpServletRequest request, @RequestParam String drinkId) throws Exception
 	{
 		logger.debug("GET /qrcode for drink " + drinkId);
 
@@ -75,7 +75,7 @@ public class QRCodeController extends GenController {
 		}
 		catch (Exception e)
 		{
-			logger.error("QR CODE GEN FAILURE: (drinkId: " + drinkId + ")");
+			logger.error("GEN QR CODE FAILURE: (drinkId: " + drinkId + ")");
 			logger.error(ExceptionUtils.getStackTrace(e));
 		}
 		finally
@@ -83,6 +83,6 @@ public class QRCodeController extends GenController {
 
 		}
 
-		return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
+		return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("GEN QR CODE FAILURE: (drinkId: " + drinkId + ")");
 	}
 }

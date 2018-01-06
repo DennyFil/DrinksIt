@@ -38,10 +38,17 @@ export class QrCodeComponent {
 		this.errorMsg = '';
         this.qrCode = null;
         
+        var self = this;
         this._restService.getQRCode(drinkId, this._authService.getUserCreds())
-            .subscribe(
+        	.subscribe(function(response) {
+			    this.qrCode = response;
+			}, function(error) {
+				self._errorManager.displayError(error);
+			});
+			
+            /*.subscribe(
                 data => this.qrCode = data,
                 err => this._errorManager.displayError(err.message)
-                );
+                );*/
     }
 }
