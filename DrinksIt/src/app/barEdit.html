@@ -55,7 +55,7 @@
 			</div>
 		</div>
 		<div class="form-group">
-			<button type="submit" class="btn btn-default">Submit</button>
+			<button type="submit" [disabled]="!form.valid" class="btn btn-default">Submit</button>
 			<button type="button" class="btn btn-default" (click)="onCancel()">Cancel</button>
 		</div>
 	</form>
