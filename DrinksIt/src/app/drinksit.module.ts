@@ -14,6 +14,7 @@ import { DrinkComponent }  		from './drink.component';
 import { UserComponent }  		from './user.component';
 import { BarEdit }  			from './barEdit';
 import { UserEdit }  			from './userEdit';
+import { DrinkEdit }  			from './drinkEdit';
 import { ReportComponent }  	from './report.component';
 import { QrCodeComponent }  	from './qrcode.component';
 import { routing }        		from './drinksit.routing';
@@ -38,13 +39,14 @@ import { routing }        		from './drinksit.routing';
         UserComponent,
         BarEdit,
         UserEdit,
+        DrinkEdit,
         ReportComponent,
         QrCodeComponent
     ],
     //providers: [],
     bootstrap: [DrinksItComponent],
     
-    entryComponents: [ BarEdit, UserEdit ]
+    entryComponents: [ BarEdit, UserEdit, DrinkEdit ]
 })
 export class DrinksItModule {
 }
