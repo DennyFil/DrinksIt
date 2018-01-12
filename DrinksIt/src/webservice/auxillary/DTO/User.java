@@ -22,9 +22,6 @@ public class User implements java.io.Serializable {
     @Column(name = "passwordHash")
     private String passwordHash;
     
-    @Column(name = "isAdmin")
-    private boolean isAdmin;
-    
     @Column(name = "bar_id", insertable = false, updatable = false)
 	private int barId;
     
@@ -42,17 +39,9 @@ public class User implements java.io.Serializable {
     public User(String userName, String passwordHash, int barId) {
         this.userName = userName;
         this.passwordHash = passwordHash;
-        this.isAdmin = false;
         this.barId = barId;
     }
-    
-    public User(String userName, String passwordHash, int barId, boolean isAdmin) {
-        this.userName = userName;
-        this.passwordHash = passwordHash;
-        this.isAdmin = isAdmin;
-        this.barId = barId;
-    }
-    
+
     public String getUserName() {
         return this.userName;
     }
@@ -73,14 +62,6 @@ public class User implements java.io.Serializable {
         this.passwordHash = passwordHash;
     }
     
-    public boolean getIsAdmin() {
-        return this.isAdmin;
-    }
-
-    public void setIsAdmin(boolean isAdmin) {
-        this.isAdmin = isAdmin;
-    }
-    
     public Bar getBar() {
         return this.bar;
     }
@@ -93,7 +74,11 @@ public class User implements java.io.Serializable {
     	return this.barId;
     }
     
+    public boolean isAdmin() {
+        return this.barId == 0;
+    }
+    
     public boolean isBarAdmin(int barId) {
-        return this.barId == barId || this.barId == 0 || this.isAdmin; // or master bar admin
+        return this.barId == barId || this.barId == 0; // or master bar admin
     }
 }

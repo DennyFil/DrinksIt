@@ -42,22 +42,10 @@ public class V1_1__DB_Schema_Create implements SpringJdbcMigration {
 						");";
 		jdbcTemplate.execute(createOrdersTable);
 
-		String createPaymentsTable =
-				"CREATE TABLE IF NOT EXISTS payments (" +
-						"id INTEGER NOT NULL AUTO_INCREMENT," +
-						"ts TIMESTAMP DEFAULT CURRENT_TIMESTAMP," +
-						"amount DOUBLE NOT NULL," +
-						"order_id INTEGER NOT NULL," +
-						"PRIMARY KEY (id)," +
-						"FOREIGN KEY (order_id) REFERENCES orders(id)" +
-						");";
-		jdbcTemplate.execute(createPaymentsTable);
-
 		String createUsersTable =
 				"CREATE TABLE IF NOT EXISTS users (" +
 						"userName VARCHAR (50) NOT NULL," +
 						"passwordHash VARCHAR(100) NOT NULL," +
-						"isAdmin BIT NOT NULL," +
 						"bar_id INTEGER," +
 						"PRIMARY KEY (userName)," +
 						"FOREIGN KEY (bar_id) REFERENCES bars(id)" +

@@ -10,14 +10,12 @@
 		<thead class="drinksit-text">
 			<tr>
 				<th>UserName</th>
-				<th>Admin</th>
 				<th>Bar</th>
 			</tr>
 		</thead>
 		<tbody>
 			<tr *ngFor="let user of users">
 				<td>{{user.userName}}</td>
-				<td><span *ngIf="user.isAdmin" class="glyphicon glyphicon-ok"></span></td>
 				<td>{{user.barName}}</td>
 			</tr>
 		</tbody>

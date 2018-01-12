@@ -4,23 +4,23 @@ package webservice.auxillary.DTO;
 public class UserInfo {
 
 	private String userName;
-	private boolean isAdmin;
+	private int barId;
     private String barName;
     
 	public UserInfo(User user) {
 		this.userName = user.getUserName();
-		this.isAdmin = user.getIsAdmin();
 		if (user.getBar() != null){
 			this.barName = user.getBar().getName();
 		}
+		this.barId = user.getBarId();
 	}
 	
 	public String getUserName() {
 		return userName;
 	}
 	
-	public boolean getIsAdmin() {
-		return isAdmin;
+	public int getBarId() {
+		return barId;
 	}
 	
 	public String getBarName() {

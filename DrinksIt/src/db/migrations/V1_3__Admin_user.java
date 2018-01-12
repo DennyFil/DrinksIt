@@ -5,11 +5,11 @@ import org.springframework.jdbc.core.JdbcTemplate;
 
 import webservice.auxillary.HashComputor;
 
-public class V1_2__Admin_user implements SpringJdbcMigration {
+public class V1_3__Admin_user implements SpringJdbcMigration {
     public void migrate(JdbcTemplate jdbcTemplate) throws Exception {
     	String password = "z5@MTLEq";
     	String passwordHash = HashComputor.ComputeSHA256(password);
-    	String query = "INSERT INTO users (userName, passwordHash, isAdmin) VALUES ('DrinksItAdmin', '" + passwordHash + "', true)";
+    	String query = "INSERT INTO users (userName, passwordHash, bar_id) VALUES ('DrinksItAdmin', '" + passwordHash + "', 0)";
         jdbcTemplate.execute(query);
     }
 }

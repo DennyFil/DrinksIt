@@ -21,7 +21,7 @@ public class AccessRightsService {
             User user = userService.GetUser(userInfo.getUserName());
             assert (user != null);
                       
-            if (!user.getIsAdmin()) {
+            if (!user.isAdmin()) {
             	logger.error("AccessRightService: not authorized");
             	return false;
             }
