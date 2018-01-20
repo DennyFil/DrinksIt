@@ -28,6 +28,7 @@
 		<node.version>v8.9.4</node.version>
 		<npm.version>5.6.0</npm.version>
 		<tomcat7-maven-plugin.version>2.2</tomcat7-maven-plugin.version>
+		<NODE_PATH>C:\Program Files\</NODE_PATH>
 	</properties>
 
 	<dependencies>
@@ -191,18 +192,18 @@
 					<failOnMissingWebXml>false</failOnMissingWebXml>
 				</configuration>
 			</plugin>
-
-			<!-- Plugin to execute command "npm install" and "npm run build" inside 
-				/DrinksIt directory -->
+						
+			<!-- Plugin to execute command "npm install" and "npm run build" inside /DrinksIt/client directory -->
 			<plugin>
 				<groupId>com.github.eirslett</groupId>
 				<artifactId>frontend-maven-plugin</artifactId>
 				<version>${frontend-maven-plugin.version}</version>
 				<configuration>
-					<!--<workingDirectory>target</workingDirectory>-->
+					<installDirectory>${NODE_PATH}</installDirectory>
+					<workingDirectory>client</workingDirectory>
 				</configuration>
 				<executions>
-					<!-- It will install nodejs and npm -->
+					<!-- It will install nodejs and npm 
 					<execution>
 						<id>install node and npm</id>
 						<goals>
@@ -212,9 +213,9 @@
 							<nodeVersion>${node.version}</nodeVersion>
 							<npmVersion>${npm.version}</npmVersion>
 						</configuration>
-					</execution>
+					</execution>-->
 
-					<!-- It will execute command "npm install" inside "/target" directory -->
+					<!-- It will execute command "npm install" inside "/DrinksIt/client" directory -->
 					<execution>
 						<id>npm install</id>
 						<goals>
@@ -225,22 +226,22 @@
 						</configuration>
 					</execution>
 
-					<!-- It will execute command "npm build" inside "/target" directory 
-						to clean and create "/target" directory -->
+					<!-- It will execute command "npm build" inside "/client" directory 
+						to clean and create "/dist" directory -->
 					<execution>
-						<id>npm build</id>
+						<id>npm run-script build</id>
 						<goals>
 							<goal>npm</goal>
 						</goals>
 						<configuration>
-							<arguments>build</arguments>
+							<arguments>run-script build</arguments>
 						</configuration>
 					</execution>
 				</executions>
 			</plugin>
 
-			<!-- Plugin to copy the content of /DrinksIt/src/app directory to output 
-				directory (ie/ /target/transactionManager-1.0/) -->
+			<!-- Plugin to copy the content of /DrinksIt/client/dist directory to output 
+				directory (ie/ /target/DrinksItAdmin-1.0/) -->
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-resources-plugin</artifactId>
@@ -257,7 +258,7 @@
 							<outputDirectory>${project.build.directory}/${project.artifactId}-${project.version}/</outputDirectory>
 							<resources>
 								<resource>
-									<directory>${project.basedir}/DrinksIt/src/app</directory>
+									<directory>${project.basedir}/client/dist</directory>
 								</resource>
 							</resources>
 						</configuration>

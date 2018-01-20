@@ -1,6 +1,0 @@
-{
-  "/DrinksIt": {
-    "target": "http://drinksit:8080",
-    "secure": false
-  }
-}
