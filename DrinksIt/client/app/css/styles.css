@@ -1,0 +1,39 @@
+/*
+.heading {
+	font-size: 18px;
+	color: white;
+	font: bold;
+	background-color: orange;
+	border: thick;
+	text-align: center;
+}*/
+
+row2 {
+	margin-left: 0px;
+	margin-right: 0px;
+}
+
+tr {
+	vertical-align: middle;
+}
+
+th {
+	text-align: center;
+}
+
+td {
+	text-align: center;
+}
+
+.top-buffer {
+	margin-top:20px;
+}
+
+.drinksit-text {
+	color: teal;
+	text-align: center;
+}
+
+.drinksit-border {
+	outline: 1px solid orange;
+}
