@@ -193,7 +193,7 @@
 				</configuration>
 			</plugin>
 						
-			<!-- Plugin to execute command "npm install" and "npm run build" inside /DrinksIt/client directory -->
+			<!-- Plugin to execute command "npm install" and "npm run-script build" inside /DrinksIt/client directory -->
 			<plugin>
 				<groupId>com.github.eirslett</groupId>
 				<artifactId>frontend-maven-plugin</artifactId>
@@ -226,7 +226,7 @@
 						</configuration>
 					</execution>
 
-					<!-- It will execute command "npm build" inside "/client" directory 
+					<!-- It will execute command "npm run-script build" inside "/client" directory 
 						to clean and create "/dist" directory -->
 					<execution>
 						<id>npm run-script build</id>
@@ -240,7 +240,7 @@
 				</executions>
 			</plugin>
 
-			<!-- Plugin to copy the content of /DrinksIt/client/dist directory to output 
+			<!-- Plugin to copy the content of /DrinksIt/client/src directory to output 
 				directory (ie/ /target/DrinksItAdmin-1.0/) -->
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
@@ -258,7 +258,7 @@
 							<outputDirectory>${project.build.directory}/${project.artifactId}-${project.version}/</outputDirectory>
 							<resources>
 								<resource>
-									<directory>${project.basedir}/client/dist</directory>
+									<directory>${project.basedir}/client/src</directory>
 								</resource>
 							</resources>
 						</configuration>

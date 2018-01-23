@@ -1,0 +1,44 @@
+<div class="container">
+	<div class="row">
+		<div class="col-lg-12 alert alert-danger"
+			[hidden]="!this._errorManager.errorMsg">
+			{{this._errorManager.errorMsg}}</div>
+	</div>
+	
+	<!-- Bar selector -->	
+	<div class="row">
+		<h3>Select bar</h3>
+	</div>
+	<div class="row">
+		<div class="col-sm-4">
+			<select [(ngModel)]="selectedBar" (ngModelChange)="onBarSelected()">
+				<option *ngFor="let bar of bars" [ngValue]="bar">{{bar.name}}</option>
+			</select>
+		</div>
+		<div class="col-sm-8" [hidden]="!selectedBar.id">
+			<button type="button" class="btn btn-info" (click)="editDrink()">New</button>
+		</div>
+	</div>
+
+	<!-- Drink displayer -->
+	<div class="row">
+		<table class="table table-striped">
+			<thead class="drinksit-text">
+				<tr>
+					<th>ID</th>
+					<th>Name</th>
+					<th>Price</th>
+					<th>Size</th>
+				</tr>
+			</thead>
+			<tbody>
+				<tr *ngFor="let drink of drinks">
+					<td>{{drink.id}}</td>
+					<td>{{drink.name}}</td>
+					<td>{{drink.price}}</td>
+					<td>{{drink.size}}</td>
+				</tr>
+			</tbody>
+		</table>
+	</div>
+</div>

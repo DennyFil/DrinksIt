@@ -1,7 +1,7 @@
 /* tslint:disable:no-unused-variable */
 
 import { TestBed, async } from '@angular/core/testing';
-import { DrinksItComponent } from '../app/drinksit.component';
+import { DrinksItComponent } from '../src/app/drinksit.component';
 import {} from 'jasmine';
 
 describe('App: DrinksItAdminWeb', () => {

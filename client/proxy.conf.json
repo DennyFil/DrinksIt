@@ -1,6 +1,6 @@
 {
-  "/DrinksIt": {
-    "target": "http://drinksit:8080",
+  "/": {
+    "target": "http://localhost:8080/DrinksIt",
     "secure": false
   }
 }
