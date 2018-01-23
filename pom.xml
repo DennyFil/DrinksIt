@@ -234,13 +234,13 @@
 							<goal>npm</goal>
 						</goals>
 						<configuration>
-							<arguments>run-script build</arguments>
+							<arguments>build</arguments>
 						</configuration>
 					</execution>
 				</executions>
 			</plugin>
 
-			<!-- Plugin to copy the content of /DrinksIt/client/src directory to output 
+			<!-- Plugin to copy the content of /DrinksIt/client/dist directory to output 
 				directory (ie/ /target/DrinksItAdmin-1.0/) -->
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
@@ -258,7 +258,7 @@
 							<outputDirectory>${project.build.directory}/${project.artifactId}-${project.version}/</outputDirectory>
 							<resources>
 								<resource>
-									<directory>${project.basedir}/client/src</directory>
+									<directory>${project.basedir}/client/dist</directory>
 								</resource>
 							</resources>
 						</configuration>
