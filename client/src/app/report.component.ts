@@ -24,8 +24,7 @@ export class ReportComponent {
     ngOnInit() {
         if (this._authService.getLoggedUser()) {
             this.setTitle();
-        }
-        else {
+        } else {
             this.router.navigateByUrl('app/login');
         }
     }
@@ -35,9 +34,12 @@ export class ReportComponent {
     }
 
     getReportData(dateFrom, dateTo) {
-    
+
     	this.errorMsg = '';
-    	var self = this;
-        this._restService.getReport(dateFrom, dateTo, this._authService.getUserCreds(), function(error) { self._errorManager.displayError(error); });
+    	let self = this;
+        this._restService.getReport(dateFrom, dateTo, this._authService.getUserCreds(),
+          function(error) {
+            self._errorManager.displayError(error);
+          });
     }
 }

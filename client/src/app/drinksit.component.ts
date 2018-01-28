@@ -3,8 +3,8 @@ import { Router } from '@angular/router';
 import {Observable} from 'rxjs/Rx';
 import 'rxjs/add/operator/map';
 
-import { AuthenticationService } from './authentication.service';
-import { HttpPacketService } from './httpPacket.service';
+import { AuthenticationService } 	from './authentication.service';
+import { HttpPacketService } 		from './httpPacket.service';
 import { User }           			from './models/user';
 
 @Component({

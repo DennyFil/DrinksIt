@@ -24,7 +24,7 @@ import { routing }        		from './drinksit.routing';
         BrowserModule,
         FormsModule,
         HttpModule,
-        JsonpModule, 
+        JsonpModule,
 	    ModalModule.forRoot(),
 	    BootstrapModalModule,
         routing
@@ -43,9 +43,9 @@ import { routing }        		from './drinksit.routing';
         ReportComponent,
         QrCodeComponent
     ],
-    //providers: [],
+    // providers: [],
     bootstrap: [DrinksItComponent],
-    
+
     entryComponents: [ BarEdit, UserEdit, DrinkEdit ]
 })
 export class DrinksItModule {

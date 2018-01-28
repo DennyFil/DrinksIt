@@ -8,10 +8,10 @@ import { Component, Injectable } from '@angular/core';
 export class ErrorManager {
 
 	errorMsg = '';
-    
+
     constructor() {
     }
-    
+
     displayError(error) {
     	this.errorMsg = error;
     }

@@ -17,19 +17,19 @@ export class BarEditContext extends BSModalContext {
   selector: 'bar-edit',
   templateUrl: './barEdit.html',
   providers: [ErrorManager, AuthenticationService, HttpPacketService, RestService]
-}) 
+})
 export class BarEdit implements ModalComponent<BarEditContext> {
-  
+
   	barEditContext: BarEditContext;
-	    
+
     constructor(private _errorManager: ErrorManager,
     			private _authService: AuthenticationService,
     			private _restService: RestService,
     			public dialog: DialogRef<BarEditContext>) {
-    			
+
 	    this.barEditContext = dialog.context;
 	}
-    
+
 	onSubmit() {
 		// post form to server
 		this._restService.postBar(this.barEditContext.bar, this._authService.getUserCreds())
@@ -40,7 +40,7 @@ export class BarEdit implements ModalComponent<BarEditContext> {
             },
             err => this._errorManager.displayError(err.message));
 	}
-	
+
 	onCancel() {
 		this.dialog.close();
 	}

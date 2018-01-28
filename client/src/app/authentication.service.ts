@@ -1,10 +1,9 @@
-import { Component, Injectable } from '@angular/core';
-import { Router } from '@angular/router';
- 
-import { HttpPacketService } from './httpPacket.service';
-import { User }           			from './models/user';
+import { Component, Injectable }  from '@angular/core';
+import { Router }                 from '@angular/router';
+import { Http }                   from '@angular/http';
 
-import { Http, Response } from '@angular/http';
+import { HttpPacketService }      from './httpPacket.service';
+import { User }           			  from './models/user';
 
 export class UserCreds {
     constructor(
@@ -22,7 +21,7 @@ export class AuthenticationService {
     constructor(public router: Router,
         private _httpPacketService: HttpPacketService,
         private http: Http) { }
-        
+
     login(userCreds, successCbk, failureCbk) {
 
         let url = 'login';
@@ -35,34 +34,33 @@ export class AuthenticationService {
                 data => this.loginResponseCbk(data, successCbk, failureCbk, userCreds),
                 err => failureCbk()
                 );
-    }    
-	
+    }
+
 	loginResponseCbk(userInfo, successCbk, failureCbk, userCreds) {
 
 		if (userInfo) {
-        	localStorage.setItem("userInfo", JSON.stringify(userInfo));
-        	localStorage.setItem("userCreds", JSON.stringify(userCreds));
-        	if (successCbk){
+        	localStorage.setItem('userInfo', JSON.stringify(userInfo));
+        	localStorage.setItem('userCreds', JSON.stringify(userCreds));
+        	if (successCbk) {
         		successCbk();
         	}
-        }
-        else {
+        } else {
         	if (failureCbk) {
         		failureCbk();
         	}
         }
     }
-    
+
 	getLoggedUser() {
-        return JSON.parse(localStorage.getItem("userInfo"));
+        return JSON.parse(localStorage.getItem('userInfo'));
     }
-    
+
 	getUserCreds() {
-        return JSON.parse(localStorage.getItem("userCreds"));
+        return JSON.parse(localStorage.getItem('userCreds'));
     }
-    
+
     cleanLoggedUser() {
-        localStorage.removeItem("userInfo");
-        localStorage.removeItem("userCreds");
+        localStorage.removeItem('userInfo');
+        localStorage.removeItem('userCreds');
     }
 }

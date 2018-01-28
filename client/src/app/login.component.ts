@@ -1,7 +1,7 @@
-import { Component, Injectable } from '@angular/core';
-import { Router } from '@angular/router';
-import { ErrorManager } 					from './errorManager';
-import { AuthenticationService, UserCreds } from './authentication.service';
+import { Component }                          from '@angular/core';
+import { Router }                             from '@angular/router';
+import { ErrorManager } 					            from './errorManager';
+import { AuthenticationService, UserCreds }   from './authentication.service';
 
 @Component({
   selector: 'drinksit-login',
@@ -10,18 +10,18 @@ import { AuthenticationService, UserCreds } from './authentication.service';
 })
 export class LoginComponent {
 
-    private userCreds = new UserCreds('', '');
+    userCreds = new UserCreds('', '');
 
     constructor(public router: Router,
     	private _errorManager: ErrorManager,
-    	private _authService:AuthenticationService) {
+    	private _authService: AuthenticationService) {
 
-		if (this._authService.getLoggedUser()) {
-			this.router.navigateByUrl('app/orders');
-		} else {
-			this.router.navigateByUrl('app/login');
-		}
-	}
+  		if (this._authService.getLoggedUser()) {
+  			this.router.navigateByUrl('app/orders');
+  		} else {
+  			this.router.navigateByUrl('app/login');
+  		}
+  	}
 
     login() {
 

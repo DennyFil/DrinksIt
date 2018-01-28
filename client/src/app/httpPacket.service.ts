@@ -18,10 +18,10 @@ export class HttpPacketService {
 
         let contentType = 'application/json';
         let contentHeaders = this.computeHeaders(contentType);
-        
-        let authHeader = user.userName + ":" + user.password;
+
+        let authHeader = user.userName + ':' + user.password;
         contentHeaders.append('Authorization', authHeader);
-		
+
         return new RequestOptions({ headers: contentHeaders });
     }
 }

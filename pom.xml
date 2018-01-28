@@ -234,7 +234,7 @@
 							<goal>npm</goal>
 						</goals>
 						<configuration>
-							<arguments>build</arguments>
+							<arguments>run-script build</arguments>
 						</configuration>
 					</execution>
 				</executions>

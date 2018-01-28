@@ -29,8 +29,7 @@ export class BarComponent {
         if (this._authService.getLoggedUser()) {
             this.setTitle();
             this.getBars();
-        }
-        else {
+        } else {
             this._router.navigateByUrl('/login');
         }
     }
@@ -43,15 +42,15 @@ export class BarComponent {
 
 		this._restService.getBars(this._authService.getUserCreds())
 			.subscribe(
-            	data => this.bars = data, //Bind to view
+            	data => this.bars = data, // Bind to view
                 err => this._errorManager.displayError(err.message));
     }
-    
+
     editBar(bar) {
-    	
+
     	// New bar
-    	if (bar == null){
-    		bar = new Bar(-1, "", "", "", "");
+    	if (bar == null) {
+    		bar = new Bar(-1, '', '', '', '');
     	}
 
     	return this.modal.open(BarEdit,
