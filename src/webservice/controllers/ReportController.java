@@ -27,10 +27,7 @@ import webservice.auxillary.ReportBuilder;
 import webservice.auxillary.AuthInfo;
 
 @RestController
-public class ReportController extends GenController {
-
-	private static final Logger logger = 
-			LoggerFactory.getLogger("reportControllerLogger");
+public class ReportController extends BaseController {
 
 	@Autowired
 	OrderService orderService;

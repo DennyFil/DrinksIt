@@ -17,7 +17,7 @@ export class RestService {
 
   getBars(user): Observable<Bar[]> {
     let packetOptions = this._httpPacketService.computePacketOptions('GET', user);
-    return this.http.get('bars', packetOptions)
+    return this.http.get('bars/list', packetOptions)
       .map((res: Response) => res.json())
       .catch((error: any) => Observable.throw(error.json().error || 'Server error'));
   }
@@ -25,7 +25,7 @@ export class RestService {
   postBar(bar, userCreds): Observable<Bar> {
     let packetOptions = this._httpPacketService.computePacketOptions('POST', userCreds);
 		let body = JSON.stringify(bar);
-		return this.http.post('postBar', body, packetOptions)
+		return this.http.post('bars/post', body, packetOptions)
       .map((res: Response) => res.json())
       .catch((error: any) => Observable.throw(error.json().error || 'Server error'));
   }
@@ -33,7 +33,7 @@ export class RestService {
   getDrinks(user, barId): Observable<Drink[]> {
 
     let packetOptions = this._httpPacketService.computePacketOptions('GET', user);
-    return this.http.get('drinks' + '?barId=' + barId, packetOptions)
+    return this.http.get('drinks/list' + '?barId=' + barId, packetOptions)
       .map((res: Response) => res.json())
       .catch((error: any) => Observable.throw(error.json().error || 'Server error'));
    }
@@ -41,7 +41,7 @@ export class RestService {
   postDrink(drink, userCreds): Observable<Drink> {
     let packetOptions = this._httpPacketService.computePacketOptions('POST', userCreds);
 		let body = JSON.stringify(drink);
-    return this.http.post('postDrink', body, packetOptions)
+    return this.http.post('drinks/post', body, packetOptions)
     	.map((res: Response) => res.json())
         .catch((error: any) => Observable.throw(error.json().error || 'Server error'));
   }
@@ -63,7 +63,7 @@ export class RestService {
 
    getUsers(loggedInUser): Observable<User[]> {
       let packetOptions = this._httpPacketService.computePacketOptions('GET', loggedInUser);
-      return this.http.get('users', packetOptions)
+      return this.http.get('users/list', packetOptions)
       	.map((res: Response) => res.json())
           .catch((error: any) => Observable.throw(error.json().error || 'Server error'));
    }
@@ -71,7 +71,7 @@ export class RestService {
    postUser(user, userCreds): Observable<User> {
       let packetOptions = this._httpPacketService.computePacketOptions('POST', userCreds);
 	    let body = JSON.stringify(user);
-      return this.http.post('postUser', body, packetOptions)
+      return this.http.post('users/post', body, packetOptions)
       	.map((res: Response) => res.json())
           .catch((error: any) => Observable.throw(error.json().error || 'Server error'));
    }

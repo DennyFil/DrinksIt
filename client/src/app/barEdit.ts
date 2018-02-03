@@ -1,12 +1,12 @@
-import { Component } from '@angular/core';
-import { DialogRef, ModalComponent } from 'angular2-modal';
-import { BSModalContext } from 'angular2-modal/plugins/bootstrap';
+import { Component }                    from '@angular/core';
+import { DialogRef, ModalComponent }    from 'angular2-modal';
+import { BSModalContext }               from 'angular2-modal/plugins/bootstrap';
 
-import { ErrorManager } 			from './errorManager';
-import { AuthenticationService } 	from './authentication.service';
-import { RestService }           	from './restService';
-import { HttpPacketService } 		from './httpPacket.service';
-import { Bar }           			from './models/bar';
+import { ErrorManager } 			          from './errorManager';
+import { AuthenticationService } 	      from './authentication.service';
+import { RestService }           	      from './restService';
+import { HttpPacketService } 		        from './httpPacket.service';
+import { Bar }           			          from './models/bar';
 
 export class BarEditContext extends BSModalContext {
   public bar: Bar;

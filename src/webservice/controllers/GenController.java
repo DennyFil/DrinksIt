@@ -1,43 +1,87 @@
 package webservice.controllers;
 
+import java.util.List;
+
 import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
 
 import webservice.auxillary.AccessRightsService;
-import webservice.auxillary.HashComputor;
+import webservice.auxillary.DTO.BaseItem;
 import webservice.auxillary.AuthInfo;
-import webservice.auxillary.AuthenticationService;
 
-public class GenController {
+public abstract class GenController<T extends BaseItem> extends BaseController {
 	
-	@Autowired
-	AuthenticationService authService;
+	protected abstract String getPostLog(T item);
+	
+	protected abstract boolean hasPostRight(AuthInfo userInfo, T newItem);
+	
+	protected abstract T createItem(T newItem) throws Exception;
+	
+	protected abstract ResponseEntity<List<T>> getListItems(AuthInfo userInfo) throws Exception;
 	
 	@Autowired
 	AccessRightsService arService;
-	
-	protected AuthInfo getAuthInfo(HttpServletRequest request) throws Exception {
 
-		String authHeader = request.getHeader(HttpHeaders.AUTHORIZATION);
+	@RequestMapping("/post")
+	public ResponseEntity<BaseItem> Post(HttpServletRequest request, @RequestBody T newItem) throws Exception {
 
-		if (authHeader == null || authHeader == "") {
-			throw new Exception("Empty authentication header");
-		}
-
-		try {
-			int idxSeparator = authHeader.indexOf(":");
-
-			String userName = authHeader.substring(0, idxSeparator);
-			String receivedPassword = authHeader.substring(idxSeparator + 1, authHeader.length());
-			String receivedPasswordHash = HashComputor.ComputeSHA256(receivedPassword);
-
-			return new AuthInfo(userName, receivedPasswordHash);
-		}
-		catch (Exception e)
+		AuthInfo userInfo = getAuthInfo(request);
+		if (! authService.IsAuthorized(userInfo))
 		{
-			throw new Exception("Failed to parse authentication header");
+			logger.debug("POST /post: not authorized for " + userInfo.getUserName());
+			return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(null);
 		}
+		
+		if ( ! hasPostRight(userInfo, newItem))
+		{
+			logger.debug("POST /post: no create right for " + userInfo.getUserName());
+			return ResponseEntity.status(HttpStatus.FORBIDDEN).body(null);
+		}
+		
+		try {
+			BaseItem item = createItem(newItem);
+			
+			logger.debug("POST /post " + newItem.getId());
+			
+			String logStr = getPostLog(newItem);
+			logger.debug(logStr);
+			
+			return ResponseEntity.ok(item);
+		}
+		catch (Exception e){
+			logger.debug(e.getMessage());
+		}
+
+		return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
+	}
+	
+	protected ResponseEntity<List<T>> list(HttpServletRequest request) throws Exception {
+
+		AuthInfo userInfo = getAuthInfo(request);
+		if (! authService.IsAuthorized(userInfo))
+		{
+			logger.debug("GET /list: not authorized for " + userInfo.getUserName());
+			return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(null);
+		}
+		
+		if ( ! arService.checkRight(userInfo, "list"))
+		{
+			logger.debug("POST /list: no list right for " + userInfo.getUserName());
+			return ResponseEntity.status(HttpStatus.FORBIDDEN).body(null);
+		}
+
+		try {			
+			return getListItems(userInfo);
+		}
+		catch (Exception e){
+			logger.debug(e.getMessage());
+		}
+
+		return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
 	}
 }

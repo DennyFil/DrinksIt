@@ -4,12 +4,9 @@ import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
@@ -19,16 +16,14 @@ import webservice.auxillary.DTO.Drink;
 import webservice.auxillary.ServiceDTO.DrinkService;
 
 @RestController
-public class DrinkController extends GenController {
+@RequestMapping("/drinks")
+public class DrinkController extends GenController<Drink> {
 
-	private static final Logger logger = 
-			LoggerFactory.getLogger("drinkControllerLogger");
-	
 	@Autowired
 	DrinkService drinkService;
 	
-	@RequestMapping("/drinks")
-	public ResponseEntity<List<Drink>> GetDrinks(HttpServletRequest request, @RequestParam Integer barId) throws Exception {
+	@RequestMapping("/list")
+	public ResponseEntity<List<Drink>> GetBarDrinks(HttpServletRequest request, @RequestParam Integer barId) throws Exception {
 
 		logger.debug("GET /drinks for bar " + barId);
 
@@ -51,36 +46,26 @@ public class DrinkController extends GenController {
 		return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
 	}
 
-	@RequestMapping("/postDrink")
-	public ResponseEntity<Drink> PostDrink(HttpServletRequest request, @RequestBody Drink newDrink) throws Exception {
+	@Override
+	protected boolean hasPostRight(AuthInfo userInfo, Drink newDrink) {
+		return arService.isBarAdmin(userInfo, newDrink.getBarId());
+	}
+	
+	@Override
+	protected Drink createItem(Drink newDrink) throws Exception
+	{
+		return drinkService.CreateDrink(newDrink);
+	}
+	
+	@Override
+	protected String getPostLog(Drink drink)
+	{
+		return "CREATION drink: " + drink.getName() + ", size: " + drink.getSize() + ", price: " + drink.getPrice() + ", bar: " + drink.getBarId();
+	}
 
-		logger.debug("POST /postDrink " + newDrink.getName() + " to bar " + newDrink.getBarId());
-
-		AuthInfo userInfo = getAuthInfo(request);
-		if (! authService.IsAuthorized(userInfo))
-		{
-			logger.debug("POST /postDrink: not authorized for " + userInfo.getUserName());
-			return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(null);
-		}
-		
-		if ( ! arService.isBarAdmin(userInfo, newDrink.getBarId()))
-		{
-			logger.debug("POST /postDrink: no create right for " + userInfo.getUserName());
-			return ResponseEntity.status(HttpStatus.FORBIDDEN).body(null);
-		}
-		
-		try {
-
-			Drink drink = drinkService.CreateDrink(newDrink);
-			
-			logger.debug("CREATION drink: " + newDrink.getName() + ", size: " + newDrink.getSize() + ", price: " + newDrink.getPrice() + ", bar: " + newDrink.getBarId());
-            
-			return ResponseEntity.ok(drink);
-		}
-		catch (Exception e){
-			logger.debug(e.getMessage());
-		}
-
-		return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
+	@Override
+	protected ResponseEntity<List<Drink>> getListItems(AuthInfo userInfo) throws Exception {
+		// Drinks from master bar = all drinks
+		return ResponseEntity.ok(drinkService.GetDrinks(0));
 	}
 }

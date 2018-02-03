@@ -13,7 +13,7 @@ import webservice.auxillary.DTO.Bar;
 
 @Entity
 @Table(name = "users")
-public class User implements java.io.Serializable {
+public class User extends BaseItem implements java.io.Serializable {
 
 	@Id
     @Column(name = "userName")
@@ -41,6 +41,10 @@ public class User implements java.io.Serializable {
         this.passwordHash = passwordHash;
         this.barId = barId;
     }
+    
+    public String getId() {
+		return this.userName;
+	}
 
     public String getUserName() {
         return this.userName;

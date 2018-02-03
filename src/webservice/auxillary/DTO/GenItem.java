@@ -7,13 +7,13 @@ import javax.persistence.Id;
 import javax.persistence.MappedSuperclass;
 
 @MappedSuperclass
-public class GenItem {
+public class GenItem extends BaseItem {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name = "id")
 	private int id;
 
-	public int getId() {
-		return this.id;
+	public String getId() {
+		return Integer.toString(this.id);
 	}
 }

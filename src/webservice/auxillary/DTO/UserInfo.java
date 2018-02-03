@@ -1,7 +1,7 @@
 package webservice.auxillary.DTO;
 
 // Not Mapped
-public class UserInfo {
+public class UserInfo extends BaseItem {
 
 	private String userName;
 	private int barId;
@@ -25,5 +25,10 @@ public class UserInfo {
 	
 	public String getBarName() {
 		return barName;
+	}
+
+	@Override
+	public String getId() {
+		return userName;
 	}
 }

@@ -3,8 +3,6 @@ package webservice.controllers;
 import javax.servlet.http.HttpServletRequest;
 
 import org.apache.commons.lang.exception.ExceptionUtils;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.env.Environment;
@@ -21,10 +19,7 @@ import webservice.auxillary.DTO.Drink;
 import webservice.auxillary.ServiceDTO.DrinkService;
 
 @RestController
-public class QRCodeController extends GenController {
-
-	private static final Logger logger = 
-			LoggerFactory.getLogger("qrCodeGenControllerLogger");
+public class QRCodeController extends BaseController {
 
 	@Autowired
 	DrinkService drinkService;
