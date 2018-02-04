@@ -5,5 +5,5 @@ import javax.persistence.MappedSuperclass;
 @MappedSuperclass
 public abstract class BaseItem {
 
-	public abstract String getId();
+	public abstract String getIdStr();
 }

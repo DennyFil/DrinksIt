@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import webservice.auxillary.AuthInfo;
 import webservice.auxillary.ServiceDTO.UserService;
+import webservice.auxillary.DTO.Bar;
 import webservice.auxillary.DTO.User;
 
 @RestController
@@ -26,10 +27,21 @@ public class UserController extends GenController<User> {
 
 		return list(request);		
 	}
+	
+	@Override
+	protected boolean itemExists(User newUser) throws Exception {
+		return userService.Exists(newUser);
+	}
+
+	@Override
+	protected User updateItem(User newUser) throws Exception {
+		userService.Update(newUser);
+		return newUser;
+	}
 
 	@Override
 	protected User createItem(User newUser) throws Exception {
-		return userService.CreateUser(newUser);
+		return userService.Create(newUser);
 	}
 
 	@Override

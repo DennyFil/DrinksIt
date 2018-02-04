@@ -10,6 +10,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import webservice.auxillary.HashComputor;
 import webservice.auxillary.DTO.Bar;
+import webservice.auxillary.DTO.Drink;
 import webservice.auxillary.DTO.User;
 
 @Service("UserService")
@@ -51,7 +52,7 @@ public class UserService {
 		return (User) session.get(User.class, userName);
 	}
 
-	public User CreateUser(User newUser) throws Exception
+	public User Create(User newUser) throws Exception
 	{
 		Session session = sessionFactory.getCurrentSession();
 
@@ -69,5 +70,21 @@ public class UserService {
 		else {
 			throw new Exception("CREATE user failed: bar " + newUser.getBarId() + " does not exist");
 		}
+	}
+	
+	public void Update(User user) throws Exception
+	{
+		Session session = sessionFactory.getCurrentSession();
+
+		session.update(user);
+	}
+	
+	public boolean Exists(User newUser) throws Exception
+	{
+		Session session = sessionFactory.getCurrentSession();
+
+		User user = (User) session.get(User.class, newUser.getIdStr());
+		
+		return user != null;
 	}
 }

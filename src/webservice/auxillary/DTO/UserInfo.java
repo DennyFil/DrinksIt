@@ -28,7 +28,7 @@ public class UserInfo extends BaseItem {
 	}
 
 	@Override
-	public String getId() {
+	public String getIdStr() {
 		return userName;
 	}
 }

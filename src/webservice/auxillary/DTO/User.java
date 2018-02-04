@@ -42,7 +42,7 @@ public class User extends BaseItem implements java.io.Serializable {
         this.barId = barId;
     }
     
-    public String getId() {
+    public String getIdStr() {
 		return this.userName;
 	}
 

@@ -43,12 +43,28 @@ public class BarService {
 		return (List<Bar>)session.createQuery("FROM Bar").list();
 	}
 
-	public Bar CreateBar(Bar newBar) throws Exception
+	public Bar Create(Bar newBar) throws Exception
 	{
 		Session session = sessionFactory.getCurrentSession();
 
 		session.save(newBar);
 
 		return newBar;
+	}
+	
+	public void Update(Bar bar) throws Exception
+	{
+		Session session = sessionFactory.getCurrentSession();
+
+		session.update(bar);
+	}
+	
+	public boolean Exists(Bar newBar) throws Exception
+	{
+		Session session = sessionFactory.getCurrentSession();
+
+		Bar bar = (Bar) session.get(Bar.class, newBar.getId());
+		
+		return bar != null;
 	}
 }

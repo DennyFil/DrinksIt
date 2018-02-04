@@ -13,7 +13,11 @@ public class GenItem extends BaseItem {
 	@Column(name = "id")
 	private int id;
 
-	public String getId() {
+	public String getIdStr() {
 		return Integer.toString(this.id);
+	}
+	
+	public int getId() {
+		return this.id;
 	}
 }

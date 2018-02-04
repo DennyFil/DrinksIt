@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import webservice.auxillary.AuthInfo;
+import webservice.auxillary.DTO.Bar;
 import webservice.auxillary.DTO.Drink;
 import webservice.auxillary.ServiceDTO.DrinkService;
 
@@ -52,9 +53,20 @@ public class DrinkController extends GenController<Drink> {
 	}
 	
 	@Override
+	protected boolean itemExists(Drink newDrink) throws Exception {
+		return drinkService.Exists(newDrink);
+	}
+
+	@Override
+	protected Drink updateItem(Drink newDrink) throws Exception {
+		drinkService.Update(newDrink);
+		return newDrink;
+	}
+	
+	@Override
 	protected Drink createItem(Drink newDrink) throws Exception
 	{
-		return drinkService.CreateDrink(newDrink);
+		return drinkService.Create(newDrink);
 	}
 	
 	@Override

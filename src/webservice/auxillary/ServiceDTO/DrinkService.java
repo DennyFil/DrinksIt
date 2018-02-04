@@ -65,7 +65,7 @@ public class DrinkService {
 		}
 	}
 
-	public Drink CreateDrink(Drink newDrink) throws Exception
+	public Drink Create(Drink newDrink) throws Exception
 	{
 		Session session = sessionFactory.getCurrentSession();
 
@@ -81,5 +81,21 @@ public class DrinkService {
 		else {
 			throw new Exception("CREATE drink failed: bar " + newDrink.getBarId() + " not available");
 		}
+	}
+	
+	public void Update(Drink drink) throws Exception
+	{
+		Session session = sessionFactory.getCurrentSession();
+
+		session.update(drink);
+	}
+	
+	public boolean Exists(Drink newDrink) throws Exception
+	{
+		Session session = sessionFactory.getCurrentSession();
+
+		Drink drink = (Drink) session.get(Drink.class, newDrink.getId());
+		
+		return drink != null;
 	}
 }

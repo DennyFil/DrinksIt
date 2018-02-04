@@ -33,8 +33,19 @@ public class BarController extends GenController<Bar> {
 	}
 
 	@Override
+	protected boolean itemExists(Bar newBar) throws Exception {
+		return barService.Exists(newBar);
+	}
+
+	@Override
+	protected Bar updateItem(Bar newBar) throws Exception {
+		barService.Update(newBar);
+		return newBar;
+	}
+
+	@Override
 	protected Bar createItem(Bar newBar) throws Exception {
-		return barService.CreateBar(newBar);
+		return barService.Create(newBar);
 	}
 
 	@Override

@@ -20,9 +20,23 @@ public abstract class GenController<T extends BaseItem> extends BaseController {
 	
 	protected abstract boolean hasPostRight(AuthInfo userInfo, T newItem);
 	
+	protected abstract boolean itemExists(T newItem) throws Exception;
+	
 	protected abstract T createItem(T newItem) throws Exception;
 	
+	protected abstract T updateItem(T newItem) throws Exception;
+	
 	protected abstract ResponseEntity<List<T>> getListItems(AuthInfo userInfo) throws Exception;
+	
+	private T handlePostedItem(T newItem) throws Exception
+	{
+		if (itemExists(newItem))
+		{
+			return updateItem(newItem);
+		}
+		
+		return createItem(newItem);
+	}
 	
 	@Autowired
 	AccessRightsService arService;
@@ -39,14 +53,14 @@ public abstract class GenController<T extends BaseItem> extends BaseController {
 		
 		if ( ! hasPostRight(userInfo, newItem))
 		{
-			logger.debug("POST /post: no create right for " + userInfo.getUserName());
+			logger.debug("POST /post: no post right for " + userInfo.getUserName());
 			return ResponseEntity.status(HttpStatus.FORBIDDEN).body(null);
 		}
 		
 		try {
-			BaseItem item = createItem(newItem);
+			BaseItem item = handlePostedItem(newItem);
 			
-			logger.debug("POST /post " + newItem.getId());
+			logger.debug("POST /post " + newItem.getIdStr());
 			
 			String logStr = getPostLog(newItem);
 			logger.debug(logStr);
