@@ -1,9 +1,14 @@
-<div class="container-fluid">
-	<h2>Create drink</h2>
+<div class="panel-body">
+	<div class="row">
+		<div class="col-sm-12">
+			<h2>Create drink</h2>
+		</div>
+	</div>
 	<div class="row">
 		<div class="col-sm-12 alert alert-danger"
 			[hidden]="!this._errorManager.errorMsg">
-			{{this._errorManager.errorMsg}}</div>
+			{{this._errorManager.errorMsg}}
+		</div>
 	</div>
 	<form #form="ngForm" (ngSubmit)="onSubmit()">
 		<div class="row">
@@ -11,11 +16,9 @@
 				<label for="name">Name</label>
 			</div>
 			<div class="col-sm-8">
-				<div class="form-group">
-					<input type="text" class="form-control" id="name"
-						placeholder="Name" name="name"
-						[(ngModel)]="drinkEditContext.drink.name" required>
-				</div>
+				<input type="text" class="form-control" id="name"
+					placeholder="Name" name="name"
+					[(ngModel)]="drinkEditContext.drink.name" required>
 			</div>
 		</div>
 		<div class="row">
@@ -23,11 +26,9 @@
 				<label for="price">Price</label>
 			</div>
 			<div class="col-sm-8">
-				<div class="form-group">
-					<input type="number" class="form-control" id="price"
-						placeholder="Price" name="price"
-						[(ngModel)]="drinkEditContext.drink.price" step="0.01" required>
-				</div>
+				<input type="number" class="form-control" id="price"
+					placeholder="Price" name="price"
+					[(ngModel)]="drinkEditContext.drink.price" step="0.01" required>
 			</div>
 		</div>
 		<div class="row">
@@ -35,11 +36,9 @@
 				<label for="price">Size</label>
 			</div>
 			<div class="col-sm-8">
-				<div class="form-group">
-					<input type="number" class="form-control" id="size"
-						placeholder="Size" name="size"
-						[(ngModel)]="drinkEditContext.drink.size" step="0.01" required>
-				</div>
+				<input type="number" class="form-control" id="size"
+					placeholder="Size" name="size"
+					[(ngModel)]="drinkEditContext.drink.size" step="0.01" required>
 			</div>
 		</div>
 		<div class="row">
@@ -53,8 +52,10 @@
 			</div>
 		</div>
 		<div class="row">
-			<button type="submit" [disabled]="!form.valid" class="btn btn-default">Submit</button>
-			<button type="button" class="btn btn-default" (click)="onCancel()">Cancel</button>
+			<div class="col-sm-12">
+				<button type="submit" [disabled]="!form.valid" class="btn btn-default">Submit</button>
+				<button type="button" class="btn btn-default" (click)="onCancel()">Cancel</button>
+			</div>
 		</div>
 	</form>
 </div>

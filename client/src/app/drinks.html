@@ -5,17 +5,17 @@
 			{{this._errorManager.errorMsg}}</div>
 	</div>
 	
-	<!-- Bar selector -->	
-	<div class="row">
-		<h3>Select bar</h3>
-	</div>
+	<!-- Bar selector -->
 	<div class="row">
 		<div class="col-sm-4">
+			<h3>Select bar</h3>
 			<select [(ngModel)]="selectedBar" (ngModelChange)="onBarSelected()">
 				<option *ngFor="let bar of bars" [ngValue]="bar">{{bar.name}}</option>
 			</select>
 		</div>
-		<div class="col-sm-8" [hidden]="!selectedBar.id">
+	</div>
+	<div class="row">
+		<div class="col-sm-12" [hidden]="!selectedBar.id">
 			<button type="button" class="btn btn-info" (click)="editDrink()">New</button>
 		</div>
 	</div>

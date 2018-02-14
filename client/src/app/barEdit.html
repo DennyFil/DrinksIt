@@ -1,9 +1,14 @@
-<div class="container-fluid">
-	<h2>Create bar</h2>
+<div class="panel-body">
+	<div class="row">
+		<div class="col-sm-12">
+			<h2>Create bar</h2>
+		</div>
+	</div>
 	<div class="row">
 		<div class="col-sm-12 alert alert-danger"
 			[hidden]="!this._errorManager.errorMsg">
-			{{this._errorManager.errorMsg}}</div>
+			{{this._errorManager.errorMsg}}
+		</div>
 	</div>
 	<form #form="ngForm" (ngSubmit)="onSubmit()">
 		<div class="row">
@@ -11,11 +16,9 @@
 				<label for="name">Name</label>
 			</div>
 			<div class="col-sm-8">
-				<div class="form-group">
-					<input type="text" class="form-control" id="name"
-						placeholder="Name" name="barName"
-						[(ngModel)]="barEditContext.bar.name" required>
-				</div>
+				<input type="text" class="form-control" id="name"
+					placeholder="Name" name="barName"
+					[(ngModel)]="barEditContext.bar.name" required>
 			</div>
 		</div>
 		<div class="row">
@@ -23,11 +26,9 @@
 				<label for="address">Address</label>
 			</div>
 			<div class="col-sm-8">
-				<div class="form-group">
-					<input type="text" class="form-control" id="address"
-						placeholder="Address" name="address"
-						[(ngModel)]="barEditContext.bar.address" required>
-				</div>
+				<input type="text" class="form-control" id="address"
+					placeholder="Address" name="address"
+					[(ngModel)]="barEditContext.bar.address" required>
 			</div>
 		</div>
 		<div class="row">
@@ -35,11 +36,9 @@
 				<label for="city">City</label>
 			</div>
 			<div class="col-sm-8">
-				<div class="form-group">
-					<input type="text" class="form-control" id="city"
-						placeholder="City" name="city"
-						[(ngModel)]="barEditContext.bar.city" required>
-				</div>
+				<input type="text" class="form-control" id="city"
+					placeholder="City" name="city"
+					[(ngModel)]="barEditContext.bar.city" required>
 			</div>
 		</div>
 		<div class="row">
@@ -47,16 +46,16 @@
 				<label for="country">Country</label>
 			</div>
 			<div class="col-sm-8">
-				<div class="form-group">
-					<input type="text" class="form-control" id="country"
-						placeholder="Country" name="country"
-						[(ngModel)]="barEditContext.bar.country" required>
-				</div>
+				<input type="text" class="form-control" id="country"
+					placeholder="Country" name="country"
+					[(ngModel)]="barEditContext.bar.country" required>
 			</div>
 		</div>
 		<div class="row">
-			<button type="submit" [disabled]="!form.valid" class="btn btn-default">Submit</button>
-			<button type="button" class="btn btn-default" (click)="onCancel()">Cancel</button>
-		</div>
+			<div class="col-sm-12">
+				<button type="submit" [disabled]="!form.valid" class="btn btn-default">Submit</button>
+				<button type="button" class="btn btn-default" (click)="onCancel()">Cancel</button>
+			</div>
+		</div>	
 	</form>
 </div>
