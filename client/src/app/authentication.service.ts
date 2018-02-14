@@ -1,5 +1,4 @@
 import { Component, Injectable }  from '@angular/core';
-import { Router }                 from '@angular/router';
 import { Http }                   from '@angular/http';
 
 import { HttpPacketService }      from './httpPacket.service';
@@ -18,8 +17,7 @@ export class UserCreds {
 export class AuthenticationService {
 
 	user: User;
-    constructor(public router: Router,
-        private _httpPacketService: HttpPacketService,
+    constructor(private _httpPacketService: HttpPacketService,
         private http: Http) { }
 
     login(userCreds, successCbk, failureCbk) {

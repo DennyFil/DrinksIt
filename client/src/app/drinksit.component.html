@@ -1,35 +1,41 @@
-<div class="drinksit-text h1 container-fluid">
-	DrinksIt
-</div>
+<div class="container">
+	<h1 class="drinksit-text">
+		DrinksIt
+	</h1>
 
-<div *ngIf="this._authService.getLoggedUser()" class="row top-buffer">
-	<div class="btn-group btn-group-justified" role="group">
-	  <div class="btn-group" role="group">
-	    <button type="button" routerLink="app/orders" routerLinkActive="active" class="btn btn-default">Orders</button>
-	  </div>
-	  <div *ngIf="user.barId===0" class="btn-group" role="group">
-	    <button type="button" routerLink="app/bars" routerLinkActive="active" class="btn btn-default">Bars</button>
-	  </div>
-	  <div class="btn-group" role="group">
-	    <button type="button" routerLink="app/drinks" routerLinkActive="active" class="btn btn-default">Drinks</button>
-	  </div>
-	  <div *ngIf="user.barId===0" class="btn-group" role="group">
-	    <button type="button" routerLink="app/users" routerLinkActive="active" class="btn btn-default">Users</button>
-	  </div>
-	  <div class="btn-group" role="group">
-	    <button type="button" routerLink="app/reports" routerLinkActive="active" class="btn btn-default">Reports</button>
-	  </div>
-	  <div class="btn-group" role="group">
-	    <button type="button" routerLink="app/qrcode" routerLinkActive="active" class="btn btn-default">QR code</button>
-	  </div>
+	<div *ngIf="this._authService.getLoggedUser()" class="row">
+		<div class="col-sm-12">
+			<div class="pull-right">
+				{{ user.userName }}
+				<button type="submit" class="btn btn-default navbar-btn" (click)="this.logout()">Logout</button>
+			</div>
+		</div>
 	</div>
-</div>
+	
+	<div *ngIf="this._authService.getLoggedUser()" class="row">
+		<div class="btn-group btn-group-justified" role="group">
+		  <div class="btn-group" role="group">
+			<button type="button" routerLink="app/orders" routerLinkActive="active" class="btn btn-default">Orders</button>
+		  </div>
+		  <div *ngIf="user.barId===0" class="btn-group" role="group">
+			<button type="button" routerLink="app/bars" routerLinkActive="active" class="btn btn-default">Bars</button>
+		  </div>
+		  <div class="btn-group" role="group">
+			<button type="button" routerLink="app/drinks" routerLinkActive="active" class="btn btn-default">Drinks</button>
+		  </div>
+		  <div *ngIf="user.barId===0" class="btn-group" role="group">
+			<button type="button" routerLink="app/users" routerLinkActive="active" class="btn btn-default">Users</button>
+		  </div>
+		  <div class="btn-group" role="group">
+			<button type="button" routerLink="app/reports" routerLinkActive="active" class="btn btn-default">Reports</button>
+		  </div>
+		  <div class="btn-group" role="group">
+			<button type="button" routerLink="app/qrcode" routerLinkActive="active" class="btn btn-default">QR code</button>
+		  </div>
+		</div>
+	</div>
 
-<div class="row top-buffer">
-	<router-outlet></router-outlet>
-</div>
-
-<div *ngIf="this._authService.getLoggedUser()" class="pull-right">
-	<button type="submit" class="btn btn-default navbar-btn" (click)="this.logout()">Logout</button>
-    <p *ngIf="user" class="navbar-text">{{ user.userName }}</p>
+	<div class="row">
+		<router-outlet></router-outlet>
+	</div>
 </div>

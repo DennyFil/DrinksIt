@@ -1,7 +1,7 @@
-import { Component }                          from '@angular/core';
-import { Router }                             from '@angular/router';
-import { ErrorManager } 					            from './errorManager';
-import { AuthenticationService, UserCreds }   from './authentication.service';
+import { Component }							from '@angular/core';
+import { Router }								from '@angular/router';
+import { ErrorManager }							from './errorManager';
+import { AuthenticationService, UserCreds }		from './authentication.service';
 
 @Component({
   selector: 'drinksit-login',
@@ -18,8 +18,6 @@ export class LoginComponent {
 
   		if (this._authService.getLoggedUser()) {
   			this.router.navigateByUrl('app/orders');
-  		} else {
-  			this.router.navigateByUrl('app/login');
   		}
   	}
 
@@ -33,7 +31,6 @@ export class LoginComponent {
 			},
 			function() {
 				self._errorManager.displayError('Failed to login');
-				self.router.navigateByUrl('app/login');
 			});
     }
 }
