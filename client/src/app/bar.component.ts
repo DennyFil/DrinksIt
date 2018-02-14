@@ -1,10 +1,8 @@
 import { Component, Injectable } from '@angular/core';
-import { Router } from '@angular/router';
 import { Overlay, overlayConfigFactory } from 'angular2-modal';
 import { Modal, BSModalContext } from 'angular2-modal/plugins/bootstrap';
 
 import { ErrorManager } 				from './errorManager';
-import { AuthenticationService } 		from './authentication.service';
 import { RestService }           		from './restService';
 import { BarEditContext, BarEdit }   	from './barEdit';
 import { Bar }           				from './models/bar';
@@ -12,38 +10,33 @@ import { Bar }           				from './models/bar';
 @Component({
     selector: 'drinksit-bar',
     templateUrl: './bars.html',
-    providers: [ErrorManager, AuthenticationService, RestService, Modal]
+    providers: [ErrorManager, RestService, Modal]
 })
 export class BarComponent {
 
     title = '';
     bars = [];
 
-    constructor(private _router: Router,
-        private _errorManager: ErrorManager,
-        private _authService: AuthenticationService,
-        private _restService: RestService,
+    constructor(
+        private errorManager: ErrorManager,
+        private restService: RestService,
         public modal: Modal) { }
 
     ngOnInit() {
-        if (this._authService.getLoggedUser()) {
-            this.setTitle();
-            this.getBars();
-        } else {
-            this._router.navigateByUrl('/login');
-        }
+		this.setTitle();
+		this.getBars();
     }
 
     setTitle() {
-        this.title = 'Bar';
+        this.title = 'Bars';
     }
 
     getBars() {
 
-		this._restService.getBars(this._authService.getUserCreds())
+		this.restService.getBars()
 			.subscribe(
             	data => this.bars = data, // Bind to view
-                err => this._errorManager.displayError(err.message));
+                err => this.errorManager.displayError(err.message));
     }
 
     editBar(bar) {

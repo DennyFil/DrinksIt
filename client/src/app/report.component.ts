@@ -1,32 +1,24 @@
-import { Component } from '@angular/core';
-import { Router }  from '@angular/router';
+import { Component }				from '@angular/core';
 import { ErrorManager } 			from './errorManager';
-import { AuthenticationService } from './authentication.service';
-import * as FileSaver from 'file-saver';
+import * as FileSaver				from 'file-saver';
 
 import { RestService }           	from './restService';
 
 @Component({
     selector: 'drinksit-report',
     templateUrl: './reports.html',
-    providers: [ErrorManager, AuthenticationService, RestService]
+    providers: [ErrorManager, RestService]
 })
 export class ReportComponent {
 
-	public errorMsg = '';
     title = '';
 
-    constructor(private router: Router,
-    	private _errorManager: ErrorManager,
-        private _authService: AuthenticationService,
-        private _restService: RestService) { }
+    constructor(
+    	private errorManager: ErrorManager,
+        private restService: RestService) { }
 
     ngOnInit() {
-        if (this._authService.getLoggedUser()) {
-            this.setTitle();
-        } else {
-            this.router.navigateByUrl('app/login');
-        }
+        this.setTitle();
     }
 
     setTitle() {
@@ -35,11 +27,10 @@ export class ReportComponent {
 
     getReportData(dateFrom, dateTo) {
 
-    	this.errorMsg = '';
     	let self = this;
-        this._restService.getReport(dateFrom, dateTo, this._authService.getUserCreds(),
+        this.restService.getReport(dateFrom, dateTo,
           function(error) {
-            self._errorManager.displayError(error);
+            self.errorManager.displayError(error);
           });
     }
 }

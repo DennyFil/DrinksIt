@@ -2,8 +2,8 @@
 	<div class="row">
 		<div class="col-sm-4 col-sm-offset-4">
 			<div id="errorMsg" class="alert alert-danger"
-				[hidden]="!this._errorManager.errorMsg">
-				{{this._errorManager.errorMsg}}
+				[hidden]="!this.errorManager.errorMsg">
+				{{this.errorManager.errorMsg}}
 			</div>
 			<form (ngSubmit)="login()">
 				<div class="form-group">

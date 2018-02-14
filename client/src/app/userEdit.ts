@@ -3,9 +3,7 @@ import { DialogRef, ModalComponent } from 'angular2-modal';
 import { BSModalContext } from 'angular2-modal/plugins/bootstrap';
 
 import { ErrorManager } 			from './errorManager';
-import { AuthenticationService } 	from './authentication.service';
 import { RestService }           	from './restService';
-import { HttpPacketService } 		from './httpPacket.service';
 import { User }           			from './models/user';
 
 export class UserEditContext extends BSModalContext {
@@ -16,16 +14,15 @@ export class UserEditContext extends BSModalContext {
 @Component({
   selector: 'user-edit',
   templateUrl: './userEdit.html',
-  providers: [ErrorManager, AuthenticationService, HttpPacketService, RestService]
+  providers: [ErrorManager, RestService]
 }) 
 export class UserEdit implements ModalComponent<UserEditContext> {
   
   	userEditContext: UserEditContext;
   	bars = [];
 	    
-    constructor(private _errorManager: ErrorManager,
-    			private _authService: AuthenticationService,
-    			private _restService: RestService,
+    constructor(private errorManager: ErrorManager,
+    			private restService: RestService,
     			public dialog: DialogRef<UserEditContext>) {
     			
 	    this.userEditContext = dialog.context;
@@ -37,21 +34,21 @@ export class UserEdit implements ModalComponent<UserEditContext> {
 
 	getBars() {
 		
-		this._restService.getBars(this._authService.getUserCreds())
+		this.restService.getBars()
 			.subscribe(
             	data => this.bars = data, //Bind to view
-                err => this._errorManager.displayError(err.message));
+                err => this.errorManager.displayError(err.message));
     }
     
 	onSubmit() {
 		// post form to server
-		this._restService.postUser(this.userEditContext.user, this._authService.getUserCreds())
+		this.restService.postUser(this.userEditContext.user)
 			.subscribe(
             data => {
             	this.userEditContext.onSubmitCallback();
             	this.dialog.close();
             },
-            err => this._errorManager.displayError(err.message));
+            err => this.errorManager.displayError(err.message));
 	}
 	
 	onCancel() {

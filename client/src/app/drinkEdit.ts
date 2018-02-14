@@ -3,9 +3,7 @@ import { DialogRef, ModalComponent } from 'angular2-modal';
 import { BSModalContext } from 'angular2-modal/plugins/bootstrap';
 
 import { ErrorManager } 			from './errorManager';
-import { AuthenticationService } 	from './authentication.service';
 import { RestService }           	from './restService';
-import { HttpPacketService } 		from './httpPacket.service';
 import { Drink }           			from './models/drink';
 
 export class DrinkEditContext extends BSModalContext {
@@ -16,15 +14,14 @@ export class DrinkEditContext extends BSModalContext {
 @Component({
   selector: 'drink-edit',
   templateUrl: './drinkEdit.html',
-  providers: [ErrorManager, AuthenticationService, HttpPacketService, RestService]
+  providers: [ErrorManager, RestService]
 }) 
 export class DrinkEdit implements ModalComponent<DrinkEditContext> {
   
   	drinkEditContext: DrinkEditContext;
 	    
-    constructor(private _errorManager: ErrorManager,
-    			private _authService: AuthenticationService,
-    			private _restService: RestService,
+    constructor(private errorManager: ErrorManager,
+    			private restService: RestService,
     			public dialog: DialogRef<DrinkEditContext>) {
     			
 	    this.drinkEditContext = dialog.context;
@@ -35,13 +32,13 @@ export class DrinkEdit implements ModalComponent<DrinkEditContext> {
     
 	onSubmit() {
 		// post form to server
-		this._restService.postDrink(this.drinkEditContext.drink, this._authService.getUserCreds())
+		this.restService.postDrink(this.drinkEditContext.drink)
 			.subscribe(
             data => {
             	this.drinkEditContext.onSubmitCallback();
             	this.dialog.close();
             },
-            err => this._errorManager.displayError(err.message));
+            err => this.errorManager.displayError(err.message));
 	}
 	
 	onCancel() {

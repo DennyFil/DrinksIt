@@ -1,22 +1,21 @@
 import { Component, Injectable }    from '@angular/core';
-import { Router }                   from '@angular/router';
-import { ErrorManager } 			      from './errorManager';
-import { AuthenticationService } 	  from './authentication.service';
-import { RestService }           	  from './restService';
-import { Order }           			    from './models/order';
+import { ErrorManager } 			from './errorManager';
+import { RestService }           	from './restService';
+import { Order }           			from './models/order';
 
-@Component({    selector: 'drinksit-order',    templateUrl: './orders.html',    providers: [ErrorManager, AuthenticationService, RestService]
+@Component({    selector: 'drinksit-order',    templateUrl: './orders.html',    providers: [ErrorManager, RestService]
 })
 export class OrderComponent {
-    title = '';    orders = [];    constructor(private _router: Router,
-    	private _errorManager: ErrorManager,        private _authService: AuthenticationService,
-        private _restService: RestService) { }    ngOnInit() {        if (this._authService.getLoggedUser()) {            this.setTitle();            this.getOrders();        } else {            this._router.navigateByUrl('app/login');        }    }    setTitle() {        this.title = 'Order';    }    getOrders() {
-		this._restService.getOrders(this._authService.getUserCreds())
+    title = '';    orders = [];    constructor(
+    	private errorManager: ErrorManager,
+        private restService: RestService) { }    ngOnInit() {        this.setTitle();
+		this.getOrders();    }    setTitle() {        this.title = 'Orders';    }    getOrders() {
+		this.restService.getOrders()
 			.subscribe(
             	data => this.orders = data, // Bind to view
-                err => this._errorManager.displayError(err.message));    }    updateStatus(order) {
-		this._restService.updateOrderStatus(order, this._authService.getUserCreds())
+                err => this.errorManager.displayError(err.message));    }    updateStatus(order) {
+		this.restService.updateOrderStatus(order)
 			.subscribe(
             	data => this.getOrders(), // Bind to view
-                err => this._errorManager.displayError(err.message));    }
+                err => this.errorManager.displayError(err.message));    }
 }

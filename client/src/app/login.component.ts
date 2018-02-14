@@ -13,10 +13,10 @@ export class LoginComponent {
     userCreds = new UserCreds('', '');
 
     constructor(public router: Router,
-    	private _errorManager: ErrorManager,
-    	private _authService: AuthenticationService) {
+    	private errorManager: ErrorManager,
+    	private authService: AuthenticationService) {
 
-  		if (this._authService.getLoggedUser()) {
+  		if (this.authService.isLoggedIn()) {
   			this.router.navigateByUrl('app/orders');
   		}
   	}
@@ -25,12 +25,12 @@ export class LoginComponent {
 
 		// closure safe
 		let self = this;
-		this._authService.login(this.userCreds,
+		this.authService.login(this.userCreds,
 			function() {
 				self.router.navigateByUrl('app/orders');
 			},
 			function() {
-				self._errorManager.displayError('Failed to login');
+				self.errorManager.displayError('Failed to login');
 			});
     }
 }

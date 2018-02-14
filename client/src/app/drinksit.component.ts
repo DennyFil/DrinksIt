@@ -16,11 +16,11 @@ export class DrinksItComponent {
 	
 	user: User;
 	
-	constructor(private router: Router, private _authService:AuthenticationService) {		
+	constructor(private router: Router, private authService:AuthenticationService) {		
 	}
 	
 	ngOnInit() {
-        let loggedInUser = this._authService.getLoggedUser();
+        let loggedInUser = this.authService.getLoggedUser();
 		if(loggedInUser) {
 			this.user = loggedInUser;
 		}
@@ -30,12 +30,12 @@ export class DrinksItComponent {
 		
 		this.router.events
 	    .subscribe((event) => {
-	    	this.user = this._authService.getLoggedUser();
+	    	this.user = this.authService.getLoggedUser();
 	    });
     }
     
     logout() {
-    	this._authService.cleanLoggedUser();
+    	this.authService.logout();
         this.router.navigateByUrl('app/login');
     }
 }

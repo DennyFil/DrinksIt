@@ -1,8 +1,8 @@
-import { Component, Injectable }  from '@angular/core';
-import { Http }                   from '@angular/http';
+import { Component, Injectable }	from '@angular/core';
+import { Http }						from '@angular/http';
 
-import { HttpPacketService }      from './httpPacket.service';
-import { User }           			  from './models/user';
+import { HttpPacketService }		from './httpPacket.service';
+import { User }						from './models/user';
 
 export class UserCreds {
     constructor(
@@ -17,14 +17,14 @@ export class UserCreds {
 export class AuthenticationService {
 
 	user: User;
-    constructor(private _httpPacketService: HttpPacketService,
+    constructor(private httpPacketService: HttpPacketService,
         private http: Http) { }
 
     login(userCreds, successCbk, failureCbk) {
 
         let url = 'login';
         let body = JSON.stringify({});
-        let packetOptions = this._httpPacketService.computePacketOptions('POST', userCreds);
+        let packetOptions = this.httpPacketService.computePacketOptions('POST', userCreds);
 
         this.http.post(url, body, packetOptions)
             .map(response => response.json())
@@ -48,6 +48,11 @@ export class AuthenticationService {
         	}
         }
     }
+	
+	isLoggedIn() {
+		let userInfo = JSON.parse(localStorage.getItem('userInfo'));
+		return (userInfo !== null);
+	}
 
 	getLoggedUser() {
         return JSON.parse(localStorage.getItem('userInfo'));
@@ -57,7 +62,7 @@ export class AuthenticationService {
         return JSON.parse(localStorage.getItem('userCreds'));
     }
 
-    cleanLoggedUser() {
+    logout() {
         localStorage.removeItem('userInfo');
         localStorage.removeItem('userCreds');
     }

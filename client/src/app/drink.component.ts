@@ -1,21 +1,19 @@
 import { Component, Injectable }            from '@angular/core';
-import { Router }                           from '@angular/router';
 import 'rxjs/add/operator/map';
 import 'rxjs/add/operator/catch';
 import { Overlay, overlayConfigFactory }    from 'angular2-modal';
 import { Modal, BSModalContext }            from 'angular2-modal/plugins/bootstrap';
 
-import { ErrorManager } 			              from './errorManager';
-import { AuthenticationService } 	          from './authentication.service';
-import { RestService }           	          from './restService';
-import { Bar }           			              from './models/bar';
+import { ErrorManager } 			        from './errorManager';
+import { RestService }           	        from './restService';
+import { Bar }           			        from './models/bar';
 import { DrinkEditContext, DrinkEdit }      from './drinkEdit';
-import { Drink }           			            from './models/drink';
+import { Drink }           			        from './models/drink';
 
 @Component({
     selector: 'drinksit-drink',
     templateUrl: './drinks.html',
-    providers: [ErrorManager, AuthenticationService, RestService, Modal]
+    providers: [ErrorManager, RestService, Modal]
 })
 export class DrinkComponent {
 
@@ -24,31 +22,26 @@ export class DrinkComponent {
     bars = [];
     selectedBar = { id: ''};
 
-    constructor(private _router: Router,
-        private _errorManager: ErrorManager,
-        private _authService: AuthenticationService,
-        private _restService: RestService,
+    constructor(
+        private errorManager: ErrorManager,
+        private restService: RestService,
         public modal: Modal) { }
 
     ngOnInit() {
-        if (this._authService.getLoggedUser()) {
-            this.setTitle();
-            this.getBars();
-        } else {
-            this._router.navigateByUrl('app/login');
-        }
+        this.setTitle();
+		this.getBars();
     }
 
     setTitle() {
-        this.title = 'Drink';
+        this.title = 'Drinks';
     }
 
     getDrinks() {
 
-		this._restService.getDrinks(this._authService.getUserCreds(), this.selectedBar.id)
+		this.restService.getDrinks(this.selectedBar.id)
 			.subscribe(
             	data => this.drinks = data, // Bind to view
-                err => this._errorManager.displayError(err.message));
+                err => this.errorManager.displayError(err.message));
     }
 
     onBarSelected() {
@@ -59,10 +52,10 @@ export class DrinkComponent {
 
     getBars() {
 
-		this._restService.getBars(this._authService.getUserCreds())
+		this.restService.getBars()
 			.subscribe(
             	data => this.bars = data, // Bind to view
-                err => this._errorManager.displayError(err.message));
+                err => this.errorManager.displayError(err.message));
     }
 
     editDrink(drink) {
@@ -74,7 +67,7 @@ export class DrinkComponent {
 
 		drink.barId = this.selectedBar.id;
 
-    return this.modal.open(DrinkEdit,
+		return this.modal.open(DrinkEdit,
     		overlayConfigFactory(
     		{
 	    		onSubmitCallback: () => {

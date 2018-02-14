@@ -3,7 +3,7 @@
 		DrinksIt
 	</h1>
 
-	<div *ngIf="this._authService.getLoggedUser()" class="row">
+	<div *ngIf="this.authService.isLoggedIn()" class="row">
 		<div class="col-sm-12">
 			<div class="pull-right">
 				{{ user.userName }}
@@ -12,7 +12,7 @@
 		</div>
 	</div>
 	
-	<div *ngIf="this._authService.getLoggedUser()" class="row">
+	<div *ngIf="this.authService.isLoggedIn()" class="row">
 		<div class="btn-group btn-group-justified" role="group">
 		  <div class="btn-group" role="group">
 			<button type="button" routerLink="app/orders" routerLinkActive="active" class="btn btn-default">Orders</button>
