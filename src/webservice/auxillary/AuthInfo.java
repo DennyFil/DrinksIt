@@ -2,14 +2,18 @@ package webservice.auxillary;
 
 public class AuthInfo {
 	String userName;
-	String passwordHash;
+	String token;
 	
-	public AuthInfo(String userName, String passwordHash) {
+	public AuthInfo(String userName, String token) {
 		this.userName = userName;
-		this.passwordHash = passwordHash;
+		this.token = token;
 	}
 	
 	public String getUserName(){
 		return this.userName;
+	}
+	
+	public String getToken(){
+		return this.token;
 	}
 }

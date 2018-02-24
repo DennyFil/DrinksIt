@@ -13,13 +13,21 @@ export class HttpPacketService {
     computeHeaders(contentType) {
         return new Headers({ 'Content-Type': contentType });
     }
+	
+	computePacketOptionsNoCreds() {
+		
+		let contentType = 'application/json';
+        let contentHeaders = this.computeHeaders(contentType);
+		
+		return new RequestOptions({ headers: contentHeaders });
+	}
 
-    computePacketOptions(method, user) {
+    computePacketOptions(credentials) {
 
         let contentType = 'application/json';
         let contentHeaders = this.computeHeaders(contentType);
 
-        let authHeader = user.userName + ':' + user.password;
+        let authHeader = credentials.userName + ':' + credentials.token;
         contentHeaders.append('Authorization', authHeader);
 
         return new RequestOptions({ headers: contentHeaders });

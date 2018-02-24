@@ -1,11 +1,10 @@
-import { Component } from '@angular/core';
-import { Router } from '@angular/router';
-import {Observable} from 'rxjs/Rx';
+import { Component } 						from '@angular/core';
+import { Router } 							from '@angular/router';
+import {Observable} 						from 'rxjs/Rx';
 import 'rxjs/add/operator/map';
 
-import { AuthenticationService } 	from './authentication.service';
-import { HttpPacketService } 		from './httpPacket.service';
-import { User }           			from './models/user';
+import { AuthenticationService, UserInfo } 	from './authentication.service';
+import { HttpPacketService } 				from './httpPacket.service';
 
 @Component({
     selector: 'drinksit',
@@ -14,15 +13,15 @@ import { User }           			from './models/user';
 })
 export class DrinksItComponent {
 	
-	user: User;
+	userInfo: UserInfo;
 	
 	constructor(private router: Router, private authService:AuthenticationService) {		
 	}
 	
 	ngOnInit() {
-        let loggedInUser = this.authService.getLoggedUser();
-		if(loggedInUser) {
-			this.user = loggedInUser;
+        let userInfo = this.authService.getUserInfo();
+		if(userInfo) {
+			this.userInfo = userInfo;
 		}
 		else {
 			this.router.navigateByUrl('app/login');
@@ -30,7 +29,7 @@ export class DrinksItComponent {
 		
 		this.router.events
 	    .subscribe((event) => {
-	    	this.user = this.authService.getLoggedUser();
+	    	this.userInfo = this.authService.getUserInfo();
 	    });
     }
     

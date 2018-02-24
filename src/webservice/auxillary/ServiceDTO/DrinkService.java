@@ -48,21 +48,11 @@ public class DrinkService {
 		return (List<Drink>)session.createQuery(query).list();
 	}	
 
-	public Drink GetDrink(int drinkId, String userName) throws Exception
+	public Drink GetDrink(int drinkId) throws Exception
 	{
 		Session session = sessionFactory.getCurrentSession();
 
-		User user = (User) session.get(User.class, userName);
-		Drink drink = (Drink) session.get(Drink.class, drinkId);
-
-		if (drink != null && user != null && drink.getBarId() == user.getBarId())
-		{
-			return drink;
-		}
-		else
-		{
-			throw new Exception("Drink " + drinkId + " not available for " + userName);
-		}
+		return (Drink) session.get(Drink.class, drinkId);
 	}
 
 	public Drink Create(Drink newDrink) throws Exception

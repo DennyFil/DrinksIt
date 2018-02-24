@@ -29,8 +29,13 @@ export class LoginComponent {
 			function() {
 				self.router.navigateByUrl('app/orders');
 			},
-			function() {
-				self.errorManager.displayError('Failed to login');
+			function(err) {
+				if (err) {
+					self.errorManager.displayError(err);
+				}
+				else {
+					self.errorManager.displayError('Failed to login');
+				}
 			});
     }
 }

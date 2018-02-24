@@ -2,12 +2,19 @@ import { Component, Injectable }	from '@angular/core';
 import { Http }						from '@angular/http';
 
 import { HttpPacketService }		from './httpPacket.service';
-import { User }						from './models/user';
 
 export class UserCreds {
     constructor(
         public userName: string,
-        public password: string) { }
+        public token: string) { }
+}
+
+export class UserInfo {
+    constructor(
+        public userName: string,
+        public barName: string,
+        public barId: number,
+        public token: string) { }
 }
 
 @Injectable()
@@ -16,29 +23,27 @@ export class UserCreds {
 })
 export class AuthenticationService {
 
-	user: User;
     constructor(private httpPacketService: HttpPacketService,
         private http: Http) { }
 
     login(userCreds, successCbk, failureCbk) {
 
         let url = 'login';
-        let body = JSON.stringify({});
-        let packetOptions = this.httpPacketService.computePacketOptions('POST', userCreds);
+        let body = JSON.stringify(userCreds);
+		let packetOptions = this.httpPacketService.computePacketOptionsNoCreds();
 
         this.http.post(url, body, packetOptions)
             .map(response => response.json())
             .subscribe(
-                data => this.loginResponseCbk(data, successCbk, failureCbk, userCreds),
-                err => failureCbk()
+                data => this.loginResponseCbk(data, successCbk, failureCbk),
+                err => failureCbk(err._body)
                 );
     }
 
-	loginResponseCbk(userInfo, successCbk, failureCbk, userCreds) {
+	loginResponseCbk(userInfo, successCbk, failureCbk) {
 
-		if (userInfo) {
-        	localStorage.setItem('userInfo', JSON.stringify(userInfo));
-        	localStorage.setItem('userCreds', JSON.stringify(userCreds));
+		if (userInfo.token) {
+        	localStorage.setItem('drinksItUserInfo', JSON.stringify(userInfo));
         	if (successCbk) {
         		successCbk();
         	}
@@ -48,22 +53,25 @@ export class AuthenticationService {
         	}
         }
     }
+
+	getUserInfo() {
+		return JSON.parse(localStorage.getItem('drinksItUserInfo'));
+    }
 	
 	isLoggedIn() {
-		let userInfo = JSON.parse(localStorage.getItem('userInfo'));
-		return (userInfo !== null);
+		let userInfo = this.getUserInfo();
+		return (userInfo && userInfo.token && userInfo.token.length !== 0);
+	}
+	
+	getCredentials() {
+		let userInfo = this.getUserInfo();
+		return {
+			userName: userInfo.userName,
+			token: userInfo.token
+		};
 	}
 
-	getLoggedUser() {
-        return JSON.parse(localStorage.getItem('userInfo'));
-    }
-
-	getUserCreds() {
-        return JSON.parse(localStorage.getItem('userCreds'));
-    }
-
     logout() {
-        localStorage.removeItem('userInfo');
-        localStorage.removeItem('userCreds');
+        localStorage.removeItem('drinksItUserInfo');
     }
 }

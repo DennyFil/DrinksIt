@@ -30,10 +30,9 @@ public class BaseController {
 			int idxSeparator = authHeader.indexOf(":");
 
 			String userName = authHeader.substring(0, idxSeparator);
-			String receivedPassword = authHeader.substring(idxSeparator + 1, authHeader.length());
-			String receivedPasswordHash = HashComputor.ComputeSHA256(receivedPassword);
+			String token = authHeader.substring(idxSeparator + 1, authHeader.length());
 
-			return new AuthInfo(userName, receivedPasswordHash);
+			return new AuthInfo(userName, token);
 		}
 		catch (Exception e)
 		{

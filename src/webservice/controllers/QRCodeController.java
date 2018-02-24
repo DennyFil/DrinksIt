@@ -38,11 +38,13 @@ public class QRCodeController extends BaseController {
 			logger.debug("GET /qrcode: not authorized for " + userInfo.getUserName());
 			return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(null);
 		}
+		
+		// TDB: Access rights
 
 		try
 		{
 			// Request DB for Drink name, price, size and Bar Id based on drinkId
-			Drink drink = drinkService.GetDrink(Integer.valueOf(drinkId), userInfo.getUserName());
+			Drink drink = drinkService.GetDrink(Integer.valueOf(drinkId));
 
 			// Generate QR Code
 			String serverUrl = environment.getRequiredProperty("server.url");

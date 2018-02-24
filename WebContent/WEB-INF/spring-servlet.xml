@@ -110,5 +110,8 @@
 	
 	<bean id="arService" class="webservice.auxillary.AccessRightsService">
 	</bean>
+	
+	<bean id="tokenService" class="webservice.auxillary.TokenService">
+	</bean>
 
 </beans>  

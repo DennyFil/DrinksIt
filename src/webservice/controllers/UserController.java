@@ -1,5 +1,6 @@
 package webservice.controllers;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -14,6 +15,7 @@ import webservice.auxillary.AuthInfo;
 import webservice.auxillary.ServiceDTO.UserService;
 import webservice.auxillary.DTO.Bar;
 import webservice.auxillary.DTO.User;
+import webservice.auxillary.DTO.UserInfo;
 
 @RestController
 @RequestMapping("/users")
@@ -23,9 +25,18 @@ public class UserController extends GenController<User> {
 	UserService userService;
 
 	@RequestMapping("/list")
-	public ResponseEntity<List<User>> GetUsers(HttpServletRequest request) throws Exception {
+	public ResponseEntity<List<UserInfo>> GetUsers(HttpServletRequest request) throws Exception {
 
-		return list(request);		
+		List<User> users = userService.GetUsers();
+		
+		// Remap to userInfo		
+		List<UserInfo> usersInfo = new ArrayList<UserInfo>();
+		
+		for (User user : users){
+			usersInfo.add(new UserInfo(user));
+		} 
+		
+		return ResponseEntity.ok(usersInfo);
 	}
 	
 	@Override

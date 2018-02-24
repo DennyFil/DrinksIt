@@ -17,18 +17,18 @@ export class RestService {
         private httpPacketService: HttpPacketService,
 		private authService: AuthenticationService,
         private http: Http) {
-			this.credentials = this.authService.getUserCreds();
+			this.credentials = this.authService.getCredentials();
 		}
 		
 	getBars(): Observable<Bar[]> {
-		let packetOptions = this.httpPacketService.computePacketOptions('GET', this.credentials);
+		let packetOptions = this.httpPacketService.computePacketOptions(this.credentials);
 		return this.http.get('bars/list', packetOptions)
 		  .map((res: Response) => res.json())
 		  .catch((error: any) => Observable.throw(error.json().error || 'Server error'));
 	}
 
 	postBar(bar): Observable<Bar> {
-		let packetOptions = this.httpPacketService.computePacketOptions('POST', this.credentials);
+		let packetOptions = this.httpPacketService.computePacketOptions(this.credentials);
 			let body = JSON.stringify(bar);
 			return this.http.post('bars/post', body, packetOptions)
 		  .map((res: Response) => res.json())
@@ -37,14 +37,14 @@ export class RestService {
 
 	getDrinks(barId): Observable<Drink[]> {
 
-		let packetOptions = this.httpPacketService.computePacketOptions('GET', this.credentials);
+		let packetOptions = this.httpPacketService.computePacketOptions(this.credentials);
 		return this.http.get('drinks/list' + '?barId=' + barId, packetOptions)
 		  .map((res: Response) => res.json())
 		  .catch((error: any) => Observable.throw(error.json().error || 'Server error'));
 	}
 
 	postDrink(drink): Observable<Drink> {
-		let packetOptions = this.httpPacketService.computePacketOptions('POST', this.credentials);
+		let packetOptions = this.httpPacketService.computePacketOptions(this.credentials);
 			let body = JSON.stringify(drink);
 		return this.http.post('drinks/post', body, packetOptions)
 			.map((res: Response) => res.json())
@@ -52,14 +52,14 @@ export class RestService {
 	}
 
 	getOrders(): Observable<Order[]> {
-		let packetOptions = this.httpPacketService.computePacketOptions('POST', this.credentials);
+		let packetOptions = this.httpPacketService.computePacketOptions(this.credentials);
 		return this.http.get('orders', packetOptions)
 			.map((res: Response) => res.json())
 			.catch((error: any) => Observable.throw(error.json().error || 'Server error'));
 	}
 
 	updateOrderStatus(order): Observable<Order> {
-		let packetOptions = this.httpPacketService.computePacketOptions('POST', this.credentials);
+		let packetOptions = this.httpPacketService.computePacketOptions(this.credentials);
 		let body = JSON.stringify({'orderId': order.id, 'status': order.status} );
 		return this.http.post('updateOrderStatus' + '?orderId=' + order.id + '&status=' + order.status, body, packetOptions)
 			.map((res: Response) => res.json())
@@ -67,14 +67,14 @@ export class RestService {
 	}
 
 	getUsers(): Observable<User[]> {
-		let packetOptions = this.httpPacketService.computePacketOptions('GET', this.credentials);
+		let packetOptions = this.httpPacketService.computePacketOptions(this.credentials);
 		return this.http.get('users/list', packetOptions)
 			.map((res: Response) => res.json())
 			.catch((error: any) => Observable.throw(error.json().error || 'Server error'));
 	}
 
 	postUser(user): Observable<User> {
-		let packetOptions = this.httpPacketService.computePacketOptions('POST', this.credentials);
+		let packetOptions = this.httpPacketService.computePacketOptions(this.credentials);
 	    let body = JSON.stringify(user);
 		return this.http.post('users/post', body, packetOptions)
 			.map((res: Response) => res.json())
@@ -84,7 +84,7 @@ export class RestService {
 	getReport(dateFrom, dateTo, onErrorCbk) {
 
 		let body = JSON.stringify({ 'endDate': dateTo, 'startDate': dateFrom });
-		let packetOptions = this.httpPacketService.computePacketOptions('POST', this.credentials);
+		let packetOptions = this.httpPacketService.computePacketOptions(this.credentials);
 		packetOptions.responseType = ResponseContentType.ArrayBuffer;
 
 		this.http.post('ordersReport?startDate=' + dateFrom + '&endDate=' + dateTo, body, packetOptions)
@@ -102,7 +102,7 @@ export class RestService {
 	getQRCode(drinkId) {
 
         let body = JSON.stringify({ 'drinkId': drinkId });
-        let packetOptions = this.httpPacketService.computePacketOptions('POST', this.credentials);
+        let packetOptions = this.httpPacketService.computePacketOptions(this.credentials);
 
         return this.http.post('qrcode?drinkId=' + drinkId, body, packetOptions)
             .map(response => response.json())

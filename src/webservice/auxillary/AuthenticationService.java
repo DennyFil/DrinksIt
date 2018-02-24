@@ -18,16 +18,20 @@ public class AuthenticationService {
 
 	@Autowired
 	UserService userService;
+	
+	@Autowired
+	TokenService tokenService;
 
-    public boolean IsAuthorized(AuthInfo userInfo) {
+    public boolean IsAuthorized(AuthInfo authInfo) {
 
         try {
-        	User user = userService.GetUser(userInfo.userName);
+        	User user = userService.GetUser(authInfo.userName);
             assert (user != null);
             
-            if (!userInfo.passwordHash.equals(user.getPasswordHash())) {
-            	logger.error("AuthenticationService: wrong password");
-            	logger.error("AuthenticationService: " + userInfo.userName + " is not authorized");
+            // Check token validity
+            if (tokenService.CheckToken(authInfo.getToken(), user) == false) {
+            	logger.error("AuthenticationService: token no valid");
+            	logger.error("AuthenticationService: " + authInfo.userName + " is not authorized");
             	return false;
             }
 

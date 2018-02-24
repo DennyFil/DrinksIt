@@ -8,6 +8,7 @@
 
 	<properties>
 		<springframework.version>5.0.1.RELEASE</springframework.version>
+		<jwt.version>3.3.0</jwt.version>
 		<hibernate.version>5.2.12.Final</hibernate.version>
 		<mysql.connector.version>6.0.6</mysql.connector.version>
 		<flywaydb.version>4.2.0</flywaydb.version>
@@ -66,6 +67,11 @@
 			<groupId>org.springframework</groupId>
 			<artifactId>spring-webmvc</artifactId>
 			<version>${springframework.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>com.auth0</groupId>
+			<artifactId>java-jwt</artifactId>
+			<version>${jwt.version}</version>
 		</dependency>
 		<dependency>
 			<groupId>javax.servlet</groupId>
@@ -192,8 +198,9 @@
 					<failOnMissingWebXml>false</failOnMissingWebXml>
 				</configuration>
 			</plugin>
-						
-			<!-- Plugin to execute command "npm install" and "npm run-script build" inside /DrinksIt/client directory -->
+
+			<!-- Plugin to execute command "npm install" and "npm run-script build" 
+				inside /DrinksIt/client directory -->
 			<plugin>
 				<groupId>com.github.eirslett</groupId>
 				<artifactId>frontend-maven-plugin</artifactId>
@@ -203,19 +210,13 @@
 					<workingDirectory>client</workingDirectory>
 				</configuration>
 				<executions>
-					<!-- It will install nodejs and npm 
-					<execution>
-						<id>install node and npm</id>
-						<goals>
-							<goal>install-node-and-npm</goal>
-						</goals>
-						<configuration>
-							<nodeVersion>${node.version}</nodeVersion>
-							<npmVersion>${npm.version}</npmVersion>
-						</configuration>
-					</execution>-->
+					<!-- It will install nodejs and npm <execution> <id>install node and 
+						npm</id> <goals> <goal>install-node-and-npm</goal> </goals> <configuration> 
+						<nodeVersion>${node.version}</nodeVersion> <npmVersion>${npm.version}</npmVersion> 
+						</configuration> </execution> -->
 
-					<!-- It will execute command "npm install" inside "/DrinksIt/client" directory -->
+					<!-- It will execute command "npm install" inside "/DrinksIt/client" 
+						directory -->
 					<execution>
 						<id>npm install</id>
 						<goals>
@@ -226,8 +227,8 @@
 						</configuration>
 					</execution>
 
-					<!-- It will execute command "npm run-script build" inside "/client" directory 
-						to clean and create "/dist" directory -->
+					<!-- It will execute command "npm run-script build" inside "/client" 
+						directory to clean and create "/dist" directory -->
 					<execution>
 						<id>npm run-script build</id>
 						<goals>
@@ -240,8 +241,8 @@
 				</executions>
 			</plugin>
 
-			<!-- Plugin to copy the content of /DrinksIt/client/dist directory to output 
-				directory (ie/ /target/DrinksItAdmin-1.0/) -->
+			<!-- Plugin to copy the content of /DrinksIt/client/dist directory to 
+				output directory (ie/ /target/DrinksItAdmin-1.0/) -->
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-resources-plugin</artifactId>
