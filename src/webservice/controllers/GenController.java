@@ -39,19 +39,19 @@ public abstract class GenController<T extends BaseItem> extends BaseController {
 	}
 
 	@RequestMapping("/post")
-	public ResponseEntity<BaseItem> Post(HttpServletRequest request, @RequestBody T newItem) throws Exception {
+	public ResponseEntity Post(HttpServletRequest request, @RequestBody T newItem) throws Exception {
 
 		AuthInfo userInfo = getAuthInfo(request);
 		if (! authService.IsAuthorized(userInfo))
 		{
 			logger.debug("POST /post: not authorized for " + userInfo.getUserName());
-			return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(null);
+			return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Not authorized");
 		}
 		
 		if ( ! hasPostRight(userInfo, newItem))
 		{
 			logger.debug("POST /post: no post right for " + userInfo.getUserName());
-			return ResponseEntity.status(HttpStatus.FORBIDDEN).body(null);
+			return ResponseEntity.status(HttpStatus.FORBIDDEN).body("Not allowed post item");
 		}
 		
 		try {
@@ -68,16 +68,16 @@ public abstract class GenController<T extends BaseItem> extends BaseController {
 			logger.debug(e.getMessage());
 		}
 
-		return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
+		return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Failed to post item");
 	}
 	
-	protected ResponseEntity<List<T>> list(HttpServletRequest request) throws Exception {
+	protected ResponseEntity list(HttpServletRequest request) throws Exception {
 
 		AuthInfo userInfo = getAuthInfo(request);
 		if (! authService.IsAuthorized(userInfo))
 		{
 			logger.debug("GET /list: not authorized for " + userInfo.getUserName());
-			return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(null);
+			return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Not authorized");
 		}
 
 		try {			
@@ -87,6 +87,6 @@ public abstract class GenController<T extends BaseItem> extends BaseController {
 			logger.debug(e.getMessage());
 		}
 
-		return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
+		return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Failed to list items");
 	}
 }

@@ -27,7 +27,6 @@ public class LoginController extends BaseController {
 	@RequestMapping("/login")
 	public ResponseEntity login(HttpServletRequest request, @RequestBody User userPosted) throws Exception
 	{
-		String errorMsg = "";
 		logger.debug("POST /login");
 		// Check user exists and password matches
 		try {
@@ -42,7 +41,7 @@ public class LoginController extends BaseController {
 				return ResponseEntity.ok(userInfo);
 			}
 			else {
-				errorMsg = "Wrong username or password";
+				return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Wrong username or password");
 			}
 		}
 		catch (Exception e)
@@ -51,6 +50,6 @@ public class LoginController extends BaseController {
 		}
 
 		logger.debug("POST /login: login failed");
-		return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(errorMsg);
+		return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Failed to check login credentials");
 	}
 }

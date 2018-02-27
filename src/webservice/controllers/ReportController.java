@@ -36,7 +36,7 @@ public class ReportController extends BaseController {
 	BarService barService;
 
 	@RequestMapping("/ordersReport")
-	public ResponseEntity<byte []> ExportOrders(HttpServletRequest request, @RequestParam String startDate, @RequestParam String endDate) throws Exception {
+	public ResponseEntity ExportOrders(HttpServletRequest request, @RequestParam String startDate, @RequestParam String endDate) throws Exception {
 
 		AuthInfo userInfo = getAuthInfo(request);
 		String userName = userInfo.getUserName();
@@ -45,7 +45,7 @@ public class ReportController extends BaseController {
 		if (! authService.IsAuthorized(userInfo))
 		{
 			logger.debug("GET /orderReport: not authorized for " + userName);
-			return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(null);
+			return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Not authorized");
 		}
 
 		try {
@@ -89,10 +89,9 @@ public class ReportController extends BaseController {
 			return response;
 		}
 		catch (Exception e) {
-			logger.error("REPORT GEN FAILURE");			
 			logger.debug(e.getMessage());
 		}
 
-		return new ResponseEntity<byte[]>(HttpStatus.NOT_FOUND);
+		return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Failed to generate report");
 	}
 }

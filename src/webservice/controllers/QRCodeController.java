@@ -36,7 +36,7 @@ public class QRCodeController extends BaseController {
 		if (! authService.IsAuthorized(userInfo))
 		{
 			logger.debug("GET /qrcode: not authorized for " + userInfo.getUserName());
-			return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(null);
+			return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Not authorized");
 		}
 		
 		try
@@ -76,10 +76,9 @@ public class QRCodeController extends BaseController {
 		}
 		catch (Exception e)
 		{
-			logger.error("GEN QR CODE FAILURE: (drinkId: " + drinkId + ")");
 			logger.error(ExceptionUtils.getStackTrace(e));
 		}
 
-		return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("GEN QR CODE FAILURE: (drinkId: " + drinkId + ")");
+		return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Failed to generate QR code (drinkId: " + drinkId + ")");
 	}
 }

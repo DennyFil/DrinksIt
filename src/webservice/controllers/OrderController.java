@@ -35,7 +35,7 @@ public class OrderController extends BaseController {
 	private Environment environment;
 
 	@RequestMapping("/recentOrders")
-	public ResponseEntity<List<Order>> GetRecentOrders(HttpServletRequest request) throws Exception {
+	public ResponseEntity GetRecentOrders(HttpServletRequest request) throws Exception {
 
 		AuthInfo userInfo = getAuthInfo(request);
 		logger.debug("GET /recentOrders for: " + userInfo.getUserName());
@@ -43,7 +43,7 @@ public class OrderController extends BaseController {
 		if (! authService.IsAuthorized(userInfo))
 		{
 			logger.debug("GET /recentOrders: not authorized for " + userInfo.getUserName());
-			return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(null);
+			return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Not authorized");
 		}
 
 		try {
@@ -66,11 +66,11 @@ public class OrderController extends BaseController {
 			logger.debug(e.getMessage());
 		}
 
-		return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
+		return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Failed to get recent orders");
 	}
 
 	@RequestMapping("/orders")
-	public ResponseEntity<List<Order>> GetOrders(HttpServletRequest request) throws Exception {
+	public ResponseEntity GetOrders(HttpServletRequest request) throws Exception {
 
 		AuthInfo userInfo = getAuthInfo(request);
 		logger.debug("GET /orders for " + userInfo.getUserName());
@@ -78,7 +78,7 @@ public class OrderController extends BaseController {
 		if (! authService.IsAuthorized(userInfo))
 		{
 			logger.debug("GET /orders: not authorized for " + userInfo.getUserName());
-			return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(null);
+			return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Not authorized");
 		}
 
 		try {
@@ -91,11 +91,11 @@ public class OrderController extends BaseController {
 			logger.debug(e.getMessage());
 		}
 
-		return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
+		return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Failed to get orders");
 	}
 
 	@RequestMapping("/updateOrderStatus")
-	public ResponseEntity<Order> UpdateOrderStatus(HttpServletRequest request, HttpSession session, @RequestParam Integer orderId) throws Exception {  
+	public ResponseEntity UpdateOrderStatus(HttpServletRequest request, HttpSession session, @RequestParam Integer orderId) throws Exception {  
 
 		logger.debug("GET /updateOrderStatus for order " + orderId);
 
@@ -103,7 +103,7 @@ public class OrderController extends BaseController {
 		if (! authService.IsAuthorized(userInfo))
 		{
 			logger.debug("GET /updateOrderStatus: not authorized for " + userInfo.getUserName());
-			return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(null);
+			return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Not authorized");
 		}
 
 		try {
@@ -136,11 +136,11 @@ public class OrderController extends BaseController {
 			logger.debug(e.getMessage());
 		}
 
-		return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
+		return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Failed to update order status");
 	}
 
 	@RequestMapping("/postOrder")
-	public ResponseEntity<Order> PostOrder(@RequestParam Integer drinkId, 
+	public ResponseEntity PostOrder(@RequestParam Integer drinkId, 
 			@RequestParam Integer barId, 
 			@RequestParam String drinkName, 
 			@RequestParam Double drinkSize, 
@@ -162,6 +162,6 @@ public class OrderController extends BaseController {
 			logger.debug(e.getMessage());
 		}		
 
-		return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
+		return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Failed to post order");
 	}
 }

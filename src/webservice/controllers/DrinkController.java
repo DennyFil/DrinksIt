@@ -24,7 +24,7 @@ public class DrinkController extends GenController<Drink> {
 	DrinkService drinkService;
 	
 	@RequestMapping("/list")
-	public ResponseEntity<List<Drink>> GetBarDrinks(HttpServletRequest request, @RequestParam Integer barId) throws Exception {
+	public ResponseEntity GetBarDrinks(HttpServletRequest request, @RequestParam Integer barId) throws Exception {
 
 		logger.debug("GET /drinks for bar " + barId);
 
@@ -32,7 +32,13 @@ public class DrinkController extends GenController<Drink> {
 		if (! authService.IsAuthorized(userInfo))
 		{
 			logger.debug("GET /drinks: not authorized for " + userInfo.getUserName());
-			return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(null);
+			return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Not authorized");
+		}
+		
+		if (! arService.isBarAdmin(userInfo, barId))
+		{
+			logger.debug("GET /drinks: no right for " + userInfo.getUserName());
+			return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Not allowed to get drinks for bar: " + barId);
 		}
 
 		try {
@@ -44,7 +50,7 @@ public class DrinkController extends GenController<Drink> {
 			logger.debug(e.getMessage());
 		}
 
-		return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
+		return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Failed to get drinks");
 	}
 
 	@Override
@@ -76,7 +82,14 @@ public class DrinkController extends GenController<Drink> {
 	}
 
 	@Override
-	protected ResponseEntity<List<Drink>> getListItems(AuthInfo userInfo) throws Exception {
+	protected ResponseEntity getListItems(AuthInfo userInfo) throws Exception {
+		
+		if (! arService.checkRight(userInfo, "list"))
+		{
+			logger.debug("GET /drinks: no right for " + userInfo.getUserName());
+			return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Not allowed to get drinks");
+		}
+		
 		// Drinks from master bar = all drinks
 		return ResponseEntity.ok(drinkService.GetDrinks(0));
 	}
