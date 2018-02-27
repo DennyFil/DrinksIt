@@ -105,9 +105,15 @@ public class OrderController extends BaseController {
 			logger.debug("GET /updateOrderStatus: not authorized for " + userInfo.getUserName());
 			return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Not authorized");
 		}
-
+		
 		try {
 			Order order = orderService.GetOrder(orderId);
+			
+			if (! arService.isBarAdmin(userInfo, order.getDrink().getBarId()))
+			{
+				logger.debug("GET /updateOrderStatus: no right for " + userInfo.getUserName());
+				return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Not allowed to update order");
+			}			
 
 			String status = order.getStatus();
 			switch (OrderStatus.valueOf(status))
