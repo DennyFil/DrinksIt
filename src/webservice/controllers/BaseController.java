@@ -7,6 +7,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 
+import webservice.auxillary.AccessRightsService;
 import webservice.auxillary.AuthInfo;
 import webservice.auxillary.AuthenticationService;
 import webservice.auxillary.HashComputor;
@@ -14,7 +15,10 @@ import webservice.auxillary.HashComputor;
 public class BaseController {
 	
 	protected static final Logger logger = LoggerFactory.getLogger("controllersLogger");
-
+	
+	@Autowired
+	AccessRightsService arService;
+	
 	@Autowired
 	AuthenticationService authService;
 	

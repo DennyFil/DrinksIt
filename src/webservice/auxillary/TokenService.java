@@ -38,7 +38,7 @@ public class TokenService {
     	    	.withClaim("userName", user.getUserName())
     	    	.withClaim("barId", user.getBarId())
     	    	.withClaim("passwordHash", user.getPasswordHash())
-    	    	.acceptLeeway(1) // // 1 sec for nbf ("nbf" > TODAY), iat ("iat" < TODAY) and exp ("exp" > TODAY)
+    	    	//.acceptLeeway(1) // // 1 sec for nbf ("nbf" > TODAY), iat ("iat" < TODAY) and exp ("exp" > TODAY)
     	        .build(); //Reusable verifier instance
     	    
     	    verifier.verify(token);
@@ -68,7 +68,7 @@ public class TokenService {
         	    	.withClaim("userName", user.getUserName())
         	    	.withClaim("barId", user.getBarId())
         	    	.withClaim("passwordHash", user.getPasswordHash())
-        	        .withExpiresAt(expiryDate)
+        	        //.withExpiresAt(expiryDate)
         	        .sign(algorithm);
     	} catch (UnsupportedEncodingException exception){
     	    //UTF-8 encoding not supported

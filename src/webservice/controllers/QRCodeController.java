@@ -32,19 +32,23 @@ public class QRCodeController extends BaseController {
 	{
 		logger.debug("GET /qrcode for drink " + drinkId);
 
-		AuthInfo userInfo = getAuthInfo(request);	
+		AuthInfo userInfo = getAuthInfo(request);
 		if (! authService.IsAuthorized(userInfo))
 		{
 			logger.debug("GET /qrcode: not authorized for " + userInfo.getUserName());
 			return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(null);
 		}
 		
-		// TDB: Access rights
-
 		try
 		{
 			// Request DB for Drink name, price, size and Bar Id based on drinkId
 			Drink drink = drinkService.GetDrink(Integer.valueOf(drinkId));
+						
+			if (! arService.isBarAdmin(userInfo, drink.getBarId()))
+			{
+				logger.debug("GET /qrcode: no right for " + userInfo.getUserName());
+				return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Not allowed to generate QR code for this drink");
+			}
 
 			// Generate QR Code
 			String serverUrl = environment.getRequiredProperty("server.url");
@@ -74,10 +78,6 @@ public class QRCodeController extends BaseController {
 		{
 			logger.error("GEN QR CODE FAILURE: (drinkId: " + drinkId + ")");
 			logger.error(ExceptionUtils.getStackTrace(e));
-		}
-		finally
-		{
-
 		}
 
 		return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("GEN QR CODE FAILURE: (drinkId: " + drinkId + ")");

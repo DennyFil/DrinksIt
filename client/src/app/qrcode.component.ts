@@ -27,13 +27,12 @@ export class QrCodeComponent {
     getQRCode(drinkId) {
 
         this.qrCode = null;
+		this.errorManager.cleanError();
         
         var self = this;
         this.restService.getQRCode(drinkId)
-        	.subscribe(function(response) {
-			    this.qrCode = response;
-			}, function(error) {
-				self.errorManager.displayError(error);
-			});
+			.subscribe(
+            	data => this.qrCode = data, // Bind to view
+                err => self.errorManager.displayError(err));
     }
 }

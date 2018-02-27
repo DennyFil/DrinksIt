@@ -41,7 +41,7 @@ export class DrinkComponent {
 		this.restService.getDrinks(this.selectedBar.id)
 			.subscribe(
             	data => this.drinks = data, // Bind to view
-                err => this.errorManager.displayError(err.message));
+                err => this.errorManager.displayError(err));
     }
 
     onBarSelected() {
@@ -55,7 +55,7 @@ export class DrinkComponent {
 		this.restService.getBars()
 			.subscribe(
             	data => this.bars = data, // Bind to view
-                err => this.errorManager.displayError(err.message));
+                err => this.errorManager.displayError(err));
     }
 
     editDrink(drink) {

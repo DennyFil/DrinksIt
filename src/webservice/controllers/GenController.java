@@ -37,9 +37,6 @@ public abstract class GenController<T extends BaseItem> extends BaseController {
 		
 		return createItem(newItem);
 	}
-	
-	@Autowired
-	AccessRightsService arService;
 
 	@RequestMapping("/post")
 	public ResponseEntity<BaseItem> Post(HttpServletRequest request, @RequestBody T newItem) throws Exception {
@@ -81,12 +78,6 @@ public abstract class GenController<T extends BaseItem> extends BaseController {
 		{
 			logger.debug("GET /list: not authorized for " + userInfo.getUserName());
 			return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(null);
-		}
-		
-		if ( ! arService.checkRight(userInfo, "list"))
-		{
-			logger.debug("POST /list: no list right for " + userInfo.getUserName());
-			return ResponseEntity.status(HttpStatus.FORBIDDEN).body(null);
 		}
 
 		try {			

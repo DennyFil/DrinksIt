@@ -11,6 +11,10 @@ export class ErrorManager {
 
     constructor() {
     }
+	
+	cleanError(){
+		this.errorMsg = '';
+	}
 
     // Display error message during 10 seconds
     displayError(error) {

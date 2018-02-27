@@ -13,11 +13,9 @@
 				</div>
 				<button type="submit" class="form-control btn btn-default">Generate QR Code</button>
 			</form>
-			<div *ngIf="qrCode">
-				<div *ngIf="qrCode.image">
-					<img src="data:image/png;base64,{{qrCode.image}}" />
-				</div>
-				<div *ngIf="qrCode.content">Content: {{qrCode.content}}</div>
+			<div *ngIf="this.qrCode">
+				<img class="img-responsive" src="data:image/png;base64,{{this.qrCode.image}}" />
+				<div>{{this.qrCode.content}}</div>
 			</div>
 		</div>
 	</div>
