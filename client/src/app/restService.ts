@@ -83,11 +83,10 @@ export class RestService {
 
 	getReport(dateFrom, dateTo, onErrorCbk) {
 
-		let body = JSON.stringify({ 'endDate': dateTo, 'startDate': dateFrom });
 		let packetOptions = this.httpPacketService.computePacketOptions(this.credentials);
 		packetOptions.responseType = ResponseContentType.ArrayBuffer;
 
-		this.http.post('ordersReport', body, packetOptions)
+		this.http.post('ordersReport?startDate=' + dateFrom + '&endDate=' + dateTo, null, packetOptions)
         .subscribe(function(response) {
 			let file = new Blob([response.blob()], {type: 'application/pdf'});
 			let fileURL = URL.createObjectURL(file);

@@ -37,12 +37,13 @@ public class ReportController extends BaseController {
 
 	@RequestMapping("/ordersReport")
 	public ResponseEntity ExportOrders(HttpServletRequest request, @RequestParam String startDate, @RequestParam String endDate) throws Exception {
-
-		AuthInfo userInfo = authInfoService.getAuthInfo(request);
-		String userName = userInfo.getUserName();
-		logger.debug("GET /orderReport for: " + userName);
+		
+		logger.debug("GET /orderReport");
 
 		try {
+			AuthInfo userInfo = authInfoService.getAuthInfo(request);
+			String userName = userInfo.getUserName();
+			
 			List<Order> orderListAll = orderService.GetOrders(userName);
 
 			// Tue Mar 22 22:12:34 CET 2016
