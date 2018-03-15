@@ -11,11 +11,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.env.Environment;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import webservice.auxillary.AuthInfo;
+import webservice.auxillary.AuthInfoService;
 import webservice.auxillary.DTO.Order;
 import webservice.auxillary.database.OrderComparator;
 import webservice.auxillary.database.OrderStatus;
@@ -37,14 +39,8 @@ public class OrderController extends BaseController {
 	@RequestMapping("/recentOrders")
 	public ResponseEntity GetRecentOrders(HttpServletRequest request) throws Exception {
 
-		AuthInfo userInfo = getAuthInfo(request);
+		AuthInfo userInfo = authInfoService.getAuthInfo(request);
 		logger.debug("GET /recentOrders for: " + userInfo.getUserName());
-
-		if (! authService.IsAuthorized(userInfo))
-		{
-			logger.debug("GET /recentOrders: not authorized for " + userInfo.getUserName());
-			return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Not authorized");
-		}
 
 		try {
 			List<Order> orderListAll = orderService.GetOrders(userInfo.getUserName());
@@ -72,14 +68,8 @@ public class OrderController extends BaseController {
 	@RequestMapping("/orders")
 	public ResponseEntity GetOrders(HttpServletRequest request) throws Exception {
 
-		AuthInfo userInfo = getAuthInfo(request);
+		AuthInfo userInfo = authInfoService.getAuthInfo(request);
 		logger.debug("GET /orders for " + userInfo.getUserName());
-
-		if (! authService.IsAuthorized(userInfo))
-		{
-			logger.debug("GET /orders: not authorized for " + userInfo.getUserName());
-			return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Not authorized");
-		}
 
 		try {
 			List<Order> orderListAll = orderService.GetOrders(userInfo.getUserName());
@@ -95,17 +85,12 @@ public class OrderController extends BaseController {
 	}
 
 	@RequestMapping("/updateOrderStatus")
-	public ResponseEntity UpdateOrderStatus(HttpServletRequest request, HttpSession session, @RequestParam Integer orderId) throws Exception {  
+	public ResponseEntity UpdateOrderStatus(HttpServletRequest request, HttpSession session, @RequestBody Integer orderId) throws Exception {  
 
 		logger.debug("GET /updateOrderStatus for order " + orderId);
 
-		AuthInfo userInfo = getAuthInfo(request);
-		if (! authService.IsAuthorized(userInfo))
-		{
-			logger.debug("GET /updateOrderStatus: not authorized for " + userInfo.getUserName());
-			return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Not authorized");
-		}
-		
+		AuthInfo userInfo = authInfoService.getAuthInfo(request);
+
 		try {
 			Order order = orderService.GetOrder(orderId);
 			

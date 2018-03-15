@@ -38,15 +38,9 @@ public class ReportController extends BaseController {
 	@RequestMapping("/ordersReport")
 	public ResponseEntity ExportOrders(HttpServletRequest request, @RequestParam String startDate, @RequestParam String endDate) throws Exception {
 
-		AuthInfo userInfo = getAuthInfo(request);
+		AuthInfo userInfo = authInfoService.getAuthInfo(request);
 		String userName = userInfo.getUserName();
 		logger.debug("GET /orderReport for: " + userName);
-
-		if (! authService.IsAuthorized(userInfo))
-		{
-			logger.debug("GET /orderReport: not authorized for " + userName);
-			return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Not authorized");
-		}
 
 		try {
 			List<Order> orderListAll = orderService.GetOrders(userName);

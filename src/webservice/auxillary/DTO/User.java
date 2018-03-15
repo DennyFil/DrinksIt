@@ -33,6 +33,10 @@ public class User extends BaseItem implements java.io.Serializable {
     @Transient
 	private String password;
     
+    // Not mapped
+    @Transient
+	private String token;
+    
     public User() {
     }
     
@@ -56,6 +60,10 @@ public class User extends BaseItem implements java.io.Serializable {
 
     public String getPassword() {
         return this.password;
+    }
+    
+    public String getToken() {
+        return this.token;
     }
     
     public String getPasswordHash() {

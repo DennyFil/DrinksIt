@@ -9,7 +9,21 @@
     				http://www.springframework.org/schema/mvc http://www.springframework.org/schema/mvc/spring-mvc.xsd
          			http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-4.0.xsd
 					http://www.springframework.org/schema/tx  http://www.springframework.org/schema/tx/spring-tx-4.0.xsd
-					http://www.springframework.org/schema/security http://www.springframework.org/schema/security/spring-security-4.0.xsd">
+					http://www.springframework.org/schema/security http://www.springframework.org/schema/security/spring-security.xsd">
+					
+	<!--<security:http use-expressions="true">
+        <security:intercept-url pattern="/**" access="isAuthenticated()"/>
+        <security:http-basic/>
+    </security:http>
+    
+    <security:http auto-config="true">
+	    <security:custom-filter after="BASIC_AUTH_FILTER" ref="authenticationFilter" />
+	</security:http>
+ 
+    <security:authentication-manager>
+        <security:authentication-provider
+          ref="customAuthenticationProvider" />
+    </security:authentication-manager>-->
 
 	<context:property-placeholder location="classpath:server.properties" />
 
@@ -92,6 +106,9 @@
 
 	<bean id="persistenceExceptionTranslationPostProcessor"
 		class="org.springframework.dao.annotation.PersistenceExceptionTranslationPostProcessor" />
+	
+	<!--<bean id="authenticationFilter" class="webservice.auxillary.AuthenticationFilter">
+	</bean>-->
 
 	<bean id="userService" class="webservice.auxillary.ServiceDTO.UserService">
 	</bean>
@@ -105,13 +122,19 @@
 	<bean id="drinkService" class="webservice.auxillary.ServiceDTO.DrinkService">
 	</bean>
 
-	<bean id="authService" class="webservice.auxillary.AuthenticationService">
+	<bean id="authInfoService" class="webservice.auxillary.AuthInfoService">
 	</bean>
 	
 	<bean id="arService" class="webservice.auxillary.AccessRightsService">
 	</bean>
 	
 	<bean id="tokenService" class="webservice.auxillary.TokenService">
+	</bean>
+	
+	<bean id="tokenAuthenticationProvider" class="webservice.auxillary.TokenAuthenticationProvider">
+	</bean>
+	
+	<bean id="userNamePasswordAuthenticationProvider" class="webservice.auxillary.UserNamePasswordAuthenticationProvider">
 	</bean>
 
 </beans>  

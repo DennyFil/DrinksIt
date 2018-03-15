@@ -60,8 +60,8 @@ export class RestService {
 
 	updateOrderStatus(order): Observable<Order> {
 		let packetOptions = this.httpPacketService.computePacketOptions(this.credentials);
-		let body = JSON.stringify({'orderId': order.id, 'status': order.status} );
-		return this.http.post('updateOrderStatus' + '?orderId=' + order.id + '&status=' + order.status, body, packetOptions)
+		let body = JSON.stringify(order.id);
+		return this.http.post('updateOrderStatus', body, packetOptions)
 			.map((res: Response) => res.json())
 			.catch((error: any) => Observable.throw(error._body));
 	}
@@ -87,7 +87,7 @@ export class RestService {
 		let packetOptions = this.httpPacketService.computePacketOptions(this.credentials);
 		packetOptions.responseType = ResponseContentType.ArrayBuffer;
 
-		this.http.post('ordersReport?startDate=' + dateFrom + '&endDate=' + dateTo, body, packetOptions)
+		this.http.post('ordersReport', body, packetOptions)
         .subscribe(function(response) {
 			let file = new Blob([response.blob()], {type: 'application/pdf'});
 			let fileURL = URL.createObjectURL(file);
@@ -101,10 +101,10 @@ export class RestService {
 
 	getQRCode(drinkId) {
 
-        let body = JSON.stringify({ 'drinkId': drinkId });
+        let body = JSON.stringify(drinkId);
         let packetOptions = this.httpPacketService.computePacketOptions(this.credentials);
 
-        return this.http.post('qrcode?drinkId=' + drinkId, body, packetOptions)
+        return this.http.post('qrcode', body, packetOptions)
             .map(response => response.json())
             .catch((error: any) => Observable.throw(error._body));
     }

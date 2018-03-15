@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.env.Environment;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
@@ -28,21 +29,16 @@ public class QRCodeController extends BaseController {
 	private Environment environment;
 
 	@RequestMapping("/qrcode")
-	public ResponseEntity GetQRCode(HttpServletRequest request, @RequestParam String drinkId) throws Exception
+	public ResponseEntity GetQRCode(HttpServletRequest request, @RequestBody Integer drinkId) throws Exception
 	{
 		logger.debug("GET /qrcode for drink " + drinkId);
 
-		AuthInfo userInfo = getAuthInfo(request);
-		if (! authService.IsAuthorized(userInfo))
-		{
-			logger.debug("GET /qrcode: not authorized for " + userInfo.getUserName());
-			return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Not authorized");
-		}
+		AuthInfo userInfo = authInfoService.getAuthInfo(request);
 		
 		try
 		{
 			// Request DB for Drink name, price, size and Bar Id based on drinkId
-			Drink drink = drinkService.GetDrink(Integer.valueOf(drinkId));
+			Drink drink = drinkService.GetDrink(drinkId);
 						
 			if (! arService.isBarAdmin(userInfo, drink.getBarId()))
 			{

@@ -12,7 +12,6 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import webservice.auxillary.AuthInfo;
-import webservice.auxillary.DTO.Bar;
 import webservice.auxillary.DTO.Drink;
 import webservice.auxillary.ServiceDTO.DrinkService;
 
@@ -28,12 +27,7 @@ public class DrinkController extends GenController<Drink> {
 
 		logger.debug("GET /drinks for bar " + barId);
 
-		AuthInfo userInfo = getAuthInfo(request);
-		if (! authService.IsAuthorized(userInfo))
-		{
-			logger.debug("GET /drinks: not authorized for " + userInfo.getUserName());
-			return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Not authorized");
-		}
+		AuthInfo userInfo = authInfoService.getAuthInfo(request);
 		
 		if (! arService.isBarAdmin(userInfo, barId))
 		{

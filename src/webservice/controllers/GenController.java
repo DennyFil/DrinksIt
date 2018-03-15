@@ -4,13 +4,10 @@ import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-
-import webservice.auxillary.AccessRightsService;
 import webservice.auxillary.DTO.BaseItem;
 import webservice.auxillary.AuthInfo;
 
@@ -41,12 +38,7 @@ public abstract class GenController<T extends BaseItem> extends BaseController {
 	@RequestMapping("/post")
 	public ResponseEntity Post(HttpServletRequest request, @RequestBody T newItem) throws Exception {
 
-		AuthInfo userInfo = getAuthInfo(request);
-		if (! authService.IsAuthorized(userInfo))
-		{
-			logger.debug("POST /post: not authorized for " + userInfo.getUserName());
-			return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Not authorized");
-		}
+		AuthInfo userInfo = authInfoService.getAuthInfo(request);
 		
 		if ( ! hasPostRight(userInfo, newItem))
 		{
@@ -73,12 +65,7 @@ public abstract class GenController<T extends BaseItem> extends BaseController {
 	
 	protected ResponseEntity list(HttpServletRequest request) throws Exception {
 
-		AuthInfo userInfo = getAuthInfo(request);
-		if (! authService.IsAuthorized(userInfo))
-		{
-			logger.debug("GET /list: not authorized for " + userInfo.getUserName());
-			return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Not authorized");
-		}
+		AuthInfo userInfo = authInfoService.getAuthInfo(request);
 
 		try {			
 			return getListItems(userInfo);
