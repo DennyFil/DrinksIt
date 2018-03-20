@@ -27,15 +27,15 @@ public class DrinkController extends GenController<Drink> {
 
 		logger.debug("GET /drinks for bar " + barId);
 
-		AuthInfo userInfo = authInfoService.getAuthInfo(request);
-		
-		if (! arService.isBarAdmin(userInfo, barId))
-		{
-			logger.debug("GET /drinks: no right for " + userInfo.getUserName());
-			return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Not allowed to get drinks for bar: " + barId);
-		}
-
 		try {
+			AuthInfo userInfo = authInfoService.getAuthInfo(request);
+			
+			if (! arService.isBarAdmin(userInfo, barId))
+			{
+				logger.debug("GET /drinks: no right for " + userInfo.getUserName());
+				return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Not allowed to get drinks for bar: " + barId);
+			}
+			
 			List<Drink> drinks = drinkService.GetDrinks(barId);
 			
 			return ResponseEntity.ok(drinks);
@@ -73,18 +73,5 @@ public class DrinkController extends GenController<Drink> {
 	protected String getPostLog(Drink drink)
 	{
 		return "CREATION drink: " + drink.getName() + ", size: " + drink.getSize() + ", price: " + drink.getPrice() + ", bar: " + drink.getBarId();
-	}
-
-	@Override
-	protected ResponseEntity getListItems(AuthInfo userInfo) throws Exception {
-		
-		if (! arService.checkRight(userInfo, "list"))
-		{
-			logger.debug("GET /drinks: no right for " + userInfo.getUserName());
-			return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Not allowed to get drinks");
-		}
-		
-		// Drinks from master bar = all drinks
-		return ResponseEntity.ok(drinkService.GetDrinks(0));
 	}
 }

@@ -39,10 +39,11 @@ public class OrderController extends BaseController {
 	@RequestMapping("/recentOrders")
 	public ResponseEntity GetRecentOrders(HttpServletRequest request) throws Exception {
 
-		AuthInfo userInfo = authInfoService.getAuthInfo(request);
-		logger.debug("GET /recentOrders for: " + userInfo.getUserName());
+		logger.debug("GET /recentOrders");
 
 		try {
+			AuthInfo userInfo = authInfoService.getAuthInfo(request);
+			
 			List<Order> orderListAll = orderService.GetOrders(userInfo.getUserName());
 
 			String deliveredOrderTimeDisplay = environment.getRequiredProperty("order.deliveredOrderTimeDisplay");
@@ -68,10 +69,11 @@ public class OrderController extends BaseController {
 	@RequestMapping("/orders")
 	public ResponseEntity GetOrders(HttpServletRequest request) throws Exception {
 
-		AuthInfo userInfo = authInfoService.getAuthInfo(request);
-		logger.debug("GET /orders for " + userInfo.getUserName());
+		logger.debug("GET /orders");
 
 		try {
+			AuthInfo userInfo = authInfoService.getAuthInfo(request);
+			
 			List<Order> orderListAll = orderService.GetOrders(userInfo.getUserName());
 
 			return ResponseEntity.ok(orderListAll);
@@ -89,9 +91,9 @@ public class OrderController extends BaseController {
 
 		logger.debug("GET /updateOrderStatus for order " + orderId);
 
-		AuthInfo userInfo = authInfoService.getAuthInfo(request);
-
 		try {
+			AuthInfo userInfo = authInfoService.getAuthInfo(request);
+			
 			Order order = orderService.GetOrder(orderId);
 			
 			if (! arService.isBarAdmin(userInfo, order.getDrink().getBarId()))

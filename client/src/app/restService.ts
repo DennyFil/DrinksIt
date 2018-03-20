@@ -45,7 +45,7 @@ export class RestService {
 
 	postDrink(drink): Observable<Drink> {
 		let packetOptions = this.httpPacketService.computePacketOptions(this.credentials);
-			let body = JSON.stringify(drink);
+		let body = JSON.stringify(drink);
 		return this.http.post('drinks/post', body, packetOptions)
 			.map((res: Response) => res.json())
 			.catch((error: any) => Observable.throw(error._body));

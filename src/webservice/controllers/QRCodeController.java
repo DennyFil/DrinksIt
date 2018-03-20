@@ -32,11 +32,11 @@ public class QRCodeController extends BaseController {
 	public ResponseEntity GetQRCode(HttpServletRequest request, @RequestBody Integer drinkId) throws Exception
 	{
 		logger.debug("GET /qrcode for drink " + drinkId);
-
-		AuthInfo userInfo = authInfoService.getAuthInfo(request);
 		
 		try
 		{
+			AuthInfo userInfo = authInfoService.getAuthInfo(request);
+			
 			// Request DB for Drink name, price, size and Bar Id based on drinkId
 			Drink drink = drinkService.GetDrink(drinkId);
 						

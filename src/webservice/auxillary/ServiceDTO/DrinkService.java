@@ -40,7 +40,7 @@ public class DrinkService {
 		Session session = sessionFactory.getCurrentSession();
 
 		String query = "FROM Drink";
-		if (barId > 0) // 0 is Master Bar which cannot have drinks linked
+		if (barId > 0) // 0 is Master Bar for which all drinks listed
 		{
 			query += " WHERE bar_id = '" + barId + "'";
 		}

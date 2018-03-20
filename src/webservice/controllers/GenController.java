@@ -23,8 +23,6 @@ public abstract class GenController<T extends BaseItem> extends BaseController {
 	
 	protected abstract T updateItem(T newItem) throws Exception;
 	
-	protected abstract ResponseEntity<List<T>> getListItems(AuthInfo userInfo) throws Exception;
-	
 	private T handlePostedItem(T newItem) throws Exception
 	{
 		if (itemExists(newItem))
@@ -61,19 +59,5 @@ public abstract class GenController<T extends BaseItem> extends BaseController {
 		}
 
 		return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Failed to post item");
-	}
-	
-	protected ResponseEntity list(HttpServletRequest request) throws Exception {
-
-		AuthInfo userInfo = authInfoService.getAuthInfo(request);
-
-		try {			
-			return getListItems(userInfo);
-		}
-		catch (Exception e){
-			logger.debug(e.getMessage());
-		}
-
-		return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Failed to list items");
 	}
 }

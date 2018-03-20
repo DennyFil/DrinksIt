@@ -7,6 +7,7 @@ import java.util.stream.Collectors;
 import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -25,18 +26,25 @@ public class UserController extends GenController<User> {
 	UserService userService;
 
 	@RequestMapping("/list")
-	public ResponseEntity<List<UserInfo>> GetUsers(HttpServletRequest request) throws Exception {
+	public ResponseEntity GetUsers(HttpServletRequest request) throws Exception {
 
-		List<User> users = userService.GetUsers();
-		
-		// Remap to userInfo		
-		List<UserInfo> usersInfo = new ArrayList<UserInfo>();
-		
-		for (User user : users){
-			usersInfo.add(new UserInfo(user));
-		} 
-		
-		return ResponseEntity.ok(usersInfo);
+		try {
+			List<User> users = userService.GetUsers();
+			
+			// Remap to userInfo		
+			List<UserInfo> usersInfo = new ArrayList<UserInfo>();
+			
+			for (User user : users){
+				usersInfo.add(new UserInfo(user));
+			} 
+			
+			return ResponseEntity.ok(usersInfo);
+		}
+		catch (Exception e) {
+			logger.debug(e.getMessage());
+		}
+
+		return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Failed to get users");
 	}
 	
 	@Override
@@ -63,13 +71,5 @@ public class UserController extends GenController<User> {
 	@Override
 	protected boolean hasPostRight(AuthInfo userInfo, User newItem) {
 		return arService.checkRight(userInfo, "create");
-	}
-
-	@Override
-	protected ResponseEntity<List<User>> getListItems(AuthInfo userInfo) throws Exception {
-		
-		List<User> users = userService.GetUsers();
-
-		return ResponseEntity.ok(users);
 	}
 }
