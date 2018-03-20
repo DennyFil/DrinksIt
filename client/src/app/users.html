@@ -24,6 +24,7 @@
 					<tr *ngFor="let user of users">
 						<td>{{user.userName}}</td>
 						<td>{{user.barName}}</td>
+						<button type="button" class="btn btn-info" (click)="editUser(user)"><span class="glyphicon glyphicon-pencil"></span></button>
 					</tr>
 				</tbody>
 			</table>

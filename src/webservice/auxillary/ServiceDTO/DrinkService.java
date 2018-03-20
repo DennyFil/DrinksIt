@@ -76,8 +76,17 @@ public class DrinkService {
 	public void Update(Drink drink) throws Exception
 	{
 		Session session = sessionFactory.getCurrentSession();
+		
+		Bar bar = session.get(Bar.class, drink.getBarId());
 
-		session.update(drink);
+		if (bar != null) {
+
+			drink.setBar(bar);
+			session.update(drink);
+		}
+		else {
+			throw new Exception("UPDATE drink failed: bar " + drink.getBarId() + " not available");
+		}
 	}
 	
 	public boolean Exists(Drink newDrink) throws Exception

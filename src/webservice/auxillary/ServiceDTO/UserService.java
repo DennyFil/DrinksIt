@@ -75,8 +75,18 @@ public class UserService {
 	public void Update(User user) throws Exception
 	{
 		Session session = sessionFactory.getCurrentSession();
+		
+		Bar bar = (Bar)session.get(Bar.class, user.getBarId());		
+		
+		if (bar != null) {
 
-		session.update(user);
+			user.setPasswordHash(HashComputor.ComputeSHA256(user.getPassword()));
+			user.setBar(bar);
+
+			session.update(user);		}
+		else {
+			throw new Exception("UPDATE user failed: bar " + user.getBarId() + " does not exist");
+		}
 	}
 	
 	public boolean Exists(User newUser) throws Exception
