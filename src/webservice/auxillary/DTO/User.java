@@ -9,13 +9,15 @@ import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.persistence.Transient;
 
+import org.hibernate.annotations.NaturalId;
+
 import webservice.auxillary.DTO.Bar;
 
 @Entity
 @Table(name = "users")
-public class User extends BaseItem implements java.io.Serializable {
+public class User extends GenItem implements java.io.Serializable {
 
-	@Id
+	@NaturalId
     @Column(name = "userName")
     private String userName;
 	
@@ -87,10 +89,10 @@ public class User extends BaseItem implements java.io.Serializable {
     }
     
     public boolean isAdmin() {
-        return this.barId == 0;
+        return this.barId == 1;
     }
     
     public boolean isBarAdmin(int barId) {
-        return this.barId == barId || this.barId == 0; // or master bar admin
+        return this.barId == barId || this.barId == 1; // or master bar admin
     }
 }

@@ -1,4 +1,4 @@
-package webservice.auxillary.ServiceDTO;
+package webservice.auxillary.ServiceDAO;
 
 import java.util.List;
 
@@ -11,10 +11,4 @@ public interface IDrinkService extends IGenDao<Drink> {
 	List<Drink> GetDrinks(int barId) throws Exception;
 	
 	Drink GetDrink(int drinkId) throws Exception;
-	
-	Drink Create(Drink newDrink) throws Exception;
-	
-	void Update(Drink drink) throws Exception;
-	
-	boolean Exists(Drink newDrink) throws Exception;
 }

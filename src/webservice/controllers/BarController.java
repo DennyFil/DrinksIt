@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import webservice.auxillary.AuthInfo;
 import webservice.auxillary.DTO.Bar;
-import webservice.auxillary.ServiceDTO.IBarService;
+import webservice.auxillary.ServiceDAO.IBarService;
 
 @RestController
 @RequestMapping("/bars")

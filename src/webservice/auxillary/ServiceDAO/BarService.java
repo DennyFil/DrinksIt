@@ -1,4 +1,4 @@
-package webservice.auxillary.ServiceDTO;
+package webservice.auxillary.ServiceDAO;
 
 import org.hibernate.Session;
 import org.springframework.stereotype.Service;
@@ -10,7 +10,7 @@ import webservice.auxillary.DTO.User;
 @Service("BarService")
 @Transactional
 public class BarService extends GenDao<Bar> implements IBarService {
-	
+
 	public BarService() {
 		this.setGenericType(Bar.class);
 	}
@@ -19,7 +19,10 @@ public class BarService extends GenDao<Bar> implements IBarService {
 	{
 		Session session = sessionFactory.getCurrentSession();
 
-		User user = (User) session.get(User.class, userName);
+		User user = (User) session.byNaturalId(User.class)
+			.using("userName", userName)
+        	.load();
+		
 		if (user != null)
 		{
 			return user.getBar();
@@ -27,30 +30,5 @@ public class BarService extends GenDao<Bar> implements IBarService {
 		else {
 			throw new Exception("User: " + userName + " does not exist");
 		}
-	}
-
-	public Bar Create(Bar newBar) throws Exception
-	{
-		Session session = sessionFactory.getCurrentSession();
-
-		session.save(newBar);
-
-		return newBar;
-	}
-	
-	public void Update(Bar bar) throws Exception
-	{
-		Session session = sessionFactory.getCurrentSession();
-
-		session.update(bar);
-	}
-	
-	public boolean Exists(Bar newBar) throws Exception
-	{
-		Session session = sessionFactory.getCurrentSession();
-
-		Bar bar = (Bar) session.get(Bar.class, newBar.getId());
-		
-		return bar != null;
 	}
 }

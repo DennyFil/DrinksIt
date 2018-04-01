@@ -44,10 +44,11 @@ public class V1_1__DB_Schema_Create implements SpringJdbcMigration {
 
 		String createUsersTable =
 				"CREATE TABLE IF NOT EXISTS users (" +
+						"id INTEGER NOT NULL AUTO_INCREMENT," +
 						"userName VARCHAR (50) NOT NULL," +
 						"passwordHash VARCHAR(100) NOT NULL," +
 						"bar_id INTEGER," +
-						"PRIMARY KEY (userName)," +
+						"PRIMARY KEY (id)," +
 						"FOREIGN KEY (bar_id) REFERENCES bars(id)" +
 						");";
 		jdbcTemplate.execute(createUsersTable);

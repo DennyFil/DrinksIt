@@ -17,7 +17,7 @@ import webservice.auxillary.QRCodeGenerator;
 import webservice.auxillary.QrCode;
 import webservice.auxillary.AuthInfo;
 import webservice.auxillary.DTO.Drink;
-import webservice.auxillary.ServiceDTO.IDrinkService;
+import webservice.auxillary.ServiceDAO.IDrinkService;
 
 @RestController
 public class QRCodeController extends BaseController {

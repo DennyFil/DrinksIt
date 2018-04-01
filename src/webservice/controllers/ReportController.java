@@ -21,8 +21,8 @@ import org.springframework.web.bind.annotation.RestController;
 
 import webservice.auxillary.DTO.Bar;
 import webservice.auxillary.DTO.Order;
-import webservice.auxillary.ServiceDTO.IBarService;
-import webservice.auxillary.ServiceDTO.IOrderService;
+import webservice.auxillary.ServiceDAO.IBarService;
+import webservice.auxillary.ServiceDAO.IOrderService;
 import webservice.auxillary.ReportBuilder;
 import webservice.auxillary.AuthInfo;
 

@@ -21,7 +21,7 @@ import com.google.common.base.Optional;
 
 import webservice.auxillary.DTO.User;
 import webservice.auxillary.DTO.UserInfo;
-import webservice.auxillary.ServiceDTO.UserService;
+import webservice.auxillary.ServiceDAO.UserService;
 
 import javax.servlet.FilterChain;
 import javax.servlet.ServletException;

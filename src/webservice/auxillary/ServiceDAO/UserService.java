@@ -1,16 +1,13 @@
-package webservice.auxillary.ServiceDTO;
+package webservice.auxillary.ServiceDAO;
 
 import java.util.List;
 
 import org.hibernate.Session;
-import org.hibernate.SessionFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import webservice.auxillary.HashComputor;
 import webservice.auxillary.DTO.Bar;
-import webservice.auxillary.DTO.Drink;
 import webservice.auxillary.DTO.User;
 
 @Service("UserService")
@@ -22,7 +19,7 @@ public class UserService extends GenDao<User> implements IUserService {
 	}
 
 	@SuppressWarnings("unchecked")
-	public List<User> GetUsers() throws Exception
+	public List<User> FindAll() throws Exception
 	{
 		Session session = sessionFactory.getCurrentSession();
 
@@ -47,7 +44,9 @@ public class UserService extends GenDao<User> implements IUserService {
 	{
 		Session session = sessionFactory.getCurrentSession();
 
-		return (User) session.get(User.class, userName);
+		return (User) session.byNaturalId(User.class)
+				.using("userName", userName)
+                .load();
 	}
 
 	public User Create(User newUser) throws Exception
@@ -86,14 +85,5 @@ public class UserService extends GenDao<User> implements IUserService {
 		else {
 			throw new Exception("UPDATE user failed: bar " + user.getBarId() + " does not exist");
 		}
-	}
-	
-	public boolean Exists(User newUser) throws Exception
-	{
-		Session session = sessionFactory.getCurrentSession();
-
-		User user = (User) session.get(User.class, newUser.getIdStr());
-		
-		return user != null;
 	}
 }

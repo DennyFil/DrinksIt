@@ -1,4 +1,4 @@
-package webservice.auxillary.ServiceDTO;
+package webservice.auxillary.ServiceDAO;
 
 import java.util.List;
 
@@ -35,7 +35,7 @@ public class DrinkService extends GenDao<Drink> implements IDrinkService {
 		Session session = sessionFactory.getCurrentSession();
 
 		String query = "FROM Drink";
-		if (barId > 0) // 0 is Master Bar for which all drinks listed
+		if (barId > 1) // 1 is Master Bar for which all drinks listed
 		{
 			query += " WHERE bar_id = '" + barId + "'";
 		}
@@ -82,14 +82,5 @@ public class DrinkService extends GenDao<Drink> implements IDrinkService {
 		else {
 			throw new Exception("UPDATE drink failed: bar " + drink.getBarId() + " not available");
 		}
-	}
-	
-	public boolean Exists(Drink newDrink) throws Exception
-	{
-		Session session = sessionFactory.getCurrentSession();
-
-		Drink drink = (Drink) session.get(Drink.class, newDrink.getId());
-		
-		return drink != null;
 	}
 }

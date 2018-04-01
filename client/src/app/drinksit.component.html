@@ -17,13 +17,13 @@
 		  <div class="btn-group" role="group">
 			<button type="button" routerLink="app/orders" routerLinkActive="active" class="btn btn-default">Orders</button>
 		  </div>
-		  <div *ngIf="userInfo.barId===0" class="btn-group" role="group">
+		  <div *ngIf="userInfo.barId===1" class="btn-group" role="group">
 			<button type="button" routerLink="app/bars" routerLinkActive="active" class="btn btn-default">Bars</button>
 		  </div>
 		  <div class="btn-group" role="group">
 			<button type="button" routerLink="app/drinks" routerLinkActive="active" class="btn btn-default">Drinks</button>
 		  </div>
-		  <div *ngIf="userInfo.barId===0" class="btn-group" role="group">
+		  <div *ngIf="userInfo.barId===1" class="btn-group" role="group">
 			<button type="button" routerLink="app/users" routerLinkActive="active" class="btn btn-default">Users</button>
 		  </div>
 		  <div class="btn-group" role="group">

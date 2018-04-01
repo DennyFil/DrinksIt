@@ -10,9 +10,9 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.web.authentication.preauth.PreAuthenticatedAuthenticationToken;
 
-import webservice.auxillary.ServiceDTO.IUserService;
 import webservice.auxillary.DTO.User;
 import webservice.auxillary.DTO.UserInfo;
+import webservice.auxillary.ServiceDAO.IUserService;
 
 public class UserNamePasswordAuthenticationProvider implements AuthenticationProvider {
 

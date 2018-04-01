@@ -13,11 +13,12 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import webservice.auxillary.AuthInfo;
-import webservice.auxillary.ServiceDTO.IUserService;
-import webservice.auxillary.ServiceDTO.UserService;
 import webservice.auxillary.DTO.Bar;
 import webservice.auxillary.DTO.User;
 import webservice.auxillary.DTO.UserInfo;
+import webservice.auxillary.ServiceDAO.IUserService;
+import webservice.auxillary.ServiceDAO.UserService;
+import webservice.exceptions.PostException;
 
 @RestController
 @RequestMapping("/users")
@@ -30,7 +31,7 @@ public class UserController extends GenController<User> {
 	public ResponseEntity GetUsers(HttpServletRequest request) throws Exception {
 
 		try {
-			List<User> users = userService.GetUsers();
+			List<User> users = userService.FindAll();
 			
 			// Remap to userInfo		
 			List<UserInfo> usersInfo = new ArrayList<UserInfo>();
@@ -54,9 +55,17 @@ public class UserController extends GenController<User> {
 	}
 
 	@Override
+	// Check for user if the userName is not already in use
 	protected User updateItem(User newUser) throws Exception {
-		userService.Update(newUser);
-		return newUser;
+		
+		User userSameName = userService.GetUser(newUser.getUserName());
+		if (userSameName == null) {
+			userService.Update(newUser);
+			return newUser;
+		}
+		else {
+			throw new PostException("Other user with same userName exists");
+		}
 	}
 	
 	@Override
@@ -65,8 +74,16 @@ public class UserController extends GenController<User> {
 	}
 
 	@Override
+	// Check for new user if the userName is not already in use
 	protected User createItem(User newUser) throws Exception {
-		return userService.Create(newUser);
+		
+		User userSameName = userService.GetUser(newUser.getUserName());
+		if (userSameName == null) {
+			return userService.Create(newUser);
+		}
+		else {
+			throw new PostException("Other user with same userName exists");
+		}
 	}
 
 	@Override

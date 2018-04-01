@@ -6,7 +6,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import webservice.auxillary.DTO.User;
-import webservice.auxillary.ServiceDTO.IUserService;
+import webservice.auxillary.ServiceDAO.IUserService;
 
 public class AccessRightsService {
 

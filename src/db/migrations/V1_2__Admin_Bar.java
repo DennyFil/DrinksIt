@@ -7,7 +7,7 @@ public class V1_2__Admin_Bar implements SpringJdbcMigration {
 	public void migrate(JdbcTemplate jdbcTemplate) throws Exception {
 
 		// Must run "SET GLOBAL sql_mode='NO_AUTO_VALUE_ON_ZERO'" manually when installation DB server
-    	String createBar = "INSERT INTO bars (id, name, address, city, country) VALUES ('0', 'ALL', 'ALL', 'ALL', 'ALL')";
+    	String createBar = "INSERT INTO bars (name, address, city, country) VALUES ('ALL', 'ALL', 'ALL', 'ALL')";
         jdbcTemplate.execute(createBar);
     }
 }

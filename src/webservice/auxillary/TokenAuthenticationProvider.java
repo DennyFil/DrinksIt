@@ -10,7 +10,7 @@ import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.web.authentication.preauth.PreAuthenticatedAuthenticationToken;
 import org.springframework.stereotype.Component;
 import webservice.auxillary.DTO.User;
-import webservice.auxillary.ServiceDTO.IUserService;
+import webservice.auxillary.ServiceDAO.IUserService;
 
 @Component
 public class TokenAuthenticationProvider implements AuthenticationProvider {

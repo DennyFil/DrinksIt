@@ -7,6 +7,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import webservice.auxillary.DTO.BaseItem;
+import webservice.exceptions.PostException;
 import webservice.auxillary.AuthInfo;
 
 public abstract class GenController<T extends BaseItem> extends BaseController {
@@ -81,6 +82,10 @@ public abstract class GenController<T extends BaseItem> extends BaseController {
 			logger.debug(logStr);
 			
 			return ResponseEntity.ok(item);
+		}
+		catch (PostException e){
+			logger.debug(e.getMessage());
+			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(e.getMessage());
 		}
 		catch (Exception e){
 			logger.debug(e.getMessage());

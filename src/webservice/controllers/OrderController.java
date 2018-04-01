@@ -19,10 +19,10 @@ import org.springframework.web.bind.annotation.RestController;
 import webservice.auxillary.AuthInfo;
 import webservice.auxillary.AuthInfoService;
 import webservice.auxillary.DTO.Order;
+import webservice.auxillary.ServiceDAO.IDrinkService;
+import webservice.auxillary.ServiceDAO.IOrderService;
 import webservice.auxillary.database.OrderComparator;
 import webservice.auxillary.database.OrderStatus;
-import webservice.auxillary.ServiceDTO.IDrinkService;
-import webservice.auxillary.ServiceDTO.IOrderService;
 
 @RestController
 public class OrderController extends BaseController {
@@ -120,7 +120,7 @@ public class OrderController extends BaseController {
 			}
 
 			order.setUpdateTS(new Date());
-			orderService.UpdateOrder(order);
+			orderService.Update(order);
 
 			return ResponseEntity.ok(order);
 		}

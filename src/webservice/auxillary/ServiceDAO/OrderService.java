@@ -1,4 +1,4 @@
-package webservice.auxillary.ServiceDTO;
+package webservice.auxillary.ServiceDAO;
 
 import java.util.Date;
 import java.util.List;
@@ -41,13 +41,6 @@ public class OrderService extends GenDao<Order> implements IOrderService {
 		else {
 			throw new Exception("GET ORDERS failed: user " + userName + " does not exist");
 		}
-	}
-
-	public void UpdateOrder(Order order) throws Exception
-	{
-		Session session = sessionFactory.getCurrentSession();
-
-		session.update(order);
 	}
 
 	public Order CreateOrder(int drinkId, int quantity, String status) throws Exception
