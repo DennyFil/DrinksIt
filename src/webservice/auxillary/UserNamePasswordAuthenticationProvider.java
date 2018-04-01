@@ -10,7 +10,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.web.authentication.preauth.PreAuthenticatedAuthenticationToken;
 
-import webservice.auxillary.ServiceDTO.UserService;
+import webservice.auxillary.ServiceDTO.IUserService;
 import webservice.auxillary.DTO.User;
 import webservice.auxillary.DTO.UserInfo;
 
@@ -19,7 +19,7 @@ public class UserNamePasswordAuthenticationProvider implements AuthenticationPro
 	protected Logger logger = LoggerFactory.getLogger(this.getClass());
 
 	@Autowired
-	UserService userService;
+	IUserService userService;
 
 	@Autowired
 	TokenService tokenService;

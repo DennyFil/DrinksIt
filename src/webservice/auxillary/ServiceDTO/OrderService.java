@@ -4,8 +4,6 @@ import java.util.Date;
 import java.util.List;
 
 import org.hibernate.Session;
-import org.hibernate.SessionFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -15,13 +13,11 @@ import webservice.auxillary.DTO.User;
 
 @Service("OrderService")
 @Transactional
-public class OrderService {
+public class OrderService extends GenDao<Order> implements IOrderService {
 
 	public OrderService() {
+		this.setGenericType(Order.class);
 	}
-
-	@Autowired
-	public SessionFactory sessionFactory;
 
 	public Order GetOrder(int orderId) throws Exception
 	{

@@ -1,6 +1,5 @@
 package webservice.auxillary;
 
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,7 +10,7 @@ import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.web.authentication.preauth.PreAuthenticatedAuthenticationToken;
 import org.springframework.stereotype.Component;
 import webservice.auxillary.DTO.User;
-import webservice.auxillary.ServiceDTO.UserService;
+import webservice.auxillary.ServiceDTO.IUserService;
 
 @Component
 public class TokenAuthenticationProvider implements AuthenticationProvider {
@@ -19,7 +18,7 @@ public class TokenAuthenticationProvider implements AuthenticationProvider {
 	protected Logger logger = LoggerFactory.getLogger(this.getClass());
 	
 	@Autowired
-	UserService userService;
+	IUserService userService;
 	
 	@Autowired
 	TokenService tokenService;

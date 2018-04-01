@@ -15,12 +15,10 @@ import webservice.auxillary.DTO.User;
 
 @Service("UserService")
 @Transactional
-public class UserService {
-
-	@Autowired
-	public SessionFactory sessionFactory;
+public class UserService extends GenDao<User> implements IUserService {
 
 	public UserService() {
+		this.setGenericType(User.class);
 	}
 
 	@SuppressWarnings("unchecked")
@@ -83,7 +81,8 @@ public class UserService {
 			user.setPasswordHash(HashComputor.ComputeSHA256(user.getPassword()));
 			user.setBar(bar);
 
-			session.update(user);		}
+			session.update(user);
+		}
 		else {
 			throw new Exception("UPDATE user failed: bar " + user.getBarId() + " does not exist");
 		}

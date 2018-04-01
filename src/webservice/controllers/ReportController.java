@@ -21,8 +21,8 @@ import org.springframework.web.bind.annotation.RestController;
 
 import webservice.auxillary.DTO.Bar;
 import webservice.auxillary.DTO.Order;
-import webservice.auxillary.ServiceDTO.BarService;
-import webservice.auxillary.ServiceDTO.OrderService;
+import webservice.auxillary.ServiceDTO.IBarService;
+import webservice.auxillary.ServiceDTO.IOrderService;
 import webservice.auxillary.ReportBuilder;
 import webservice.auxillary.AuthInfo;
 
@@ -30,10 +30,10 @@ import webservice.auxillary.AuthInfo;
 public class ReportController extends BaseController {
 
 	@Autowired
-	OrderService orderService;
+	IOrderService orderService;
 
 	@Autowired
-	BarService barService;
+	IBarService barService;
 
 	@RequestMapping("/ordersReport")
 	public ResponseEntity ExportOrders(HttpServletRequest request, @RequestParam String startDate, @RequestParam String endDate) throws Exception {

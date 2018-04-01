@@ -15,7 +15,7 @@
 		</div>
 	</div>
 	<div class="row">
-		<div class="col-sm-12" [hidden]="!selectedBar.id">
+		<div class="col-sm-12" [hidden]="selectedBar.id === ''">
 			<button type="button" class="btn btn-info" (click)="editDrink()">New</button>
 		</div>
 	</div>

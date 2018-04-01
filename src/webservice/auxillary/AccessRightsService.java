@@ -6,14 +6,14 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import webservice.auxillary.DTO.User;
-import webservice.auxillary.ServiceDTO.UserService;
+import webservice.auxillary.ServiceDTO.IUserService;
 
 public class AccessRightsService {
 
 	private final Logger logger = LoggerFactory.getLogger("wsAccessRightsLogger");
 	
 	@Autowired
-	UserService userService;
+	IUserService userService;
 	
 	public boolean checkRight(AuthInfo userInfo, String right) {
 

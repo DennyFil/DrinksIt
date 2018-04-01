@@ -13,14 +13,14 @@ import org.springframework.web.bind.annotation.RestController;
 
 import webservice.auxillary.AuthInfo;
 import webservice.auxillary.DTO.Bar;
-import webservice.auxillary.ServiceDTO.BarService;
+import webservice.auxillary.ServiceDTO.IBarService;
 
 @RestController
 @RequestMapping("/bars")
 public class BarController extends GenController<Bar> {
 
 	@Autowired
-	BarService barService;
+	IBarService barService;
 
 	@RequestMapping("/list")
 	public ResponseEntity GetBars(HttpServletRequest request) throws Exception {
@@ -31,7 +31,7 @@ public class BarController extends GenController<Bar> {
 			// All bars returned if user has list right
 			if ( arService.checkRight(userInfo, "list"))
 			{
-				List<Bar> bars = barService.GetBars();
+				List<Bar> bars = barService.FindAll();
 	
 				return ResponseEntity.ok(bars);
 			}
@@ -62,6 +62,11 @@ public class BarController extends GenController<Bar> {
 	protected Bar updateItem(Bar newBar) throws Exception {
 		barService.Update(newBar);
 		return newBar;
+	}
+	
+	@Override
+	protected void deleteItem(int id) throws Exception {
+		barService.DeleteById(id);
 	}
 
 	@Override

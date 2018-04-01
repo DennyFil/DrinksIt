@@ -13,14 +13,14 @@ import org.springframework.web.bind.annotation.RestController;
 
 import webservice.auxillary.AuthInfo;
 import webservice.auxillary.DTO.Drink;
-import webservice.auxillary.ServiceDTO.DrinkService;
+import webservice.auxillary.ServiceDTO.IDrinkService;
 
 @RestController
 @RequestMapping("/drinks")
 public class DrinkController extends GenController<Drink> {
 
 	@Autowired
-	DrinkService drinkService;
+	IDrinkService drinkService;
 	
 	@RequestMapping("/list")
 	public ResponseEntity GetBarDrinks(HttpServletRequest request, @RequestParam Integer barId) throws Exception {
@@ -61,6 +61,11 @@ public class DrinkController extends GenController<Drink> {
 	protected Drink updateItem(Drink newDrink) throws Exception {
 		drinkService.Update(newDrink);
 		return newDrink;
+	}
+	
+	@Override
+	protected void deleteItem(int id) throws Exception {
+		drinkService.DeleteById(id);
 	}
 	
 	@Override

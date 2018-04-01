@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import webservice.auxillary.AuthInfo;
+import webservice.auxillary.ServiceDTO.IUserService;
 import webservice.auxillary.ServiceDTO.UserService;
 import webservice.auxillary.DTO.Bar;
 import webservice.auxillary.DTO.User;
@@ -23,7 +24,7 @@ import webservice.auxillary.DTO.UserInfo;
 public class UserController extends GenController<User> {
 
 	@Autowired
-	UserService userService;
+	IUserService userService;
 
 	@RequestMapping("/list")
 	public ResponseEntity GetUsers(HttpServletRequest request) throws Exception {
@@ -56,6 +57,11 @@ public class UserController extends GenController<User> {
 	protected User updateItem(User newUser) throws Exception {
 		userService.Update(newUser);
 		return newUser;
+	}
+	
+	@Override
+	protected void deleteItem(int id) throws Exception {
+		userService.DeleteById(id);
 	}
 
 	@Override

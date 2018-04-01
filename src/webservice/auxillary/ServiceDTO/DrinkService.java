@@ -3,24 +3,19 @@ package webservice.auxillary.ServiceDTO;
 import java.util.List;
 
 import org.hibernate.Session;
-import org.hibernate.SessionFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import webservice.auxillary.DTO.Bar;
 import webservice.auxillary.DTO.Drink;
-import webservice.auxillary.DTO.User;
 
 @Service("DrinkService")
 @Transactional
-public class DrinkService {
+public class DrinkService extends GenDao<Drink> implements IDrinkService {
 
 	public DrinkService() {
+		this.setGenericType(Drink.class);
 	}
-
-	@Autowired
-	public SessionFactory sessionFactory;
 
 	public boolean CheckDrink(int drinkId, int barId, String drinkName, double drinkSize, double drinkPrice) throws Exception
 	{

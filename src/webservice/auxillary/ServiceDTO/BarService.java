@@ -1,10 +1,6 @@
 package webservice.auxillary.ServiceDTO;
 
-import java.util.List;
-
 import org.hibernate.Session;
-import org.hibernate.SessionFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -13,13 +9,11 @@ import webservice.auxillary.DTO.User;
 
 @Service("BarService")
 @Transactional
-public class BarService {
+public class BarService extends GenDao<Bar> implements IBarService {
 	
 	public BarService() {
+		this.setGenericType(Bar.class);
 	}
-
-	@Autowired
-	public SessionFactory sessionFactory;
 
 	public Bar GetBar(String userName) throws Exception
 	{
@@ -33,14 +27,6 @@ public class BarService {
 		else {
 			throw new Exception("User: " + userName + " does not exist");
 		}
-	}
-
-	@SuppressWarnings("unchecked")
-	public List<Bar> GetBars() throws Exception
-	{
-		Session session = sessionFactory.getCurrentSession();
-
-		return (List<Bar>)session.createQuery("FROM Bar").list();
 	}
 
 	public Bar Create(Bar newBar) throws Exception

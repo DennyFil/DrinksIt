@@ -21,17 +21,17 @@ import webservice.auxillary.AuthInfoService;
 import webservice.auxillary.DTO.Order;
 import webservice.auxillary.database.OrderComparator;
 import webservice.auxillary.database.OrderStatus;
-import webservice.auxillary.ServiceDTO.DrinkService;
-import webservice.auxillary.ServiceDTO.OrderService;
+import webservice.auxillary.ServiceDTO.IDrinkService;
+import webservice.auxillary.ServiceDTO.IOrderService;
 
 @RestController
 public class OrderController extends BaseController {
 
 	@Autowired
-	OrderService orderService;
+	IOrderService orderService;
 
 	@Autowired
-	DrinkService drinkService;
+	IDrinkService drinkService;
 
 	@Autowired
 	private Environment environment;
