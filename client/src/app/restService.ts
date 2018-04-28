@@ -19,6 +19,14 @@ export class RestService {
         private http: Http) {
 			this.credentials = this.authService.getCredentials();
 		}
+	
+	deleteElement(moduleP, id) {
+		let packetOptions = this.httpPacketService.computePacketOptions(this.credentials);
+		let body = JSON.stringify(id);
+		return this.http.post(moduleP + '/delete', body, packetOptions)
+		  .map((res: Response) => res.json())
+		  .catch((error: any) => Observable.throw(error._body));
+	}
 		
 	getBars(): Observable<Bar[]> {
 		let packetOptions = this.httpPacketService.computePacketOptions(this.credentials);

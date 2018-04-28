@@ -15,6 +15,7 @@ import { UserComponent }  			from './user.component';
 import { BarEdit }  				from './barEdit';
 import { UserEdit }  				from './userEdit';
 import { DrinkEdit }  				from './drinkEdit';
+import { ConfirmModal }  			from './confirmModal';
 import { ReportComponent }  		from './report.component';
 import { QrCodeComponent }  		from './qrcode.component';
 import { AuthGuard }				from './authGuard';
@@ -43,13 +44,14 @@ import { routing }        			from './drinksit.routing';
         BarEdit,
         UserEdit,
         DrinkEdit,
+		ConfirmModal,
         ReportComponent,
         QrCodeComponent
     ],
     providers: [AuthGuard, AuthenticationService, HttpPacketService],
     bootstrap: [DrinksItComponent],
 
-    entryComponents: [ BarEdit, UserEdit, DrinkEdit ]
+    entryComponents: [ BarEdit, UserEdit, DrinkEdit, ConfirmModal ]
 })
 export class DrinksItModule {
 }

@@ -43,7 +43,7 @@ export class UserComponent {
     	
     	// New user
     	if (user == null){
-    		user = new User("", -1);
+    		user = new User(0, "", -1);
     	}
 
     	return this.modal.open(UserEdit,

@@ -1,14 +1,15 @@
 import { Component, Injectable }            from '@angular/core';
 import 'rxjs/add/operator/map';
 import 'rxjs/add/operator/catch';
-import { Overlay, overlayConfigFactory }    from 'angular2-modal';
-import { Modal, BSModalContext }            from 'angular2-modal/plugins/bootstrap';
+import { Overlay, overlayConfigFactory }    	from 'angular2-modal';
+import { Modal, BSModalContext }            	from 'angular2-modal/plugins/bootstrap';
 
-import { ErrorManager } 			        from './errorManager';
-import { RestService }           	        from './restService';
-import { Bar }           			        from './models/bar';
-import { DrinkEditContext, DrinkEdit }      from './drinkEdit';
-import { Drink }           			        from './models/drink';
+import { ErrorManager } 			        	from './errorManager';
+import { RestService }           	        	from './restService';
+import { Bar }           			        	from './models/bar';
+import { DrinkEditContext, DrinkEdit }      	from './drinkEdit';
+import { ConfirmModalContext, ConfirmModal }	from './confirmModal';
+import { Drink }           			        	from './models/drink';
 
 @Component({
     selector: 'drinksit-drink',
@@ -57,12 +58,27 @@ export class DrinkComponent {
             	data => this.bars = data, // Bind to view
                 err => this.errorManager.displayError(err));
     }
+	
+	deleteDrink(drink) {
+		
+		return this.modal.open(ConfirmModal,
+    		overlayConfigFactory(
+    		{
+				onSubmitAction: () => {
+					return this.restService.deleteElement('drinks', drink.id);
+	          	},
+	    		onSubmitCallback: () => {
+	               this.getDrinks();
+	          	}
+	        },
+           	BSModalContext));
+	}
 
     editDrink(drink) {
 
     	// New drink
     	if (drink == null) {
-    		drink = new Drink('', 0, 0, 0 );
+    		drink = new Drink(0,'', 0, 0, 0 );
     	}
 
 		drink.barId = this.selectedBar.id;
