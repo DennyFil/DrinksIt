@@ -2,10 +2,11 @@ import { Component, Injectable } from '@angular/core';
 import { Overlay, overlayConfigFactory } from 'angular2-modal';
 import { Modal, BSModalContext } from 'angular2-modal/plugins/bootstrap';
 
-import { ErrorManager } 				from './errorManager';
-import { RestService }           		from './restService';
-import { BarEditContext, BarEdit }   	from './barEdit';
-import { Bar }           				from './models/bar';
+import { ErrorManager } 						from './errorManager';
+import { RestService }           				from './restService';
+import { BarEditContext, BarEdit }   			from './barEdit';
+import { ConfirmModalContext, ConfirmModal }	from './confirmModal';
+import { Bar }           						from './models/bar';
 
 @Component({
     selector: 'drinksit-bar',
@@ -38,6 +39,21 @@ export class BarComponent {
             	data => this.bars = data, // Bind to view
                 err => this.errorManager.displayError(err.message));
     }
+	
+	deleteBar(bar) {
+		
+		return this.modal.open(ConfirmModal,
+    		overlayConfigFactory(
+    		{
+				onSubmitAction: () => {
+					return this.restService.deleteElement('bars', bar.id);
+	          	},
+	    		onSubmitCallback: () => {
+	               this.getBars();
+	          	}
+	        },
+           	BSModalContext));
+	}
 
     editBar(bar) {
 

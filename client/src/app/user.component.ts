@@ -2,10 +2,11 @@ import { Component, Injectable } from '@angular/core';
 import { Overlay, overlayConfigFactory } from 'angular2-modal';
 import { Modal, BSModalContext } from 'angular2-modal/plugins/bootstrap';
 
-import { ErrorManager } 				from './errorManager';
-import { RestService }           		from './restService';
-import { UserEditContext, UserEdit }    from './userEdit';
-import { User }           				from './models/user';
+import { ErrorManager } 						from './errorManager';
+import { RestService }           				from './restService';
+import { UserEditContext, UserEdit }    		from './userEdit';
+import { ConfirmModalContext, ConfirmModal }	from './confirmModal';
+import { User }           						from './models/user';
 
 @Component({
     selector: 'drinksit-user',
@@ -38,6 +39,21 @@ export class UserComponent {
             data => this.users = data, //Bind to view
             err => this.errorManager.displayError(err.message));
     }
+	
+	deleteUser(user) {
+		
+		return this.modal.open(ConfirmModal,
+    		overlayConfigFactory(
+    		{
+				onSubmitAction: () => {
+					return this.restService.deleteElement('users', user.id);
+	          	},
+	    		onSubmitCallback: () => {
+	               this.getUsers();
+	          	}
+	        },
+           	BSModalContext));
+	}
   
   	editUser(user) {
     	

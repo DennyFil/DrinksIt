@@ -18,13 +18,20 @@
 					<tr>
 						<th>UserName</th>
 						<th>Bar</th>
+						<th></th>
+						<th></th>
 					</tr>
 				</thead>
 				<tbody>
 					<tr *ngFor="let user of users">
 						<td>{{user.userName}}</td>
 						<td>{{user.barName}}</td>
-						<button type="button" class="btn btn-info" (click)="editUser(user)"><span class="glyphicon glyphicon-pencil"></span></button>
+						<td>	
+							<button type="button" class="btn btn-info" (click)="editUser(user)"><span class="glyphicon glyphicon-pencil"></span></button>
+						</td>
+						<td>
+							<button type="button" class="btn btn-danger" (click)="deleteUser(user)"><span class="glyphicon glyphicon-remove"></span></button>
+						</td>
 					</tr>
 				</tbody>
 			</table>

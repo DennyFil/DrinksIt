@@ -19,6 +19,8 @@
 						<th>Address</th>
 						<th>City</th>
 						<th>Country</th>
+						<th></th>
+						<th></th>
 					</tr>
 				</thead>
 				<tbody>
@@ -28,7 +30,12 @@
 						<td>{{bar.address}}</td>
 						<td>{{bar.city}}</td>
 						<td>{{bar.country}}</td>				
-						<button type="button" class="btn btn-info" (click)="editBar(bar)"><span class="glyphicon glyphicon-pencil"></span></button>
+						<td>
+							<button type="button" class="btn btn-info" (click)="editBar(bar)"><span class="glyphicon glyphicon-pencil"></span></button>
+						</td>
+						<td>
+							<button type="button" class="btn btn-danger" (click)="deleteBar(bar)"><span class="glyphicon glyphicon-remove"></span></button>
+						</td>
 					</tr>
 				</tbody>
 			</table>

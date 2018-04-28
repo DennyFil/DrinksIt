@@ -3,6 +3,7 @@ package webservice.auxillary.DTO;
 // Not Mapped
 public class UserInfo extends BaseItem {
 
+	int id;
 	String userName;
 	int barId;
     String barName;
@@ -13,12 +14,17 @@ public class UserInfo extends BaseItem {
 	}
     
 	public UserInfo(User user, String token) {
+		this.id = user.getId();
 		this.userName = user.getUserName();
 		if (user.getBar() != null){
 			this.barName = user.getBar().getName();
 		}
 		this.barId = user.getBarId();
 		this.token = token;
+	}
+	
+	public int getId() {
+		return id;
 	}
 	
 	public String getUserName() {

@@ -1,0 +1,21 @@
+<div class="panel-body">
+	<div class="row">
+		<div class="col-sm-12">
+			<h2>Confirm action</h2>
+		</div>
+	</div>
+	<div class="row">
+		<div class="col-sm-12 alert alert-danger"
+			[hidden]="!this.errorManager.errorMsg">
+			{{this.errorManager.errorMsg}}
+		</div>
+	</div>
+	<form #form="ngForm" (ngSubmit)="onSubmit()">
+		<div class="row">
+			<div class="col-sm-12">
+				<button type="submit" [disabled]="!form.valid" class="btn btn-default">Submit</button>
+				<button type="button" class="btn btn-default" (click)="onCancel()">Cancel</button>
+			</div>
+		</div>
+	</form>
+</div>
