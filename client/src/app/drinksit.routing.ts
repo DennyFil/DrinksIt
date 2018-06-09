@@ -10,11 +10,11 @@ import { QrCodeComponent }			from './qrcode.component';
 import { AuthGuard }				from './authGuard';
 
 const appRoutes: Routes = [
-  {
+	/*{
         path: '',
         redirectTo: 'app/orders',
         pathMatch: 'full'
-    },
+    },*/
     {
         path: 'app',
         redirectTo: 'app/orders',

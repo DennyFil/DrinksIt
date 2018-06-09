@@ -20,6 +20,7 @@ import webservice.auxillary.DTO.Drink;
 import webservice.auxillary.ServiceDAO.IDrinkService;
 
 @RestController
+@RequestMapping("/api")
 public class QRCodeController extends BaseController {
 
 	@Autowired

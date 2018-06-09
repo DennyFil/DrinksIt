@@ -21,7 +21,7 @@ import webservice.auxillary.ServiceDAO.UserService;
 import webservice.exceptions.PostException;
 
 @RestController
-@RequestMapping("/users")
+@RequestMapping("/api/users")
 public class UserController extends GenController<User> {
 
 	@Autowired

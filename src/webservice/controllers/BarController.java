@@ -16,7 +16,7 @@ import webservice.auxillary.DTO.Bar;
 import webservice.auxillary.ServiceDAO.IBarService;
 
 @RestController
-@RequestMapping("/bars")
+@RequestMapping("/api/bars")
 public class BarController extends GenController<Bar> {
 
 	@Autowired

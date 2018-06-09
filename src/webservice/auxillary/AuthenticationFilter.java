@@ -56,7 +56,7 @@ public class AuthenticationFilter extends GenericFilterBean {
         try {
         	String resourcePath = new UrlPathHelper().getPathWithinApplication(httpRequest);
         	
-        	if (resourcePath.equalsIgnoreCase("/login") && httpRequest.getMethod().equals("POST")) {
+        	if (resourcePath.contains("/login") && httpRequest.getMethod().equals("POST")) {
         		
         		ObjectMapper mapper = new ObjectMapper();
         		User userPosted = mapper.readValue(request.getInputStream(), User.class);

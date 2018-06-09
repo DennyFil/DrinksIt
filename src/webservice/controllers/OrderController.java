@@ -25,6 +25,7 @@ import webservice.auxillary.database.OrderComparator;
 import webservice.auxillary.database.OrderStatus;
 
 @RestController
+@RequestMapping("/api")
 public class OrderController extends BaseController {
 
 	@Autowired

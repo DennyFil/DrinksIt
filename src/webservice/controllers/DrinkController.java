@@ -16,7 +16,7 @@ import webservice.auxillary.DTO.Drink;
 import webservice.auxillary.ServiceDAO.IDrinkService;
 
 @RestController
-@RequestMapping("/drinks")
+@RequestMapping("/api/drinks")
 public class DrinkController extends GenController<Drink> {
 
 	@Autowired

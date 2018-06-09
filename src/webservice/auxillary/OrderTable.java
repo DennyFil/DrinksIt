@@ -16,11 +16,12 @@ import be.quodlibet.boxable.Cell;
 import be.quodlibet.boxable.Row;
 
 import webservice.auxillary.DTO.Order;
+import webservice.auxillary.DTO.User;
 import webservice.auxillary.DTO.Bar;
 
 public class OrderTable {
 
-	public static void createOrderTable(PDDocument doc, PDPage page, List<Order> orders, Bar bar, Date startDate, Date endDate, DateFormat df)
+	public static void createOrderTable(PDDocument doc, PDPage page, List<Order> orders, String userName, Bar bar, Date startDate, Date endDate, DateFormat df)
 		throws IOException
 	{
 		//Set margins
@@ -38,40 +39,71 @@ public class OrderTable {
 
 		//Create Header row
 		Row<PDPage> headerRow = table.createRow(15f);
-		Cell<PDPage> cell = headerRow.createCell(100, "Orders report");
+		Cell<PDPage> cell = headerRow.createCell(100, "Orders report for user: " + userName);
 		cell.setFont(PDType1Font.HELVETICA_BOLD);
 		cell.setFillColor(Color.GREEN);
 		cell.setTextColor(Color.BLACK);
 
 		table.addHeaderRow(headerRow);
 		
-		Row<PDPage> barRow = table.createRow(15f);
-		cell = barRow.createCell((100 / 6f), "Bar:");
+		Row<PDPage> barRow1 = table.createRow(15f);
+		cell = barRow1.createCell((100 / 6f), "Bar");
 		cell.setFont(PDType1Font.HELVETICA);
 		cell.setFillColor(Color.CYAN);
 		cell.setTextColor(Color.BLACK);
 		
-		cell = barRow.createCell((100 / 6f), new Integer(bar.getId()).toString());
+		cell = barRow1.createCell((100 / 6f), "ID");
 		cell.setFont(PDType1Font.HELVETICA);
 		cell.setFillColor(Color.CYAN);
 		cell.setTextColor(Color.BLACK);
 		
-		cell = barRow.createCell((100 / 6f), bar.getName());
+		cell = barRow1.createCell((100 / 6f), "Name");
 		cell.setFont(PDType1Font.HELVETICA);
 		cell.setFillColor(Color.CYAN);
 		cell.setTextColor(Color.BLACK);
 		
-		cell = barRow.createCell((100 / 6f), bar.getAddress());
+		cell = barRow1.createCell((100 / 6f), "Address");
 		cell.setFont(PDType1Font.HELVETICA);
 		cell.setFillColor(Color.CYAN);
 		cell.setTextColor(Color.BLACK);
 		
-		cell = barRow.createCell((100 / 6f), bar.getCity());
+		cell = barRow1.createCell((100 / 6f), "City");
 		cell.setFont(PDType1Font.HELVETICA);
 		cell.setFillColor(Color.CYAN);
 		cell.setTextColor(Color.BLACK);
 		
-		cell = barRow.createCell((100 / 6f), bar.getCountry());
+		cell = barRow1.createCell((100 / 6f), "Country");
+		cell.setFont(PDType1Font.HELVETICA);
+		cell.setFillColor(Color.CYAN);
+		cell.setTextColor(Color.BLACK);
+		
+		Row<PDPage> barRow2 = table.createRow(15f);
+		cell = barRow2.createCell((100 / 6f), "");
+		cell.setFont(PDType1Font.HELVETICA);
+		cell.setFillColor(Color.CYAN);
+		cell.setTextColor(Color.BLACK);
+		
+		cell = barRow2.createCell((100 / 6f), new Integer(bar.getId()).toString());
+		cell.setFont(PDType1Font.HELVETICA);
+		cell.setFillColor(Color.CYAN);
+		cell.setTextColor(Color.BLACK);
+		
+		cell = barRow2.createCell((100 / 6f), bar.getName());
+		cell.setFont(PDType1Font.HELVETICA);
+		cell.setFillColor(Color.CYAN);
+		cell.setTextColor(Color.BLACK);
+		
+		cell = barRow2.createCell((100 / 6f), bar.getAddress());
+		cell.setFont(PDType1Font.HELVETICA);
+		cell.setFillColor(Color.CYAN);
+		cell.setTextColor(Color.BLACK);
+		
+		cell = barRow2.createCell((100 / 6f), bar.getCity());
+		cell.setFont(PDType1Font.HELVETICA);
+		cell.setFillColor(Color.CYAN);
+		cell.setTextColor(Color.BLACK);
+		
+		cell = barRow2.createCell((100 / 6f), bar.getCountry());
 		cell.setFont(PDType1Font.HELVETICA);
 		cell.setFillColor(Color.CYAN);
 		cell.setTextColor(Color.BLACK);

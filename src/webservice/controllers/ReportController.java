@@ -27,6 +27,7 @@ import webservice.auxillary.ReportBuilder;
 import webservice.auxillary.AuthInfo;
 
 @RestController
+@RequestMapping("/api")
 public class ReportController extends BaseController {
 
 	@Autowired
@@ -66,7 +67,7 @@ public class ReportController extends BaseController {
 
 			Bar bar = barService.GetBar(userName);
 
-			byte[] report = ReportBuilder.buildOrderReport(filteredOrders, bar, startDateD, endDateD, dfCreationTime);
+			byte[] report = ReportBuilder.buildOrderReport(filteredOrders, userName, bar, startDateD, endDateD, dfCreationTime);
 
 			logger.debug("GET /orderReport: filtered orders count " + filteredOrders.size());
 			logger.debug("GET /orderReport: returned pdf report containing orders for period from " + startDate.toString() + " till " + endDate.toString());

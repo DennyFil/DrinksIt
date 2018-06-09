@@ -11,10 +11,11 @@ import org.apache.pdfbox.pdmodel.PDPage;
 import webservice.auxillary.OrderTable;
 import webservice.auxillary.DTO.Bar;
 import webservice.auxillary.DTO.Order;
+import webservice.auxillary.DTO.User;
 
 public class ReportBuilder {
 
-	public static byte[] buildOrderReport(List<Order> orders, Bar bar, Date startDate, Date endDate, DateFormat dateFormat) {
+	public static byte[] buildOrderReport(List<Order> orders, String userName, Bar bar, Date startDate, Date endDate, DateFormat dateFormat) {
 	
 		try {
 			// IE workaround: write into byte array first.
@@ -27,7 +28,7 @@ public class ReportBuilder {
 			PDPage page = new PDPage();
 			document.addPage( page );
 
-			OrderTable.createOrderTable(document, page, orders, bar, startDate, endDate, dateFormat);		
+			OrderTable.createOrderTable(document, page, orders, userName, bar, startDate, endDate, dateFormat);		
 			
 			document.save(baos);
 			document.close();

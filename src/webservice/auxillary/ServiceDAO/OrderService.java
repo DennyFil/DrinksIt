@@ -31,7 +31,7 @@ public class OrderService extends GenDao<Order> implements IOrderService {
 	{
 		Session session = sessionFactory.getCurrentSession();
 
-		User user = (User) session.get(User.class, userName);
+		User user = (User) session.byNaturalId(User.class).using("userName", userName).load();
 
 		if (user != null) {
 			int barId = user.getBarId();

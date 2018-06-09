@@ -1,7 +1,4 @@
 import { Component, Injectable }	from '@angular/core';
-import { Http }						from '@angular/http';
-
-import { HttpPacketService }		from './httpPacket.service';
 
 export class UserCreds {
     constructor(
@@ -19,40 +16,10 @@ export class UserInfo {
 
 @Injectable()
 @Component({
-    providers: [HttpPacketService]
 })
 export class AuthenticationService {
 
-    constructor(private httpPacketService: HttpPacketService,
-        private http: Http) { }
-
-    login(userCreds, successCbk, failureCbk) {
-
-        let url = 'login';
-        let body = JSON.stringify(userCreds);
-		let packetOptions = this.httpPacketService.computePacketOptionsNoCreds();
-
-        this.http.post(url, body, packetOptions)
-            .map(response => response.json())
-            .subscribe(
-                data => this.loginResponseCbk(data, successCbk, failureCbk),
-                err => failureCbk(err._body)
-                );
-    }
-
-	loginResponseCbk(userInfo, successCbk, failureCbk) {
-
-		if (userInfo.token) {
-        	localStorage.setItem('drinksItUserInfo', JSON.stringify(userInfo));
-        	if (successCbk) {
-        		successCbk();
-        	}
-        } else {
-        	if (failureCbk) {
-        		failureCbk();
-        	}
-        }
-    }
+    constructor() { }
 
 	getUserInfo() {
 		return JSON.parse(localStorage.getItem('drinksItUserInfo'));
@@ -65,10 +32,14 @@ export class AuthenticationService {
 	
 	getCredentials() {
 		let userInfo = this.getUserInfo();
-		return {
-			userName: userInfo.userName,
-			token: userInfo.token
-		};
+		if (userInfo) {			
+			return {
+				userName: userInfo.userName,
+				token: userInfo.token
+			};
+		}
+		
+		return null;
 	}
 
     logout() {
