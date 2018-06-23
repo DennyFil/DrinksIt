@@ -1,7 +1,5 @@
 package webservice.controllers;
 
-import java.util.List;
-
 import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -36,9 +34,7 @@ public class DrinkController extends GenController<Drink> {
 				return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Not allowed to get drinks for bar: " + barId);
 			}
 			
-			List<Drink> drinks = drinkService.GetDrinks(barId);
-			
-			return ResponseEntity.ok(drinks);
+			return ResponseEntity.ok(drinkService.GetDrinks(barId));
 		}
 		catch (Exception e){
 			logger.debug(e.getMessage());

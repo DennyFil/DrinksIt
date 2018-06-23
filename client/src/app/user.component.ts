@@ -57,8 +57,9 @@ export class UserComponent {
   
   	editUser(user) {
     	
+		let isNew = user == null;
     	// New user
-    	if (user == null){
+    	if (isNew){
     		user = new User(0, "", -1);
     	}
 
@@ -68,7 +69,8 @@ export class UserComponent {
 	    		onSubmitCallback: () => {
 	               this.getUsers();
 	          	},
-	           	user: user
+	           	user: user,
+				isNew: isNew
 	        },
            	BSModalContext));
   	}

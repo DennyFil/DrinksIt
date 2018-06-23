@@ -10,7 +10,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import webservice.auxillary.QRCodeGenerator;
@@ -54,7 +53,7 @@ public class QRCodeController extends BaseController {
 			double drinkSize = drink.getSize();
 			int drinkBarId = drink.getBarId();
 
-			String qrCodeContent = serverUrl + "/postOrder?drinkId=" + drinkId + 
+			String qrCodeContent = serverUrl + "/api/postOrder?drinkId=" + drinkId + 
 					"&barId=" + drinkBarId + 
 					"&drinkName=" + drinkName +
 					"&drinkPrice=" + drinkPrice +

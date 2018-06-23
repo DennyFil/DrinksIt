@@ -57,8 +57,9 @@ export class BarComponent {
 
     editBar(bar) {
 
+		let isNew = bar == null;
     	// New bar
-    	if (bar == null) {
+    	if (isNew) {
     		bar = new Bar(-1, '', '', '', '');
     	}
 
@@ -68,7 +69,8 @@ export class BarComponent {
 	    		onSubmitCallback: () => {
 	               this.getBars();
 	          	},
-	           	bar: bar
+	           	bar: bar,
+				isNew: isNew
 	        },
            	BSModalContext));
   	}

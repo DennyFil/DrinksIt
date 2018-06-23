@@ -8,6 +8,7 @@ import { Bar }							from './models/bar';
 
 export class BarEditContext extends BSModalContext {
   public bar: Bar;
+  public isNew: boolean;
   public onSubmitCallback: Function;
 }
 

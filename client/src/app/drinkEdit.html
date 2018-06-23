@@ -1,7 +1,11 @@
 <div class="panel-body">
 	<div class="row">
 		<div class="col-sm-12">
-			<h2>Create drink</h2>
+			<h2>
+				<span [hidden]="!drinkEditContext.isNew">Create</span>
+				<span [hidden]="drinkEditContext.isNew">Edit</span>
+				drink
+			</h2>
 		</div>
 	</div>
 	<div class="row">

@@ -8,6 +8,7 @@ import { Drink }           			from './models/drink';
 
 export class DrinkEditContext extends BSModalContext {
   public drink: Drink;
+  public isNew: boolean;
   public onSubmitCallback: Function;
 }
 

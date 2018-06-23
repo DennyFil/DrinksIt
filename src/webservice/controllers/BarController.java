@@ -2,7 +2,6 @@ package webservice.controllers;
 
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -31,9 +30,7 @@ public class BarController extends GenController<Bar> {
 			// All bars returned if user has list right
 			if ( arService.checkRight(userInfo, "list"))
 			{
-				List<Bar> bars = barService.FindAll();
-	
-				return ResponseEntity.ok(bars);
+				return ResponseEntity.ok(barService.FindAll());
 			}
 			else {
 				// Only return bar related to current user

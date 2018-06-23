@@ -31,12 +31,10 @@ public class UserController extends GenController<User> {
 	public ResponseEntity GetUsers(HttpServletRequest request) throws Exception {
 
 		try {
-			List<User> users = userService.FindAll();
-			
 			// Remap to userInfo		
 			List<UserInfo> usersInfo = new ArrayList<UserInfo>();
 			
-			for (User user : users){
+			for (User user : userService.FindAll()){
 				usersInfo.add(new UserInfo(user));
 			} 
 			
@@ -59,7 +57,7 @@ public class UserController extends GenController<User> {
 	protected User updateItem(User newUser) throws Exception {
 		
 		User userSameName = userService.GetUser(newUser.getUserName());
-		if (userSameName == null) {
+		if (userSameName != null) {
 			userService.Update(newUser);
 			return newUser;
 		}

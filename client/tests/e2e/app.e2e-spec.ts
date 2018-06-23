@@ -7,10 +7,8 @@ describe('drinks-it App', function() {
     page = new DrinksItPage();
   });
 
-  it('should display message saying app works', () => {
+  it('should display login page', () => {
     page.navigateTo();
-    page.getParagraphText().then(function (text) {
-      expect(text).toEqual('app works!');
-    });
+	// expect current URL to be 'http://localhost:4200/app/login'
   });
 });

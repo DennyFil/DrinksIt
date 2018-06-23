@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import webservice.auxillary.AuthInfo;
 import webservice.auxillary.AuthInfoService;
+import webservice.auxillary.DTO.Bar;
 import webservice.auxillary.DTO.Order;
 import webservice.auxillary.ServiceDAO.IDrinkService;
 import webservice.auxillary.ServiceDAO.IOrderService;
@@ -74,10 +75,17 @@ public class OrderController extends BaseController {
 
 		try {
 			AuthInfo userInfo = authInfoService.getAuthInfo(request);
-			
-			List<Order> orderListAll = orderService.GetOrders(userInfo.getUserName());
+			// Return all orders
+			if ( arService.checkRight(userInfo, "list"))
+			{
+				return ResponseEntity.ok(orderService.FindAll());
+			}
+			else {
+				// Return orders for user's bar
+				List<Order> orderListAll = orderService.GetOrders(userInfo.getUserName());
 
-			return ResponseEntity.ok(orderListAll);
+				return ResponseEntity.ok(orderListAll);
+			}
 		}
 		catch (Exception e)
 		{

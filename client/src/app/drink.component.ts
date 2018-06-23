@@ -55,7 +55,13 @@ export class DrinkComponent {
 
 		this.restService.getBars()
 			.subscribe(
-            	data => this.bars = data, // Bind to view
+            	data => {
+					this.bars = data; // Bind to view
+					if (this.bars.length == 1) {
+						this.selectedBar = this.bars[0];
+						this.getDrinks();
+					}
+				},
                 err => this.errorManager.displayError(err));
     }
 	
@@ -77,7 +83,8 @@ export class DrinkComponent {
     editDrink(drink) {
 
     	// New drink
-    	if (drink == null) {
+		let isNew = drink == null;
+    	if (isNew) {
     		drink = new Drink(0,'', 0, 0, 0 );
     	}
 
@@ -89,7 +96,8 @@ export class DrinkComponent {
 	    		onSubmitCallback: () => {
 	               this.getDrinks();
 	          	},
-	           	drink: drink
+	           	drink: drink,
+				isNew: isNew
 	        },
            	BSModalContext));
   	}

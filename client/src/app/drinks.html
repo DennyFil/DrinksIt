@@ -6,7 +6,7 @@
 	</div>
 	
 	<!-- Bar selector -->
-	<div class="row">
+	<div [hidden]="bars.length == 1" class="row">
 		<div class="col-sm-4">
 			<h3>Select bar</h3>
 			<select [(ngModel)]="selectedBar" (ngModelChange)="onBarSelected()">

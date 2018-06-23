@@ -8,6 +8,7 @@ import { User }           			from './models/user';
 
 export class UserEditContext extends BSModalContext {
   public user: User;
+  public isNew: boolean;
   public onSubmitCallback: Function;
 }
 

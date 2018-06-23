@@ -1,7 +1,11 @@
 <div class="panel-body">
 	<div class="row">
 		<div class="col-sm-12">
-			<h3>Create user</h3>
+			<h2>
+				<span [hidden]="!userEditContext.isNew">Create</span>
+				<span [hidden]="userEditContext.isNew">Edit</span>
+				user
+			</h2>
 		</div>
 	</div>
 	<div class="row">
