@@ -50,14 +50,17 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     @Override
     public void configure(WebSecurity web) throws Exception {
         web.ignoring().antMatchers("/api/postOrder");
+        web.ignoring().antMatchers("/index.html", "/", "/login", "/*.js", "/*.css");
     }
     
     @Override
     protected void configure(HttpSecurity http) throws Exception {
     	
-    	http.authorizeRequests().anyRequest().authenticated()
-            .and()
-            .httpBasic()
+    	http
+    		.httpBasic()
+    		.and()
+            .authorizeRequests()
+            .anyRequest().authenticated()
             .and().csrf().disable();
     	
         http.addFilterBefore(new AuthenticationFilter(authenticationManager()), BasicAuthenticationFilter.class);
