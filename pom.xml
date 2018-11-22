@@ -7,28 +7,28 @@
 	<packaging>war</packaging>
 
 	<properties>
-		<springframework.version>5.0.1.RELEASE</springframework.version>
-		<spring-security.version>5.0.3.RELEASE</spring-security.version>
-		<jwt.version>3.3.0</jwt.version>
-		<hibernate.version>5.2.12.Final</hibernate.version>
-		<mysql.connector.version>6.0.6</mysql.connector.version>
-		<flywaydb.version>4.2.0</flywaydb.version>
+		<springframework.version>5.1.1.RELEASE</springframework.version>
+		<spring-security.version>5.1.1.RELEASE</spring-security.version>
+		<jwt.version>3.4.0</jwt.version>
+		<hibernate.version>5.3.7.Final</hibernate.version>
+		<mysql.connector.version>8.0.12</mysql.connector.version>
+		<flywaydb.version>5.2.0</flywaydb.version>
 		<jstl.version>1.2</jstl.version>
-		<servletapi.version>3.0.1</servletapi.version>
+		<servletapi.version>4.0.1</servletapi.version>
 		<axis.version>1.4</axis.version>
-		<commons-lang.version>2.6</commons-lang.version>
+		<commons-lang.version>3.8.1</commons-lang.version>
 		<commons-discovery.version>0.5</commons-discovery.version>
-		<json.version>20171018</json.version>
+		<json.version>20180813</json.version>
 		<qrgen.version>1.4</qrgen.version>
-		<boxable.version>1.4</boxable.version>
-		<pdfbox.version>2.0.8</pdfbox.version>
-		<jackson.version>2.9.2</jackson.version>
-		<maven-war-plugin.version>3.2.0</maven-war-plugin.version>
-		<maven-resources-plugin.version>3.0.2</maven-resources-plugin.version>
-		<maven-compiler-plugin.version>3.7.0</maven-compiler-plugin.version>
+		<boxable.version>1.5</boxable.version>
+		<pdfbox.version>2.0.12</pdfbox.version>
+		<jackson.version>2.9.7</jackson.version>
+		<maven-war-plugin.version>3.2.2</maven-war-plugin.version>
+		<maven-resources-plugin.version>3.1.0</maven-resources-plugin.version>
+		<maven-compiler-plugin.version>3.8.0</maven-compiler-plugin.version>
 		<frontend-maven-plugin.version>1.6</frontend-maven-plugin.version>
-		<node.version>v8.9.4</node.version>
-		<npm.version>5.6.0</npm.version>
+		<node.version>v8.12.0</node.version>
+		<npm.version>6.1.1</npm.version>
 		<tomcat7-maven-plugin.version>2.2</tomcat7-maven-plugin.version>
 		<NODE_PATH>C:\Program Files\</NODE_PATH>
 	</properties>
@@ -126,8 +126,8 @@
 			<version>${flywaydb.version}</version>
 		</dependency>
 		<dependency>
-			<groupId>commons-lang</groupId>
-			<artifactId>commons-lang</artifactId>
+			<groupId>org.apache.commons</groupId>
+			<artifactId>commons-lang3</artifactId>
 			<version>${commons-lang.version}</version>
 		</dependency>
 		<dependency>
