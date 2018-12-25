@@ -3,7 +3,7 @@ package webservice.auxillary;
 import java.io.UnsupportedEncodingException;
 import java.util.Date;
 
-import org.apache.commons.lang.time.DateUtils;
+import org.apache.commons.lang3.time.DateUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
@@ -39,9 +39,6 @@ public class TokenService {
     	    
     	    verifier.verify(token);
     	    
-    	} catch (UnsupportedEncodingException exception){
-    	    //UTF-8 encoding not supported
-    		return false;
     	} catch (JWTVerificationException exception){
     	    //Invalid signature/claims
     		return false;
@@ -66,8 +63,6 @@ public class TokenService {
         	    	.withClaim("passwordHash", user.getPasswordHash())
         	        //.withExpiresAt(expiryDate)
         	        .sign(algorithm);
-    	} catch (UnsupportedEncodingException exception){
-    	    //UTF-8 encoding not supported
     	} catch (JWTCreationException exception){
     	    //Invalid Signing configuration / Couldn't convert Claims.
     	}
