@@ -10,6 +10,8 @@ import webservice.auxillary.database.OrderComparator;
 @Table(name = "orders")
 public class Order extends GenItem implements java.io.Serializable, Comparable<Order> {
 
+	private static final long serialVersionUID = 1L;
+
 	@Column(name = "ts_create")
 	private Date ts_create;
 	

@@ -21,9 +21,7 @@ public class DrinkController extends GenController<Drink> {
 	IDrinkService drinkService;
 	
 	@RequestMapping("/list")
-	public ResponseEntity GetBarDrinks(HttpServletRequest request, @RequestParam Integer barId) throws Exception {
-
-		logger.debug("GET /drinks for bar " + barId);
+	public ResponseEntity<?> GetBarDrinks(HttpServletRequest request, @RequestParam Integer barId) throws Exception {
 
 		try {
 			AuthInfo userInfo = authInfoService.getAuthInfo(request);
@@ -71,8 +69,8 @@ public class DrinkController extends GenController<Drink> {
 	}
 	
 	@Override
-	protected String getPostLog(Drink drink)
+	protected String getTypeStr()
 	{
-		return "CREATION drink: " + drink.getName() + ", size: " + drink.getSize() + ", price: " + drink.getPrice() + ", bar: " + drink.getBarId();
+		return "drink";
 	}
 }

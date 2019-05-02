@@ -2,8 +2,6 @@ package webservice.controllers;
 
 import javax.servlet.http.HttpServletRequest;
 
-import org.apache.commons.lang3.exception.ExceptionUtils;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.env.Environment;
 import org.springframework.http.HttpStatus;
@@ -29,7 +27,7 @@ public class QRCodeController extends BaseController {
 	private Environment environment;
 
 	@RequestMapping("/qrcode")
-	public ResponseEntity GetQRCode(HttpServletRequest request, @RequestBody Integer drinkId) throws Exception
+	public ResponseEntity<?> GetQRCode(HttpServletRequest request, @RequestBody Integer drinkId) throws Exception
 	{
 		logger.debug("GET /qrcode for drink " + drinkId);
 		
@@ -72,7 +70,7 @@ public class QRCodeController extends BaseController {
 		}
 		catch (Exception e)
 		{
-			logger.error(ExceptionUtils.getStackTrace(e));
+			logger.error(e.getMessage());
 		}
 
 		return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Failed to generate QR code (drinkId: " + drinkId + ")");

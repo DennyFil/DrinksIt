@@ -1,6 +1,5 @@
 package webservice.auxillary.ServiceDAO;
 
-import java.io.Serializable;
 import java.util.List;
 
 import org.hibernate.Session;

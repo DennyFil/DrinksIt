@@ -22,7 +22,7 @@ public class BarController extends GenController<Bar> {
 	IBarService barService;
 
 	@RequestMapping("/list")
-	public ResponseEntity GetBars(HttpServletRequest request) throws Exception {
+	public ResponseEntity<?> GetBars(HttpServletRequest request) throws Exception {
 
 		try {
 			AuthInfo userInfo = authInfoService.getAuthInfo(request);

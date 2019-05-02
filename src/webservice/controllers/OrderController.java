@@ -17,8 +17,6 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import webservice.auxillary.AuthInfo;
-import webservice.auxillary.AuthInfoService;
-import webservice.auxillary.DTO.Bar;
 import webservice.auxillary.DTO.Order;
 import webservice.auxillary.ServiceDAO.IDrinkService;
 import webservice.auxillary.ServiceDAO.IOrderService;
@@ -27,7 +25,7 @@ import webservice.auxillary.database.OrderStatus;
 
 @RestController
 @RequestMapping("/api")
-public class OrderController extends BaseController {
+public class OrderController extends GenController<Order> {
 
 	@Autowired
 	IOrderService orderService;
@@ -39,13 +37,11 @@ public class OrderController extends BaseController {
 	private Environment environment;
 
 	@RequestMapping("/recentOrders")
-	public ResponseEntity GetRecentOrders(HttpServletRequest request) throws Exception {
-
-		logger.debug("GET /recentOrders");
+	public ResponseEntity<?> GetRecentOrders(HttpServletRequest request) throws Exception {
 
 		try {
 			AuthInfo userInfo = authInfoService.getAuthInfo(request);
-			
+			// Get orders made to user's bar
 			List<Order> orderListAll = orderService.GetOrders(userInfo.getUserName());
 
 			String deliveredOrderTimeDisplay = environment.getRequiredProperty("order.deliveredOrderTimeDisplay");
@@ -69,9 +65,7 @@ public class OrderController extends BaseController {
 	}
 
 	@RequestMapping("/orders")
-	public ResponseEntity GetOrders(HttpServletRequest request) throws Exception {
-
-		logger.debug("GET /orders");
+	public ResponseEntity<?> GetOrders(HttpServletRequest request) throws Exception {
 
 		try {
 			AuthInfo userInfo = authInfoService.getAuthInfo(request);
@@ -81,7 +75,7 @@ public class OrderController extends BaseController {
 				return ResponseEntity.ok(orderService.FindAll());
 			}
 			else {
-				// Return orders for user's bar
+				// Get orders made to user's bar
 				List<Order> orderListAll = orderService.GetOrders(userInfo.getUserName());
 
 				return ResponseEntity.ok(orderListAll);
@@ -96,9 +90,9 @@ public class OrderController extends BaseController {
 	}
 
 	@RequestMapping("/updateOrderStatus")
-	public ResponseEntity UpdateOrderStatus(HttpServletRequest request, HttpSession session, @RequestBody Integer orderId) throws Exception {  
+	public ResponseEntity<?> UpdateOrderStatus(HttpServletRequest request, HttpSession session, @RequestBody Integer orderId) throws Exception {  
 
-		logger.debug("GET /updateOrderStatus for order " + orderId);
+		logger.debug("POST /updateOrderStatus for order " + orderId);
 
 		try {
 			AuthInfo userInfo = authInfoService.getAuthInfo(request);
@@ -107,7 +101,7 @@ public class OrderController extends BaseController {
 			
 			if (! arService.isBarAdmin(userInfo, order.getDrink().getBarId()))
 			{
-				logger.debug("GET /updateOrderStatus: no right for " + userInfo.getUserName());
+				logger.debug("POST /updateOrderStatus: no right for " + userInfo.getUserName());
 				return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Not allowed to update order");
 			}			
 
@@ -142,7 +136,7 @@ public class OrderController extends BaseController {
 	}
 
 	@RequestMapping("/postOrder")
-	public ResponseEntity PostOrder(@RequestParam Integer drinkId, 
+	public ResponseEntity<?> PostOrder(@RequestParam Integer drinkId, 
 			@RequestParam Integer barId, 
 			@RequestParam String drinkName, 
 			@RequestParam Double drinkSize, 
@@ -165,5 +159,39 @@ public class OrderController extends BaseController {
 		}		
 
 		return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Failed to post order");
+	}
+
+	@Override
+	protected boolean hasPostRight(AuthInfo userInfo, Order newOrder) {
+		// Everyone ca order a drink
+		return true;
+	}
+
+	@Override
+	protected boolean itemExists(Order newOrder) throws Exception {
+		// A posted order is always a new one
+		return false;
+	}
+
+	@Override
+	protected Order updateItem(Order newOrder) throws Exception {
+		// No one can update an order this way
+		return newOrder;
+	}
+	
+	@Override
+	protected void deleteItem(int id) throws Exception {
+		orderService.DeleteById(id);
+	}
+
+	@Override
+	protected Order createItem(Order newOrder) throws Exception {
+		
+		return orderService.Create(newOrder);
+	}
+
+	@Override
+	protected String getTypeStr() {
+		return "order";
 	}
 }

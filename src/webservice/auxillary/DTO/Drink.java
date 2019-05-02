@@ -8,6 +8,8 @@ import webservice.auxillary.DTO.Bar;
 @Table(name = "drinks")
 public class Drink extends GenItem implements java.io.Serializable {
 	
+	private static final long serialVersionUID = 1L;
+
 	@Column(name = "bar_id", insertable = false, updatable = false)
 	private int barId;
 	

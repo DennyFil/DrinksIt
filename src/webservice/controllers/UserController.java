@@ -2,7 +2,6 @@ package webservice.controllers;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -13,12 +12,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import webservice.auxillary.AuthInfo;
-import webservice.auxillary.DTO.Bar;
 import webservice.auxillary.DTO.User;
 import webservice.auxillary.DTO.UserInfo;
 import webservice.auxillary.ServiceDAO.IUserService;
-import webservice.auxillary.ServiceDAO.UserService;
-import webservice.exceptions.PostException;
 
 @RestController
 @RequestMapping("/api/users")
@@ -28,7 +24,7 @@ public class UserController extends GenController<User> {
 	IUserService userService;
 
 	@RequestMapping("/list")
-	public ResponseEntity GetUsers(HttpServletRequest request) throws Exception {
+	public ResponseEntity<?> GetUsers(HttpServletRequest request) throws Exception {
 
 		try {
 			// Remap to userInfo		
@@ -62,7 +58,7 @@ public class UserController extends GenController<User> {
 			return newUser;
 		}
 		else {
-			throw new PostException("Other user with same userName exists");
+			throw new Exception("Other user with same userName exists");
 		}
 	}
 	
@@ -80,13 +76,13 @@ public class UserController extends GenController<User> {
 			return userService.Create(newUser);
 		}
 		else {
-			throw new PostException("Other user with same userName exists");
+			throw new Exception("Other user with same userName exists");
 		}
 	}
 
 	@Override
-	protected String getPostLog(User user) {
-		return "CREATION: user " + user.getUserName() + " for bar " + user.getBarId();
+	protected String getTypeStr() {
+		return "user";
 	}
 
 	@Override

@@ -7,12 +7,11 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import webservice.auxillary.DTO.BaseItem;
-import webservice.exceptions.PostException;
 import webservice.auxillary.AuthInfo;
 
 public abstract class GenController<T extends BaseItem> extends BaseController {
 	
-	protected abstract String getPostLog(T item);
+	protected abstract String getTypeStr();
 	
 	protected abstract boolean hasPostRight(AuthInfo userInfo, T newItem);
 	
@@ -23,15 +22,31 @@ public abstract class GenController<T extends BaseItem> extends BaseController {
 	protected abstract T updateItem(T newItem) throws Exception;
 	
 	protected abstract void deleteItem(int id) throws Exception;
-	
-	private T handlePostedItem(T newItem) throws Exception
+
+	private String buildLogStr( String action, String itemId, String userName )
 	{
+		return action + ": " + getTypeStr() + " " + itemId + " by " + userName;
+	}
+	
+	private T handlePostedItem(T newItem,  String userName ) throws Exception
+	{
+		T item = null;
+		String action = "";
+
 		if (itemExists(newItem))
 		{
-			return updateItem(newItem);
+			item = updateItem(newItem);
+			action = "UPDATE";
+		}
+		else
+		{
+			item = createItem(newItem);
+			action = "CREATE";
 		}
 		
-		return createItem(newItem);
+		logger.debug(buildLogStr( action, newItem.getIdStr(), userName ));
+
+		return item;
 	}
 	
 	protected boolean hasDeleteRight(AuthInfo userInfo)
@@ -40,18 +55,19 @@ public abstract class GenController<T extends BaseItem> extends BaseController {
 	}
 	
 	@RequestMapping("/delete")
-	public ResponseEntity Delete(HttpServletRequest request, @RequestBody Integer id) throws Exception
+	public ResponseEntity<?> Delete(HttpServletRequest request, @RequestBody Integer id) throws Exception
 	{
 		try {
 			AuthInfo userInfo = authInfoService.getAuthInfo(request);
 			
 			if ( ! hasDeleteRight(userInfo))
 			{
-				logger.debug("POST /delete: no delet right for " + userInfo.getUserName());
+				logger.debug("POST /delete: no delete right for " + userInfo.getUserName());
 				return ResponseEntity.status(HttpStatus.FORBIDDEN).body("Not allowed to delete item");
 			}
 			
 			deleteItem(id);
+			buildLogStr( "DELETE", id.toString(), userInfo.getUserName() );
 			
 			return ResponseEntity.ok(id);
 		}
@@ -63,7 +79,7 @@ public abstract class GenController<T extends BaseItem> extends BaseController {
 	}
 
 	@RequestMapping("/post")
-	public ResponseEntity Post(HttpServletRequest request, @RequestBody T newItem) throws Exception {
+	public ResponseEntity<?> Post(HttpServletRequest request, @RequestBody T newItem) throws Exception {
 
 		try {
 			AuthInfo userInfo = authInfoService.getAuthInfo(request);
@@ -74,18 +90,9 @@ public abstract class GenController<T extends BaseItem> extends BaseController {
 				return ResponseEntity.status(HttpStatus.FORBIDDEN).body("Not allowed to post item");
 			}
 			
-			BaseItem item = handlePostedItem(newItem);
-			
-			logger.debug("POST /post " + newItem.getIdStr());
-			
-			String logStr = getPostLog(newItem);
-			logger.debug(logStr);
+			BaseItem item = handlePostedItem(newItem, userInfo.getUserName());
 			
 			return ResponseEntity.ok(item);
-		}
-		catch (PostException e){
-			logger.debug(e.getMessage());
-			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(e.getMessage());
 		}
 		catch (Exception e){
 			logger.debug(e.getMessage());

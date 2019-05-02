@@ -6,7 +6,6 @@ import webservice.auxillary.DTO.Order;
 public class OrderComparator implements Comparator<Order> {
 
 	public OrderComparator() {
-		// TODO Auto-generated constructor stub
 	}
 	
 	public int compare(Order o1, Order o2)

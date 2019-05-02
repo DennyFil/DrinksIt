@@ -6,6 +6,8 @@ import javax.persistence.*;
 @Table(name = "bars")
 public class Bar extends GenItem implements java.io.Serializable {
 
+	private static final long serialVersionUID = 1L;
+
 	@Column(name = "address")
 	private String address;
 	

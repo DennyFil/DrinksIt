@@ -16,7 +16,9 @@ import webservice.auxillary.DTO.Bar;
 @Table(name = "users")
 public class User extends GenItem implements java.io.Serializable {
 
-	@NaturalId
+	private static final long serialVersionUID = 1L;
+
+    @NaturalId
     @Column(name = "userName")
     private String userName;
 	
