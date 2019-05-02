@@ -72,7 +72,7 @@ public class BarController extends GenController<Bar> {
 	}
 
 	@Override
-	protected String getPostLog(Bar bar) {
-		return "CREATION: bar " + bar.getName();
+	protected String getTypeStr() {
+		return "bar";
 	}
 }
