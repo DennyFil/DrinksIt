@@ -7,28 +7,28 @@
 	<packaging>war</packaging>
 
 	<properties>
-		<springframework.version>5.1.3.RELEASE</springframework.version>
-		<spring-security.version>5.1.2.RELEASE</spring-security.version>
+		<springframework.version>5.1.6.RELEASE</springframework.version>
+		<spring-security.version>5.1.5.RELEASE</spring-security.version>
 		<jwt.version>3.4.0</jwt.version>
-		<hibernate.version>5.3.7.Final</hibernate.version>
-		<mysql.connector.version>8.0.12</mysql.connector.version>
-		<flywaydb.version>5.2.0</flywaydb.version>
+		<hibernate.version>5.4.2.Final</hibernate.version>
+		<mysql.connector.version>8.0.15</mysql.connector.version>
+		<flywaydb.version>5.2.4</flywaydb.version>
 		<jstl.version>1.2</jstl.version>
 		<servletapi.version>4.0.1</servletapi.version>
 		<axis.version>1.4</axis.version>
-		<commons-lang.version>3.8.1</commons-lang.version>
+		<commons-lang.version>3.9</commons-lang.version>
 		<commons-discovery.version>0.5</commons-discovery.version>
 		<json.version>20180813</json.version>
 		<qrgen.version>1.4</qrgen.version>
 		<boxable.version>1.5</boxable.version>
-		<pdfbox.version>2.0.12</pdfbox.version>
-		<jackson.version>2.9.7</jackson.version>
+		<pdfbox.version>2.0.15</pdfbox.version>
+		<jackson.version>2.9.8</jackson.version>
 		<maven-war-plugin.version>3.2.2</maven-war-plugin.version>
 		<maven-resources-plugin.version>3.1.0</maven-resources-plugin.version>
 		<maven-compiler-plugin.version>3.8.0</maven-compiler-plugin.version>
-		<frontend-maven-plugin.version>1.6</frontend-maven-plugin.version>
-		<node.version>v8.12.0</node.version>
-		<npm.version>6.1.1</npm.version>
+		<frontend-maven-plugin.version>1.7.6</frontend-maven-plugin.version>
+		<node.version>v10.15.3</node.version>
+		<npm.version>6.4.1</npm.version>
 		<tomcat7-maven-plugin.version>2.2</tomcat7-maven-plugin.version>
 		<NODE_PATH>C:\Program Files\</NODE_PATH>
 	</properties>

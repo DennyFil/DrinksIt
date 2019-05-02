@@ -11,7 +11,6 @@ import org.apache.pdfbox.pdmodel.PDPage;
 import webservice.auxillary.OrderTable;
 import webservice.auxillary.DTO.Bar;
 import webservice.auxillary.DTO.Order;
-import webservice.auxillary.DTO.User;
 
 public class ReportBuilder {
 

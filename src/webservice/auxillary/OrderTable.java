@@ -16,7 +16,6 @@ import be.quodlibet.boxable.Cell;
 import be.quodlibet.boxable.Row;
 
 import webservice.auxillary.DTO.Order;
-import webservice.auxillary.DTO.User;
 import webservice.auxillary.DTO.Bar;
 
 public class OrderTable {

@@ -24,9 +24,7 @@ import javax.servlet.ServletResponse;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import java.io.BufferedReader;
 import java.io.IOException;
-import java.util.stream.Collectors;
 
 public class AuthenticationFilter extends GenericFilterBean {
 

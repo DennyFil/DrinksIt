@@ -1,9 +1,5 @@
 package webservice.auxillary;
 
-import java.io.UnsupportedEncodingException;
-import java.util.Date;
-
-import org.apache.commons.lang3.time.DateUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
@@ -54,8 +50,8 @@ public class TokenService {
     	try {
     	    Algorithm algorithm = Algorithm.HMAC512("secret");
     	    // Expiration (in hours)
-    	    int expiresIn = Integer.parseInt(environment.getRequiredProperty("token.expration"));
-    	    Date expiryDate = DateUtils.addHours(new Date(), expiresIn);
+    	    //int expiresIn = Integer.parseInt(environment.getRequiredProperty("token.expration"));
+    	    //Date expiryDate = DateUtils.addHours(new Date(), expiresIn);
     	    
     	    token = JWT.create()
         	    	.withClaim("userName", user.getUserName())
