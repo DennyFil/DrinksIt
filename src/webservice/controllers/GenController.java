@@ -6,10 +6,10 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import webservice.auxillary.DTO.BaseItem;
+import webservice.auxillary.DTO.GenItem;
 import webservice.auxillary.AuthInfo;
 
-public abstract class GenController<T extends BaseItem> extends BaseController {
+public abstract class GenController<T extends GenItem> extends BaseController {
 	
 	protected abstract String getTypeStr();
 	
@@ -90,7 +90,7 @@ public abstract class GenController<T extends BaseItem> extends BaseController {
 				return ResponseEntity.status(HttpStatus.FORBIDDEN).body("Not allowed to post item");
 			}
 			
-			BaseItem item = handlePostedItem(newItem, userInfo.getUserName());
+			GenItem item = handlePostedItem(newItem, userInfo.getUserName());
 			
 			return ResponseEntity.ok(item);
 		}

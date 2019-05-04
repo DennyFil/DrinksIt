@@ -53,7 +53,7 @@ public class UserController extends GenController<User> {
 	protected User updateItem(User newUser) throws Exception {
 		
 		User userSameName = userService.GetUser(newUser.getUserName());
-		if (userSameName != null) {
+		if (userSameName == null) {
 			userService.Update(newUser);
 			return newUser;
 		}

@@ -42,9 +42,4 @@ public class UserInfo extends BaseItem {
 	public String getToken() {
 		return token;
 	}
-
-	@Override
-	public String getIdStr() {
-		return userName;
-	}
 }

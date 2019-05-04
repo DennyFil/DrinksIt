@@ -69,7 +69,7 @@ export class UserComponent {
 	    		onSubmitCallback: () => {
 	               this.getUsers();
 	          	},
-	           	user: user,
+	           	user: Object.assign({}, user),
 				isNew: isNew
 	        },
            	BSModalContext));

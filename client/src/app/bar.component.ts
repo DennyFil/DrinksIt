@@ -69,7 +69,7 @@ export class BarComponent {
 	    		onSubmitCallback: () => {
 	               this.getBars();
 	          	},
-	           	bar: bar,
+	           	bar: Object.assign({}, bar),
 				isNew: isNew
 	        },
            	BSModalContext));

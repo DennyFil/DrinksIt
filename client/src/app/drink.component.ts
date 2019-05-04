@@ -96,7 +96,7 @@ export class DrinkComponent {
 	    		onSubmitCallback: () => {
 	               this.getDrinks();
 	          	},
-	           	drink: drink,
+	           	drink: Object.assign({}, drink),
 				isNew: isNew
 	        },
            	BSModalContext));
