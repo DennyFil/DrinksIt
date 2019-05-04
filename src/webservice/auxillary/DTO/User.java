@@ -18,7 +18,7 @@ public class User extends GenItem implements java.io.Serializable {
 
 	private static final long serialVersionUID = 1L;
 
-    @NaturalId
+    @NaturalId(mutable=true)
     @Column(name = "userName")
     private String userName;
 	
