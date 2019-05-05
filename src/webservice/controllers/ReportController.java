@@ -36,8 +36,6 @@ public class ReportController extends BaseController {
 
 	@RequestMapping("/ordersReport")
 	public ResponseEntity<?> ExportOrders(HttpServletRequest request, @RequestParam String startDate, @RequestParam String endDate) throws Exception {
-		
-		logger.debug("GET /orderReport");
 
 		try {
 			AuthInfo userInfo = authInfoService.getAuthInfo(request);
@@ -53,7 +51,6 @@ public class ReportController extends BaseController {
 			Date startDateD = dfCreationTime.parse(startDate);
 			Date endDateD = dfCreationTime.parse(endDate);
 
-			logger.debug("GET /orderReport: all orders count " + orderListAll.size());
 			List<Order> filteredOrders = orderListAll;
 
 			filteredOrders = orderListAll.stream()
@@ -67,9 +64,6 @@ public class ReportController extends BaseController {
 
 			byte[] report = ReportBuilder.buildOrderReport(filteredOrders, userName, bar, startDateD, endDateD, dfCreationTime);
 
-			logger.debug("GET /orderReport: filtered orders count " + filteredOrders.size());
-			logger.debug("GET /orderReport: returned pdf report containing orders for period from " + startDate.toString() + " till " + endDate.toString());
-
 			String reportFileName = "Orders_Bar_" + bar.getId() + "_" + startDate.toString() + "_to_" + endDate.toString() + ".pdf";
 
 			HttpHeaders responseHeaders = new HttpHeaders();
@@ -80,10 +74,12 @@ public class ReportController extends BaseController {
 
 			ResponseEntity<byte[]> response = new ResponseEntity<byte[]>(report, responseHeaders, HttpStatus.OK);
 
+			loggerDB.debug("GET /orderReport: returned pdf report containing orders for period from " + startDate.toString() + " till " + endDate.toString());
+
 			return response;
 		}
 		catch (Exception e) {
-			logger.debug(e.getMessage());
+			loggerConsole.debug(e.getMessage());
 		}
 
 		return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Failed to generate report");

@@ -28,14 +28,14 @@ public class DrinkController extends GenController<Drink> {
 			
 			if (! arService.isBarAdmin(userInfo, barId))
 			{
-				logger.debug("GET /drinks: no right for " + userInfo.getUserName());
+				loggerConsole.debug("GET /drinks: no right for " + userInfo.getUserName());
 				return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Not allowed to get drinks for bar: " + barId);
 			}
 			
 			return ResponseEntity.ok(drinkService.GetDrinks(barId));
 		}
 		catch (Exception e){
-			logger.debug(e.getMessage());
+			loggerConsole.debug(e.getMessage());
 		}
 
 		return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Failed to get drinks");

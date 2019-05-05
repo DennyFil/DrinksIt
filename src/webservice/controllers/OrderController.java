@@ -58,7 +58,7 @@ public class OrderController extends GenController<Order> {
 		}
 		catch (Exception e)
 		{
-			logger.debug(e.getMessage());
+			loggerConsole.debug(e.getMessage());
 		}
 
 		return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Failed to get recent orders");
@@ -83,7 +83,7 @@ public class OrderController extends GenController<Order> {
 		}
 		catch (Exception e)
 		{
-			logger.debug(e.getMessage());
+			loggerConsole.debug(e.getMessage());
 		}
 
 		return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Failed to get orders");
@@ -92,8 +92,6 @@ public class OrderController extends GenController<Order> {
 	@RequestMapping("/updateOrderStatus")
 	public ResponseEntity<?> UpdateOrderStatus(HttpServletRequest request, HttpSession session, @RequestBody Integer orderId) throws Exception {  
 
-		logger.debug("POST /updateOrderStatus for order " + orderId);
-
 		try {
 			AuthInfo userInfo = authInfoService.getAuthInfo(request);
 			
@@ -101,7 +99,7 @@ public class OrderController extends GenController<Order> {
 			
 			if (! arService.isBarAdmin(userInfo, order.getDrink().getBarId()))
 			{
-				logger.debug("POST /updateOrderStatus: no right for " + userInfo.getUserName());
+				loggerConsole.debug("POST /updateOrderStatus: no right for " + userInfo.getUserName());
 				return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Not allowed to update order");
 			}			
 
@@ -125,11 +123,13 @@ public class OrderController extends GenController<Order> {
 			order.setUpdateTS(new Date());
 			orderService.Update(order);
 
+			loggerDB.info("Order " + orderId + ": status updated to " + order.getStatus());
+
 			return ResponseEntity.ok(order);
 		}
 		catch (Exception e)
 		{
-			logger.debug(e.getMessage());
+			loggerConsole.debug(e.getMessage());
 		}
 
 		return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Failed to update order status");
@@ -142,8 +142,6 @@ public class OrderController extends GenController<Order> {
 			@RequestParam Double drinkSize, 
 			@RequestParam Double drinkPrice)
 	{
-		logger.debug("POST /postOrder for drink " + drinkId + " in bar " + barId);
-
 		try {
 			boolean drinkExists = drinkService.CheckDrink(drinkId, barId, drinkName, drinkSize, drinkPrice);
 
@@ -151,11 +149,14 @@ public class OrderController extends GenController<Order> {
 			{
 				int quantity = 1;
 				Order newOrder = orderService.CreateOrder(drinkId, quantity, OrderStatus.NOT_ACCEPTED.getStatus());
+				
+				loggerDB.debug("Order for drink " + drinkId + " in bar " + barId + " posted");
+
 				return ResponseEntity.ok(newOrder);
 			}
 		}
 		catch (Exception e){
-			logger.debug(e.getMessage());
+			loggerConsole.debug(e.getMessage());
 		}		
 
 		return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Failed to post order");

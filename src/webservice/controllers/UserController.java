@@ -37,7 +37,7 @@ public class UserController extends GenController<User> {
 			return ResponseEntity.ok(usersInfo);
 		}
 		catch (Exception e) {
-			logger.debug(e.getMessage());
+			loggerConsole.debug(e.getMessage());
 		}
 
 		return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Failed to get users");

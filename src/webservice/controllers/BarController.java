@@ -39,7 +39,7 @@ public class BarController extends GenController<Bar> {
 			}
 		}
 		catch (Exception e) {
-			logger.debug(e.getMessage());
+			loggerConsole.debug(e.getMessage());
 		}
 
 		return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Failed to get bars");

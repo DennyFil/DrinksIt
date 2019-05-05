@@ -9,7 +9,8 @@ import webservice.auxillary.AuthInfoService;
 
 public class BaseController {
 	
-	protected static final Logger logger = LoggerFactory.getLogger("controllersLogger");
+	protected static final Logger loggerDB = LoggerFactory.getLogger("DrinksItLogger");
+	protected static final Logger loggerConsole = LoggerFactory.getLogger("DrinksItLoggerConsole");
 	
 	@Autowired
 	AccessRightsService arService;

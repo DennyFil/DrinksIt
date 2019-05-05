@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Configuration>
+  <Appenders>
+      <Console name="Console" target="SYSTEM_OUT">
+         <PatternLayout pattern="%d{yyyy-MMM-dd hh:mm:ss a } %level %c - %m %n" />
+      </Console>
+
+      <JDBC name="MySQLDatabase" tableName="logs">
+         <ConnectionFactory
+            class="webservice.configuration.HibernateConfiguration" method="dataSource" />
+         <Column name="id" pattern="%u" />
+         <Column name="entry_date" isEventTimestamp="true" />
+         <Column name="logger_id" pattern="%logger" />
+         <Column name="level" pattern="%level" />
+         <Column name="message" pattern="%m" />
+         <Column name="exception" pattern="%throwable " />
+      </JDBC>
+   </Appenders>
+
+   <Loggers>
+      <Logger name="DrinksItLoggerDB" level="debug"
+         additivity="false">
+         <AppenderRef ref="MySQLDatabase" />
+      </Logger>
+
+      <Logger name="DrinksItLoggerConsole" level="debug"
+         additivity="false">
+         <AppenderRef ref="Console" />
+      </Logger>
+   </Loggers>
+</Configuration>

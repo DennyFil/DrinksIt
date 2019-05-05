@@ -44,7 +44,7 @@ public abstract class GenController<T extends GenItem> extends BaseController {
 			action = "CREATE";
 		}
 		
-		logger.debug(buildLogStr( action, newItem.getIdStr(), userName ));
+		loggerDB.debug(buildLogStr( action, newItem.getIdStr(), userName ));
 
 		return item;
 	}
@@ -62,7 +62,7 @@ public abstract class GenController<T extends GenItem> extends BaseController {
 			
 			if ( ! hasDeleteRight(userInfo))
 			{
-				logger.debug("POST /delete: no delete right for " + userInfo.getUserName());
+				loggerConsole.debug("POST /delete: no delete right for " + userInfo.getUserName());
 				return ResponseEntity.status(HttpStatus.FORBIDDEN).body("Not allowed to delete item");
 			}
 			
@@ -72,7 +72,7 @@ public abstract class GenController<T extends GenItem> extends BaseController {
 			return ResponseEntity.ok(id);
 		}
 		catch (Exception e){
-			logger.debug(e.getMessage());
+			loggerConsole.debug(e.getMessage());
 		}
 		
 		return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Failed to delete item");
@@ -86,7 +86,7 @@ public abstract class GenController<T extends GenItem> extends BaseController {
 			
 			if ( ! hasPostRight(userInfo, newItem))
 			{
-				logger.debug("POST /post: no post right for " + userInfo.getUserName());
+				loggerConsole.debug("POST /post: no post right for " + userInfo.getUserName());
 				return ResponseEntity.status(HttpStatus.FORBIDDEN).body("Not allowed to post item");
 			}
 			
@@ -95,7 +95,7 @@ public abstract class GenController<T extends GenItem> extends BaseController {
 			return ResponseEntity.ok(item);
 		}
 		catch (Exception e){
-			logger.debug(e.getMessage());
+			loggerConsole.debug(e.getMessage());
 		}
 
 		return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Failed to post item");

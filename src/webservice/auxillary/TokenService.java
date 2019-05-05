@@ -19,8 +19,8 @@ import webservice.auxillary.DTO.User;
 @PropertySource(value = { "classpath:server.properties" })
 public class TokenService {
     
-	@Autowired
-    private Environment environment;
+	//@Autowired
+    //private Environment environment;
 	
     public boolean CheckToken(String token, User user) {
     	

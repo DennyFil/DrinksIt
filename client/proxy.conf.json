@@ -1,6 +1,6 @@
 {
   "/api/": {
-    "target": "http://localhost:8080/DrinksIt",
+    "target": "http://localhost:8080/DrinksIt-0.0.1-SNAPSHOT",
     "secure": false
   }
 }

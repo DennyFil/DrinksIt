@@ -29,8 +29,6 @@ public class QRCodeController extends BaseController {
 	@RequestMapping("/qrcode")
 	public ResponseEntity<?> GetQRCode(HttpServletRequest request, @RequestBody Integer drinkId) throws Exception
 	{
-		logger.debug("GET /qrcode for drink " + drinkId);
-		
 		try
 		{
 			AuthInfo userInfo = authInfoService.getAuthInfo(request);
@@ -40,7 +38,7 @@ public class QRCodeController extends BaseController {
 						
 			if (! arService.isBarAdmin(userInfo, drink.getBarId()))
 			{
-				logger.debug("GET /qrcode: no right for " + userInfo.getUserName());
+				loggerConsole.debug("GET /qrcode: no right for " + userInfo.getUserName());
 				return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Not allowed to generate QR code for this drink");
 			}
 
@@ -66,11 +64,13 @@ public class QRCodeController extends BaseController {
 
 			QrCode qrCode = new QrCode(qrCodeImage, qrCodeContent);
 
+			loggerDB.debug("QR code generated for drink " + drinkId);
+		
 			return ResponseEntity.ok(qrCode);
 		}
 		catch (Exception e)
 		{
-			logger.error(e.getMessage());
+			loggerConsole.error(e.getMessage());
 		}
 
 		return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Failed to generate QR code (drinkId: " + drinkId + ")");
