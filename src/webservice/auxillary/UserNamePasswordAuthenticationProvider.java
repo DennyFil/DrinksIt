@@ -15,7 +15,7 @@ import webservice.auxillary.ServiceDAO.IUserService;
 
 public class UserNamePasswordAuthenticationProvider implements AuthenticationProvider {
 
-	protected Logger logger = LoggerFactory.getLogger(this.getClass());
+	protected Logger logger = LoggerFactory.getLogger("DrinksItLoggerConsole");
 
 	@Autowired
 	IUserService userService;

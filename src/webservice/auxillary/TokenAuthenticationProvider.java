@@ -15,7 +15,7 @@ import webservice.auxillary.ServiceDAO.IUserService;
 @Component
 public class TokenAuthenticationProvider implements AuthenticationProvider {
 	
-	protected Logger logger = LoggerFactory.getLogger(this.getClass());
+	protected Logger logger = LoggerFactory.getLogger("DrinksItLoggerConsole");
 	
 	@Autowired
 	IUserService userService;

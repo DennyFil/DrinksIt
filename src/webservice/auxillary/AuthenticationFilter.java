@@ -28,7 +28,7 @@ import java.io.IOException;
 
 public class AuthenticationFilter extends GenericFilterBean {
 
-	private final Logger logger = LoggerFactory.getLogger(this.getClass());
+	private final Logger logger = LoggerFactory.getLogger("DrinksItLoggerConsole");
 	
 	private AuthInfoService authInfoService;
 	

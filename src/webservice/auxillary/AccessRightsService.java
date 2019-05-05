@@ -10,7 +10,7 @@ import webservice.auxillary.ServiceDAO.IUserService;
 
 public class AccessRightsService {
 
-	private final Logger logger = LoggerFactory.getLogger(this.getClass());
+	private final Logger logger = LoggerFactory.getLogger("DrinksItLoggerConsole");
 	
 	@Autowired
 	IUserService userService;
