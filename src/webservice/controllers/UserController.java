@@ -14,14 +14,14 @@ import org.springframework.web.bind.annotation.RestController;
 import webservice.auxillary.AuthInfo;
 import webservice.auxillary.DTO.User;
 import webservice.auxillary.DTO.UserInfo;
-import webservice.auxillary.ServiceDAO.IUserService;
+import webservice.auxillary.ServiceDAO.UserService;
 
 @RestController
 @RequestMapping("/api/users")
 public class UserController extends GenController<User> {
 
 	@Autowired
-	IUserService userService;
+	private UserService userService;
 
 	@RequestMapping("/list")
 	public ResponseEntity<?> GetUsers(HttpServletRequest request) throws Exception {

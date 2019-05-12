@@ -12,10 +12,10 @@ import webservice.auxillary.DTO.User;
 
 @Service("UserService")
 @Transactional
-public class UserService extends GenDao<User> implements IUserService {
+public class UserService extends GenDao<User> {
 
 	public UserService() {
-		this.setGenericType(User.class);
+		super(User.class);
 	}
 
 	@SuppressWarnings("unchecked")

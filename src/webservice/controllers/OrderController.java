@@ -17,9 +17,10 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import webservice.auxillary.AuthInfo;
+import webservice.auxillary.DTO.LogAction;
 import webservice.auxillary.DTO.Order;
-import webservice.auxillary.ServiceDAO.IDrinkService;
-import webservice.auxillary.ServiceDAO.IOrderService;
+import webservice.auxillary.ServiceDAO.DrinkService;
+import webservice.auxillary.ServiceDAO.OrderService;
 import webservice.auxillary.database.OrderComparator;
 import webservice.auxillary.database.OrderStatus;
 
@@ -28,10 +29,10 @@ import webservice.auxillary.database.OrderStatus;
 public class OrderController extends GenController<Order> {
 
 	@Autowired
-	IOrderService orderService;
+	private OrderService orderService;
 
 	@Autowired
-	IDrinkService drinkService;
+	private DrinkService drinkService;
 
 	@Autowired
 	private Environment environment;
@@ -123,7 +124,7 @@ public class OrderController extends GenController<Order> {
 			order.setUpdateTS(new Date());
 			orderService.Update(order);
 
-			loggerDB.info("Order " + orderId + ": status updated to " + order.getStatus());
+			AddLog(userInfo.getUserId(), LogAction.UPDATE, "Order " + orderId + ": status updated to " + order.getStatus());
 
 			return ResponseEntity.ok(order);
 		}
@@ -150,7 +151,7 @@ public class OrderController extends GenController<Order> {
 				int quantity = 1;
 				Order newOrder = orderService.CreateOrder(drinkId, quantity, OrderStatus.NOT_ACCEPTED.getStatus());
 				
-				loggerDB.debug("Order for drink " + drinkId + " in bar " + barId + " posted");
+				AddLog(-1, LogAction.CREATE, "Order for drink " + drinkId + " in bar " + barId + " posted");
 
 				return ResponseEntity.ok(newOrder);
 			}

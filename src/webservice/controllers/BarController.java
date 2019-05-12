@@ -12,14 +12,14 @@ import org.springframework.web.bind.annotation.RestController;
 
 import webservice.auxillary.AuthInfo;
 import webservice.auxillary.DTO.Bar;
-import webservice.auxillary.ServiceDAO.IBarService;
+import webservice.auxillary.ServiceDAO.BarService;
 
 @RestController
 @RequestMapping("/api/bars")
 public class BarController extends GenController<Bar> {
 
 	@Autowired
-	IBarService barService;
+	private BarService barService;
 
 	@RequestMapping("/list")
 	public ResponseEntity<?> GetBars(HttpServletRequest request) throws Exception {

@@ -8,13 +8,11 @@ public class V1_4__Log_table implements SpringJdbcMigration {
 
         String createLogsTable =
 				"CREATE TABLE IF NOT EXISTS logs (" +
-						"id INTEGER NOT NULL AUTO_INCREMENT," +
+						"id varchar(100) primary key," +
 						"entry_date TIMESTAMP NOT NULL," +
 						"logger_id INTEGER NOT NULL," +
-						"level TEXT NOT NULL," +
-						"message TEXT NOT NULL," +
-						"exception TEXT NOT NULL," +
-						"PRIMARY KEY (id)," +
+						"action varchar(100)," +
+						"message TEXT" +
 						"FOREIGN KEY (logger_id) REFERENCES users(id)" +
             ");";
                         

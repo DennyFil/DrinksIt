@@ -1,7 +1,7 @@
 package webservice.auxillary.DTO;
 
 // Not Mapped
-public class UserInfo extends BaseItem {
+public class UserInfo {
 
 	int id;
 	String userName;

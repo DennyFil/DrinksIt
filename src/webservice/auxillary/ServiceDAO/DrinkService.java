@@ -11,10 +11,10 @@ import webservice.auxillary.DTO.Drink;
 
 @Service("DrinkService")
 @Transactional
-public class DrinkService extends GenDao<Drink> implements IDrinkService {
+public class DrinkService extends GenDao<Drink> {
 
 	public DrinkService() {
-		this.setGenericType(Drink.class);
+		super(Drink.class);
 	}
 
 	public boolean CheckDrink(int drinkId, int barId, String drinkName, double drinkSize, double drinkPrice) throws Exception

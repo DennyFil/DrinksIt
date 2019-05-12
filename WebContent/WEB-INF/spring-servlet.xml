@@ -119,6 +119,9 @@
 	<bean id="drinkService" class="webservice.auxillary.ServiceDAO.DrinkService">
 	</bean>
 
+	<bean id="logService" class="webservice.auxillary.ServiceDAO.LogService">
+	</bean>
+
 	<bean id="authInfoService" class="webservice.auxillary.AuthInfoService">
 	</bean>
 	

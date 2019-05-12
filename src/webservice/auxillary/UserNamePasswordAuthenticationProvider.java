@@ -11,17 +11,17 @@ import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.web.authentication.preauth.PreAuthenticatedAuthenticationToken;
 
 import webservice.auxillary.DTO.User;
-import webservice.auxillary.ServiceDAO.IUserService;
+import webservice.auxillary.ServiceDAO.UserService;
 
 public class UserNamePasswordAuthenticationProvider implements AuthenticationProvider {
 
 	protected Logger logger = LoggerFactory.getLogger("DrinksItLoggerConsole");
 
 	@Autowired
-	IUserService userService;
+	private UserService userService;
 
 	@Autowired
-	TokenService tokenService;
+	private TokenService tokenService;
 
 	@Override
 	public Authentication authenticate(Authentication authentication) throws AuthenticationException {

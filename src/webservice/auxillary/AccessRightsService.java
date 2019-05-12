@@ -6,14 +6,14 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import webservice.auxillary.DTO.User;
-import webservice.auxillary.ServiceDAO.IUserService;
+import webservice.auxillary.ServiceDAO.UserService;
 
 public class AccessRightsService {
 
 	private final Logger logger = LoggerFactory.getLogger("DrinksItLoggerConsole");
 	
 	@Autowired
-	IUserService userService;
+	private UserService userService;
 	
 	public boolean checkRight(AuthInfo userInfo, String right) {
 

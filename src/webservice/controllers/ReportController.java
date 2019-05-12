@@ -18,9 +18,10 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import webservice.auxillary.DTO.Bar;
+import webservice.auxillary.DTO.LogAction;
 import webservice.auxillary.DTO.Order;
-import webservice.auxillary.ServiceDAO.IBarService;
-import webservice.auxillary.ServiceDAO.IOrderService;
+import webservice.auxillary.ServiceDAO.BarService;
+import webservice.auxillary.ServiceDAO.OrderService;
 import webservice.auxillary.ReportBuilder;
 import webservice.auxillary.AuthInfo;
 
@@ -29,10 +30,10 @@ import webservice.auxillary.AuthInfo;
 public class ReportController extends BaseController {
 
 	@Autowired
-	IOrderService orderService;
+	private OrderService orderService;
 
 	@Autowired
-	IBarService barService;
+	private BarService barService;
 
 	@RequestMapping("/ordersReport")
 	public ResponseEntity<?> ExportOrders(HttpServletRequest request, @RequestParam String startDate, @RequestParam String endDate) throws Exception {
@@ -74,7 +75,7 @@ public class ReportController extends BaseController {
 
 			ResponseEntity<byte[]> response = new ResponseEntity<byte[]>(report, responseHeaders, HttpStatus.OK);
 
-			loggerDB.debug("GET /orderReport: returned pdf report containing orders for period from " + startDate.toString() + " till " + endDate.toString());
+			AddLog(userInfo.getUserId(), LogAction.INFO, "GET /orderReport: returned pdf report containing orders for period from " + startDate.toString() + " till " + endDate.toString());
 
 			return response;
 		}

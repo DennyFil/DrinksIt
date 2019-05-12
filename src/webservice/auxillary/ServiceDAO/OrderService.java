@@ -13,10 +13,10 @@ import webservice.auxillary.DTO.User;
 
 @Service("OrderService")
 @Transactional
-public class OrderService extends GenDao<Order> implements IOrderService {
+public class OrderService extends GenDao<Order> {
 
 	public OrderService() {
-		this.setGenericType(Order.class);
+		super(Order.class);
 	}
 
 	public Order GetOrder(int orderId) throws Exception

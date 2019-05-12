@@ -7,6 +7,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import webservice.auxillary.DTO.GenItem;
+import webservice.auxillary.DTO.LogAction;
 import webservice.auxillary.AuthInfo;
 
 public abstract class GenController<T extends GenItem> extends BaseController {
@@ -23,28 +24,28 @@ public abstract class GenController<T extends GenItem> extends BaseController {
 	
 	protected abstract void deleteItem(int id) throws Exception;
 
-	private String buildLogStr( String action, String itemId, String userName )
+	private String buildLogStr( String itemId, String userName )
 	{
-		return action + ": " + getTypeStr() + " " + itemId + " by " + userName;
+		return "Item: " + getTypeStr() + " " + itemId + " by " + userName;
 	}
 	
-	private T handlePostedItem(T newItem,  String userName ) throws Exception
+	private T handlePostedItem(T newItem, int loggerId, String userName ) throws Exception
 	{
 		T item = null;
-		String action = "";
+		LogAction action = LogAction.UNKNOWN;
 
 		if (itemExists(newItem))
 		{
 			item = updateItem(newItem);
-			action = "UPDATE";
+			action = LogAction.UPDATE;
 		}
 		else
 		{
 			item = createItem(newItem);
-			action = "CREATE";
+			action = LogAction.CREATE;
 		}
 		
-		loggerDB.debug(buildLogStr( action, newItem.getIdStr(), userName ));
+		AddLog(loggerId, action, buildLogStr( newItem.getIdStr(), userName ));
 
 		return item;
 	}
@@ -67,7 +68,7 @@ public abstract class GenController<T extends GenItem> extends BaseController {
 			}
 			
 			deleteItem(id);
-			buildLogStr( "DELETE", id.toString(), userInfo.getUserName() );
+			AddLog(userInfo.getUserId(), LogAction.DELETE, buildLogStr( id.toString(), userInfo.getUserName() ));
 			
 			return ResponseEntity.ok(id);
 		}
@@ -90,7 +91,7 @@ public abstract class GenController<T extends GenItem> extends BaseController {
 				return ResponseEntity.status(HttpStatus.FORBIDDEN).body("Not allowed to post item");
 			}
 			
-			GenItem item = handlePostedItem(newItem, userInfo.getUserName());
+			GenItem item = handlePostedItem(newItem, userInfo.getUserId(), userInfo.getUserName());
 			
 			return ResponseEntity.ok(item);
 		}

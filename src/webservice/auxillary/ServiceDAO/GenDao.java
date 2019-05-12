@@ -12,14 +12,14 @@ import webservice.auxillary.DTO.GenItem;
 
 @Repository
 @Transactional
-public abstract class GenDao<T extends GenItem> implements IGenDao<T> {
+public abstract class GenDao<T extends GenItem> {
 	
 	private Class<T> genericType;
 
 	@Autowired
 	public SessionFactory sessionFactory;
 
-	public final void setGenericType( Class< T > typeToSet ){
+	public GenDao( Class< T > typeToSet ){
 		this.genericType = typeToSet;
 	}
 	

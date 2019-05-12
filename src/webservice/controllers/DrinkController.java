@@ -11,14 +11,14 @@ import org.springframework.web.bind.annotation.RestController;
 
 import webservice.auxillary.AuthInfo;
 import webservice.auxillary.DTO.Drink;
-import webservice.auxillary.ServiceDAO.IDrinkService;
+import webservice.auxillary.ServiceDAO.DrinkService;
 
 @RestController
 @RequestMapping("/api/drinks")
 public class DrinkController extends GenController<Drink> {
 
 	@Autowired
-	IDrinkService drinkService;
+	private DrinkService drinkService;
 	
 	@RequestMapping("/list")
 	public ResponseEntity<?> GetBarDrinks(HttpServletRequest request, @RequestParam Integer barId) throws Exception {

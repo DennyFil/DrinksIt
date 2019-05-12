@@ -14,14 +14,15 @@ import webservice.auxillary.QRCodeGenerator;
 import webservice.auxillary.QrCode;
 import webservice.auxillary.AuthInfo;
 import webservice.auxillary.DTO.Drink;
-import webservice.auxillary.ServiceDAO.IDrinkService;
+import webservice.auxillary.DTO.LogAction;
+import webservice.auxillary.ServiceDAO.DrinkService;
 
 @RestController
 @RequestMapping("/api")
 public class QRCodeController extends BaseController {
 
 	@Autowired
-	IDrinkService drinkService;
+	private DrinkService drinkService;
 
 	@Autowired
 	private Environment environment;
@@ -64,7 +65,7 @@ public class QRCodeController extends BaseController {
 
 			QrCode qrCode = new QrCode(qrCodeImage, qrCodeContent);
 
-			loggerDB.debug("QR code generated for drink " + drinkId);
+			AddLog(userInfo.getUserId(), LogAction.CREATE, "QR code generated for drink " + drinkId);
 		
 			return ResponseEntity.ok(qrCode);
 		}

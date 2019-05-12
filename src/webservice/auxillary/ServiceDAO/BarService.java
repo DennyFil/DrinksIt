@@ -9,10 +9,10 @@ import webservice.auxillary.DTO.User;
 
 @Service("BarService")
 @Transactional
-public class BarService extends GenDao<Bar> implements IBarService {
+public class BarService extends GenDao<Bar> {
 
 	public BarService() {
-		this.setGenericType(Bar.class);
+		super(Bar.class);
 	}
 
 	public Bar GetBar(String userName) throws Exception
