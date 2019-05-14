@@ -75,7 +75,7 @@ public class ReportController extends BaseController {
 
 			ResponseEntity<byte[]> response = new ResponseEntity<byte[]>(report, responseHeaders, HttpStatus.OK);
 
-			AddLog(userInfo.getUserId(), LogAction.INFO, "GET /orderReport: returned pdf report containing orders for period from " + startDate.toString() + " till " + endDate.toString());
+			AddLog(userInfo.getUserName(), LogAction.INFO, "GET /orderReport: returned pdf report containing orders for period from " + startDate.toString() + " till " + endDate.toString());
 
 			return response;
 		}

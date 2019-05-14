@@ -65,7 +65,7 @@ public class QRCodeController extends BaseController {
 
 			QrCode qrCode = new QrCode(qrCodeImage, qrCodeContent);
 
-			AddLog(userInfo.getUserId(), LogAction.CREATE, "QR code generated for drink " + drinkId);
+			AddLog(userInfo.getUserName(), LogAction.CREATE, "QR code generated for drink " + drinkId);
 		
 			return ResponseEntity.ok(qrCode);
 		}

@@ -25,9 +25,9 @@ public class BaseController {
 	@Autowired
 	protected LogService logService;
 
-	public void AddLog(int loggerId, LogAction action, String message) {
+	public void AddLog(String loggerName, LogAction action, String message) {
 
-		Log newLog = new Log(new Date(), loggerId, action, message);
+		Log newLog = new Log(new Date(), loggerName, action, message);
 		try {
 			logService.Create(newLog);
 		} catch (Exception e) {

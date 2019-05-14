@@ -29,7 +29,7 @@ public abstract class GenController<T extends GenItem> extends BaseController {
 		return "Item: " + getTypeStr() + " " + itemId + " by " + userName;
 	}
 	
-	private T handlePostedItem(T newItem, int loggerId, String userName ) throws Exception
+	private T handlePostedItem(T newItem, String userName ) throws Exception
 	{
 		T item = null;
 		LogAction action = LogAction.UNKNOWN;
@@ -45,7 +45,7 @@ public abstract class GenController<T extends GenItem> extends BaseController {
 			action = LogAction.CREATE;
 		}
 		
-		AddLog(loggerId, action, buildLogStr( newItem.getIdStr(), userName ));
+		AddLog(userName, action, buildLogStr( newItem.getIdStr(), userName ));
 
 		return item;
 	}
@@ -68,7 +68,7 @@ public abstract class GenController<T extends GenItem> extends BaseController {
 			}
 			
 			deleteItem(id);
-			AddLog(userInfo.getUserId(), LogAction.DELETE, buildLogStr( id.toString(), userInfo.getUserName() ));
+			AddLog(userInfo.getUserName(), LogAction.DELETE, buildLogStr( id.toString(), userInfo.getUserName() ));
 			
 			return ResponseEntity.ok(id);
 		}
@@ -91,7 +91,7 @@ public abstract class GenController<T extends GenItem> extends BaseController {
 				return ResponseEntity.status(HttpStatus.FORBIDDEN).body("Not allowed to post item");
 			}
 			
-			GenItem item = handlePostedItem(newItem, userInfo.getUserId(), userInfo.getUserName());
+			GenItem item = handlePostedItem(newItem, userInfo.getUserName());
 			
 			return ResponseEntity.ok(item);
 		}

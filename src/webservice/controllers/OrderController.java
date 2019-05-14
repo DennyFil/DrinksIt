@@ -124,7 +124,7 @@ public class OrderController extends GenController<Order> {
 			order.setUpdateTS(new Date());
 			orderService.Update(order);
 
-			AddLog(userInfo.getUserId(), LogAction.UPDATE, "Order " + orderId + ": status updated to " + order.getStatus());
+			AddLog(userInfo.getUserName(), LogAction.UPDATE, "Order " + orderId + ": status updated to " + order.getStatus());
 
 			return ResponseEntity.ok(order);
 		}
@@ -151,7 +151,7 @@ public class OrderController extends GenController<Order> {
 				int quantity = 1;
 				Order newOrder = orderService.CreateOrder(drinkId, quantity, OrderStatus.NOT_ACCEPTED.getStatus());
 				
-				AddLog(-1, LogAction.CREATE, "Order for drink " + drinkId + " in bar " + barId + " posted");
+				AddLog("External", LogAction.CREATE, "Order for drink " + drinkId + " in bar " + barId + " posted");
 
 				return ResponseEntity.ok(newOrder);
 			}
