@@ -41,13 +41,6 @@ public class DrinkService extends GenDao<Drink> {
 		}
 
 		return (List<Drink>)session.createQuery(query).list();
-	}	
-
-	public Drink GetDrink(int drinkId) throws Exception
-	{
-		Session session = sessionFactory.getCurrentSession();
-
-		return (Drink) session.get(Drink.class, drinkId);
 	}
 
 	public Drink Create(Drink newDrink) throws Exception

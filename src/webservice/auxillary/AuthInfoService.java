@@ -5,12 +5,7 @@
 package webservice.auxillary;
 
 import javax.servlet.http.HttpServletRequest;
-
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
-
-import webservice.auxillary.DTO.User;
-import webservice.auxillary.ServiceDAO.UserService;
 import webservice.exceptions.CustomAuthenticationException;
 
 public class AuthInfoService {

@@ -1,10 +1,10 @@
 package db.migrations;
 
-import org.flywaydb.core.api.migration.spring.SpringJdbcMigration;
-import org.springframework.jdbc.core.JdbcTemplate;
+import org.flywaydb.core.api.migration.BaseJavaMigration;
+import org.flywaydb.core.api.migration.Context;
 
-public class V1_4__Log_table implements SpringJdbcMigration {
-	public void migrate(JdbcTemplate jdbcTemplate) throws Exception {
+public class V1_4__Log_table extends BaseJavaMigration {
+	public void migrate(Context context) throws Exception {
 
         String createLogsTable =
 				"CREATE TABLE IF NOT EXISTS logs (" +
@@ -16,6 +16,6 @@ public class V1_4__Log_table implements SpringJdbcMigration {
 						"PRIMARY KEY (id)" +
             ");";
                         
-		jdbcTemplate.execute(createLogsTable);
+			MigrationTools.executeQuery(context, createLogsTable);
 	}
 }

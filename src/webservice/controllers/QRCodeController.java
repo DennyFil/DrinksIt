@@ -35,7 +35,7 @@ public class QRCodeController extends BaseController {
 			AuthInfo userInfo = authInfoService.getAuthInfo(request);
 			
 			// Request DB for Drink name, price, size and Bar Id based on drinkId
-			Drink drink = drinkService.GetDrink(drinkId);
+			Drink drink = drinkService.GetItem(drinkId);
 						
 			if (! arService.isBarAdmin(userInfo, drink.getBarId()))
 			{

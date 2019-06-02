@@ -22,6 +22,13 @@ public abstract class GenDao<T extends GenItem> {
 	public GenDao( Class< T > typeToSet ){
 		this.genericType = typeToSet;
 	}
+
+	public T GetItem(int id) throws Exception
+	{
+		Session session = sessionFactory.getCurrentSession();
+
+		return session.get(genericType, id);
+	}
 	
 	public boolean Exists(T newItem) throws Exception
 	{

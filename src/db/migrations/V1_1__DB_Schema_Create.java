@@ -1,10 +1,11 @@
 package db.migrations;
 
-import org.flywaydb.core.api.migration.spring.SpringJdbcMigration;
-import org.springframework.jdbc.core.JdbcTemplate;
+import org.flywaydb.core.api.migration.BaseJavaMigration;
+import org.flywaydb.core.api.migration.Context;
 
-public class V1_1__DB_Schema_Create implements SpringJdbcMigration {
-	public void migrate(JdbcTemplate jdbcTemplate) throws Exception {
+public class V1_1__DB_Schema_Create extends BaseJavaMigration {
+
+	public void migrate(Context context) throws Exception {
 		
 		String createBarsTable =
 				"CREATE TABLE IF NOT EXISTS bars (" +
@@ -15,7 +16,8 @@ public class V1_1__DB_Schema_Create implements SpringJdbcMigration {
 						"country VARCHAR (50) NOT NULL," +
 						"PRIMARY KEY (id)" +
 						");";
-		jdbcTemplate.execute(createBarsTable);		
+
+						MigrationTools.executeQuery(context, createBarsTable);
 
 		String createDrinksTable = 
 				"CREATE TABLE IF NOT EXISTS drinks (" +
@@ -27,7 +29,8 @@ public class V1_1__DB_Schema_Create implements SpringJdbcMigration {
 						"PRIMARY KEY (id)," +
 						"FOREIGN KEY (bar_id) REFERENCES bars(id)" +
 						");";
-		jdbcTemplate.execute(createDrinksTable);
+		
+						MigrationTools.executeQuery(context, createDrinksTable);
 
 		String createOrdersTable =
 				"CREATE TABLE IF NOT EXISTS orders (" +
@@ -40,7 +43,8 @@ public class V1_1__DB_Schema_Create implements SpringJdbcMigration {
 						"PRIMARY KEY (id)," +
 						"FOREIGN KEY (drink_id) REFERENCES drinks(id)" +
 						");";
-		jdbcTemplate.execute(createOrdersTable);
+
+						MigrationTools.executeQuery(context, createOrdersTable);
 
 		String createUsersTable =
 				"CREATE TABLE IF NOT EXISTS users (" +
@@ -51,6 +55,7 @@ public class V1_1__DB_Schema_Create implements SpringJdbcMigration {
 						"PRIMARY KEY (id)," +
 						"FOREIGN KEY (bar_id) REFERENCES bars(id)" +
 						");";
-		jdbcTemplate.execute(createUsersTable);
+
+						MigrationTools.executeQuery(context, createUsersTable);
 	}
 }

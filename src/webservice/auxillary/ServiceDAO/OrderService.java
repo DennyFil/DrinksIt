@@ -19,13 +19,6 @@ public class OrderService extends GenDao<Order> {
 		super(Order.class);
 	}
 
-	public Order GetOrder(int orderId) throws Exception
-	{
-		Session session = sessionFactory.getCurrentSession();
-
-		return (Order) session.get(Order.class, orderId);
-	}
-
 	@SuppressWarnings({"unchecked"})
 	public List<Order> GetOrders(String userName) throws Exception
 	{

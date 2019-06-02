@@ -96,7 +96,7 @@ public class OrderController extends GenController<Order> {
 		try {
 			AuthInfo userInfo = authInfoService.getAuthInfo(request);
 			
-			Order order = orderService.GetOrder(orderId);
+			Order order = orderService.GetItem(orderId);
 			
 			if (! arService.isBarAdmin(userInfo, order.getDrink().getBarId()))
 			{
