@@ -21,7 +21,7 @@
 		<json.version>20180813</json.version>
 		<qrgen.version>1.4</qrgen.version>
 		<boxable.version>1.5</boxable.version>
-		<pdfbox.version>2.0.15</pdfbox.version>
+		<pdfbox.version>2.0.24</pdfbox.version>
 		<jackson.version>2.9.8</jackson.version>
 		<maven-war-plugin.version>3.2.2</maven-war-plugin.version>
 		<maven-resources-plugin.version>3.1.0</maven-resources-plugin.version>
